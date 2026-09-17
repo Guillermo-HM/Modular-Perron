@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import "../assets/landing.css"; // Importación del CSS modular externo
+import { AnimatedLogo } from "../components/animated-logo"; // Importación del logo animado
+
+import slideImg1 from "../assets/images/arroz.jpg";
+import slideImg2 from "../assets/images/pizzas.jpg";
+import slideImg3 from "../assets/images/pollo-y-papas.jpg";
 
 const slides = [
   {
@@ -7,21 +12,21 @@ const slides = [
     title: "Cocina a tu medida con IA",
     subtitle: "Recomendaciones personalizadas según tu tiempo, presupuesto y alergias.",
     badge: "Asistente Inteligente",
-    bgGradient: "linear-gradient(135deg, #2A3B18 0%, #3D5323 100%)",
+    image: slideImg1, // Asignación de la imagen importada
   },
   {
     id: 2,
     title: "Control total de tu dieta",
     subtitle: "Filtra recetas por conteo de calorías, tipo de dieta y restricciones médicas.",
     badge: "Nutrición & Salud",
-    bgGradient: "linear-gradient(135deg, #3D5323 0%, #546E34 100%)",
+    image: slideImg2,
   },
   {
     id: 3,
     title: "Ahorra en cada comida",
     subtitle: "Dile al chat tu presupuesto disponible y obtén menús optimizados.",
     badge: "Economía del Hogar",
-    bgGradient: "linear-gradient(135deg, #1D2318 0%, #2A3B18 100%)",
+    image: slideImg3,
   },
 ];
 
@@ -41,8 +46,11 @@ function LandingPage({ onLoginClick, onSignUpClick }) {
       {/* 1. NAVBAR */}
       <header className="landing-navbar">
         <div className="landing-brand">
+          {/* Logo animado integrado */}
+          
           <span className="brand-cook">Cook</span>
           <span className="brand-smart">Smart</span>
+          <AnimatedLogo size={35} className="brand-icon" />
         </div>
         <div className="nav-buttons">
           <button className="btn-login" onClick={onLoginClick}>
@@ -92,7 +100,7 @@ function LandingPage({ onLoginClick, onSignUpClick }) {
             <div
               key={slide.id}
               className={`slide-item ${index === currentSlide ? "active" : ""}`}
-              style={{ background: slide.bgGradient }}
+              style={{ "--slide-bg": `url(${slide.image})` }}
             >
               <span className="slide-badge">{slide.badge}</span>
               <h1 className="slide-title">{slide.title}</h1>

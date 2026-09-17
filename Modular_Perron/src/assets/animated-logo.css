@@ -1,0 +1,79 @@
+/* Contenedor del Logo */
+.logo-container {
+  width: 180px;
+  height: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animated-logo-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Regla base para dibujar trazos */
+.svg-draw {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: drawStroke 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* 1. Dibujar Cuerpo y Cabeza primero */
+.body-path {
+  animation-delay: 0.1s;
+}
+
+.head-circle {
+  stroke-dasharray: 330;
+  stroke-dashoffset: 330;
+  animation-delay: 0.4s;
+}
+
+/* 2. Dibujar Gorro de Chef después */
+.hat-path {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation-delay: 0.9s;
+}
+
+.hat-base, .hat-detail {
+  stroke-dasharray: 150;
+  stroke-dashoffset: 150;
+  animation-delay: 1.2s;
+}
+
+/* 3. Animación de destellos de luz (Aparecen con pop suave) */
+.rays-group line {
+  opacity: 0;
+  transform-origin: center;
+  animation: rayPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation-delay: 1.6s;
+}
+
+/* Keyframes */
+@keyframes drawStroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes rayPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Opcional: Hacer que la animación vuelva a ejecutarse al hacer Hover */
+.logo-container:hover .svg-draw {
+  animation: none;
+}
+.logo-container:hover .svg-draw {
+  animation: drawStroke 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}

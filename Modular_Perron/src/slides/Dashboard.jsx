@@ -33,7 +33,7 @@ function Dashboard({ onLogout }) {
         <div style={styles.avatarContainer}>
           <Blobatar
             name={displayName}
-            size={90}
+            size={200}
             animate="always"    /* Mantiene la animación activa continuamente */
             trackCursor={true}  /* Los ojos seguirán la trayectoria del cursor */
           />
