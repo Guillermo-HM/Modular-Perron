@@ -1,0 +1,455 @@
+/* ==========================================================================
+   LANDING PAGE STYLES & ANIMATIONS
+   ========================================================================== */
+
+:root {
+  --color-bg-page: #F7F8EE;
+  --color-brand-dark: #1D2318;
+  --color-nav-bg: #DADECA;
+  --color-border: #C8CEB9;
+  --color-btn-primary: #A8B88C;
+  --color-btn-hover: #96A878;
+  --color-card-dark: #0F140C;
+  --color-chat-user: #3D5323;
+  --color-chat-bot: #1D2318;
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.landing-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-page);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   1. NAVBAR
+   -------------------------------------------------------------------------- */
+.landing-navbar {
+  height: 64px;
+  background-color: var(--color-nav-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.landing-brand {
+  display: flex;
+  align-items: center;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  user-select: none;
+}
+
+.brand-cook {
+  color: var(--color-brand-dark);
+}
+
+.brand-smart {
+  background-color: var(--color-brand-dark);
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: 3px;
+  font-size: 1.15rem;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-login {
+  position: relative;
+  background-color: var(--color-btn-primary);
+  color: var(--color-brand-dark);
+  border: none;
+  padding: 9px 22px;
+  border-radius: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-shadow: 0 3px 10px rgba(42, 59, 24, 0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  transition: background-color 0.25s var(--transition-smooth),
+              transform 0.25s var(--transition-smooth),
+              box-shadow 0.25s var(--transition-smooth);
+}
+
+.btn-login:hover {
+  background-color: var(--color-btn-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(42, 59, 24, 0.22);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+}
+
+/* SVG responsivo para el Login */
+.btn-login-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Trazo del borde animado */
+.btn-login-border-path {
+  fill: none;
+  stroke: var(--color-brand-dark); /* Color que contrasta y combina con el fondo verde */
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  transition: stroke-dashoffset 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Al hacer HOVER en Login, las dos mitades se dibujan sobre la cápsula */
+.btn-login:hover .btn-login-border-path {
+  stroke-dashoffset: 0;
+}
+.btn-signup {
+  position: relative;
+  background-color: transparent;
+  color: var(--color-brand-dark);
+  border: none;
+  padding: 8px 22px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  transition: transform 0.2s var(--transition-smooth);
+}
+
+.btn-signup:hover {
+  transform: translateY(-1px);
+}
+
+.btn-signup:active {
+  transform: translateY(0);
+}
+
+/* SVG Responsivo */
+.btn-signup-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Estilos base para las dos mitades */
+.btn-border-path {
+  fill: none;
+  stroke: var(--color-brand-dark);
+  stroke-width: 2.5;
+  stroke-linecap: round; /* Bordes suaves en el punto de encuentro */
+  /* Longitud aproximada de cada mitad */
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120; 
+  transition: stroke-dashoffset 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Al hacer HOVER, ambas mitades se dibujan simultáneamente */
+.btn-signup:hover .btn-border-path {
+  stroke-dashoffset: 0;
+}
+/* --------------------------------------------------------------------------
+   2. HERO / CARRUSEL PRINCIPAL CON ANIMACIONES
+   -------------------------------------------------------------------------- */
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: 320px;
+  background-color: #A2AB95;
+  overflow: hidden;
+  box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.carousel-arrow {
+  width: 70px;
+  background-color: rgba(142, 152, 128, 0.5);
+  border: none;
+  font-size: 1.8rem;
+  color: #1D2318;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s var(--transition-smooth);
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+.carousel-arrow:hover {
+  background-color: rgba(142, 152, 128, 0.9);
+  color: #FFFFFF;
+}
+
+.carousel-arrow:active {
+  transform: scale(0.92);
+}
+
+/* Slide viewport & items */
+.slide-viewport {
+  flex: 1;
+  position: relative;
+  height: 100%;
+}
+
+.slide-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 50px;
+  text-align: center;
+  color: #FFFFFF;
+  opacity: 0;
+  transform: scale(0.97) translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.5s var(--transition-smooth), transform 0.5s var(--transition-smooth);
+}
+
+.slide-item.active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+/* Elementos internos del slide con animaciones escalonadas */
+.slide-badge {
+  background-color: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 5px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.slide-title {
+  font-size: 2.4rem;
+  margin: 0 0 12px 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.slide-subtitle {
+  font-size: 1.1rem;
+  margin: 0;
+  max-width: 650px;
+  opacity: 0.92;
+  line-height: 1.5;
+}
+
+/* Indicadores de puntos (dots) para los slides */
+.carousel-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s var(--transition-smooth);
+}
+
+.dot.active {
+  background-color: #FFFFFF;
+  width: 28px;
+  border-radius: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   3. SECCIÓN DEMO / CHAT PREVIEW
+   -------------------------------------------------------------------------- */
+.feature-section {
+  flex: 1;
+  padding: 50px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.feature-pill-container {
+  background-color: var(--color-nav-bg);
+  border-radius: 35px;
+  width: 100%;
+  max-width: 1020px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  border: 1px solid var(--color-border);
+}
+
+.dark-card {
+  background-color: var(--color-card-dark);
+  border-radius: 24px;
+  padding: 24px;
+  width: 380px;
+  min-width: 310px;
+  color: #FFFFFF;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.3s var(--transition-smooth);
+}
+
+.dark-card:hover {
+  transform: translateY(-4px);
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #A8B88C;
+  border-bottom: 1px solid #222C1C;
+  padding-bottom: 10px;
+}
+
+.chat-status-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #10B981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10B981;
+}
+
+.chat-bubble-bot {
+  background-color: var(--color-chat-bot);
+  padding: 12px 16px;
+  border-radius: 14px 14px 14px 4px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #E2E8F0;
+  border: 1px solid #2A3B18;
+}
+
+.chat-bubble-user {
+  background-color: var(--color-chat-user);
+  padding: 12px 16px;
+  border-radius: 14px 14px 4px 14px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  align-self: flex-end;
+  color: #FFFFFF;
+}
+
+.feature-text-content {
+  flex: 1;
+}
+
+.feature-title {
+  color: var(--color-brand-dark);
+  font-size: 1.8rem;
+  margin: 0 0 14px 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.feature-description {
+  color: #4A5243;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  background-color: #EFF1E4;
+  color: var(--color-chat-user);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.tag:hover {
+  background-color: #E2E6D2;
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   4. FOOTER
+   -------------------------------------------------------------------------- */
+.landing-footer {
+  height: 56px;
+  background-color: var(--color-nav-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid var(--color-border);
+}
+
+.footer-text {
+  margin: 0;
+  color: var(--color-brand-dark);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* Responsividad básica */
+@media (max-width: 820px) {
+  .feature-pill-container {
+    flex-direction: column;
+  }
+  .dark-card {
+    width: 100%;
+  }
+}

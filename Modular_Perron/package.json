@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.112.3",
+    "@blobatar/react": "^2.7.0",
+    "@supabase/supabase-js": "^2.116.0",
+    "blobatar": "^2.7.0",
+    "boring-avatars": "^2.0.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },

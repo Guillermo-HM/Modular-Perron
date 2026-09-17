@@ -2,36 +2,49 @@ import React, { useState } from "react";
 import { supabase } from "../supabaseClient";
 import "./login.css";
 
-// 1. Agrega onBackToLanding en las props
-function Login({ onSwitchToSignUp, onBackToLanding }) {
+function SignUp({ onSwitchToLogin, onBackToLanding }) {
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setErrorMsg(null);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    if (password !== confirmPassword) {
+      setErrorMsg("Las contraseñas no coinciden.");
+      return;
+    }
+
+    setLoading(true);
+
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          display_name: displayName,
+        },
+      },
     });
 
     if (error) {
       setErrorMsg(error.message);
     } else {
-      console.log("Sesión iniciada:", data);
+      setSuccessMsg(true);
     }
     setLoading(false);
   };
 
   return (
     <div className="login-wrapper">
-      {/* 2. Botón flotante para regresar a la Landing Page */}
+      {/* 1. Mueve el botón AQUÍ (fuera de login-card) */}
       <button 
-        type="button" 
+        type="button"
         className="back-arrow-btn" 
         onClick={onBackToLanding}
         aria-label="Regresar al inicio"
@@ -50,14 +63,10 @@ function Login({ onSwitchToSignUp, onBackToLanding }) {
               <small>Project</small>
             </div>
           </div>
-
           <div className="brand-body">
-            <h3>Bienvenido de nuevo</h3>
-            <p>
-              Accede a la plataforma para poder seguir el control de tu dieta.
-            </p>
+            <h3>Únete a nosotros</h3>
+            <p>Crea tu cuenta en pocos pasos y comienza el control de tu dieta.</p>
           </div>
-
           <div className="brand-footer">
             <span>Est. 2026</span>
           </div>
@@ -66,23 +75,35 @@ function Login({ onSwitchToSignUp, onBackToLanding }) {
         {/* Panel Derecho */}
         <div className="form-panel">
           <div className="form-header">
-            <h2>Iniciar Sesión</h2>
-            <p>Ingresa tus credenciales para acceder a tu cuenta</p>
+            <h2>Registro</h2>
+            <p>Ingresa tus datos para crear una nueva cuenta</p>
           </div>
 
-          {errorMsg && (
-            <div className="error-badge">
-              <span>{errorMsg}</span>
+          {errorMsg && <div className="error-badge">{errorMsg}</div>}
+          {successMsg && (
+            <div style={{ background: "#D1FAE5", color: "#065F46", padding: "10px", borderRadius: "10px", marginBottom: "15px", fontSize: "0.85rem" }}>
+              Cuenta creada con éxito. Revisa tu correo o inicia sesión.
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="login-form">
+          <form onSubmit={handleSignUp} className="login-form">
+            <div className="input-field">
+              <label htmlFor="displayName">Nombre de usuario</label>
+              <input
+                id="displayName"
+                type="text"
+                placeholder="Ej. Cristopher"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+              />
+            </div>
+
             <div className="input-field">
               <label htmlFor="email">Correo electrónico</label>
               <input
                 id="email"
                 type="email"
-                placeholder="email@example.com"
+                placeholder="tuemail@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -101,27 +122,28 @@ function Login({ onSwitchToSignUp, onBackToLanding }) {
               />
             </div>
 
-            <div className="forgot-link-wrapper">
-              <a href="#" className="secondary-link">¿Olvidaste tu contraseña?</a>
+            <div className="input-field">
+              <label htmlFor="confirmPassword">Confirmar contraseña</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
             </div>
 
             <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? "Iniciando sesión..." : "INICIAR SESIÓN"}
+              {loading ? "CREANDO CUENTA..." : "REGISTRARME"}
             </button>
           </form>
 
           <div className="form-footer">
             <p>
-              ¿No tienes una cuenta?{" "}
-              <a 
-                href="#" 
-                className="highlight-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (onSwitchToSignUp) onSwitchToSignUp();
-                }}
-              >
-                Regístrate aquí
+              ¿Ya tienes cuenta?{" "}
+              <a href="#" className="highlight-link" onClick={(e) => { e.preventDefault(); onSwitchToLogin(); }}>
+                Inicia sesión aquí
               </a>
             </p>
           </div>
@@ -131,4 +153,4 @@ function Login({ onSwitchToSignUp, onBackToLanding }) {
   );
 }
 
-export default Login;
+export default SignUp;
