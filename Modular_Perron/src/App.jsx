@@ -25,8 +25,19 @@ function App() {
 
   // Si el usuario ya está autenticado, muestra el Dashboard
   if (session) {
-    return <Dashboard onLogout={() => setSession(null)} />;
-  }
+  // Extrae 'display_name' de los metadatos del usuario autenticado en Supabase
+  const displayName = session.user?.user_metadata?.display_name || "Usuario";
+
+  return (
+    <Dashboard
+      username={displayName}
+      onLogout={async () => {
+        await supabase.auth.signOut();
+        setSession(null);
+      }}
+    />
+  );
+}
 
   // Si no está autenticado, navega entre las vistas públicas
   return (

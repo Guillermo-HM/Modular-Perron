@@ -1,0 +1,525 @@
+/* ==========================================================================
+   RECIPE CHATFLOW STYLES (ESTILO TARJETA CENTRADA CON ANIMACIONES)
+   ========================================================================== */
+
+:root {
+  --chat-bg-dark: #584142;
+  --chat-bg-light: #DFE2D2;
+  --chat-bubble-bot: #00BCD4;
+  --chat-border-dark: #3F2B2C;
+}
+
+/* Contenedor principal: centra la tarjeta en la pantalla */
+.recipe-chat-view {
+  position: fixed;
+  inset: 0;
+  /* Fondo oscuro transparente para ver la página anterior de fondo */
+  background-color: rgba(0, 0, 0, 0.45); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  /* Efecto de desenfoque sobre el dashboard */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeInOverlay 0.3s ease;
+}
+
+/* Tarjeta contenedora con la forma del mockup */
+.chat-card-frame {
+  width: 100%;
+  max-width: 520px; /* Tamaño controlado similar al mockup */
+  height: 90vh;
+  max-height: 850px;
+  background-color: var(--chat-bg-dark);
+  border-radius: 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  animation: scaleUpCard 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Botón Volver */
+.chat-back-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: #E2C7C7;
+  color: #333;
+  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.chat-back-btn:hover {
+  transform: scale(1.08);
+  background-color: #d1b4b4;
+}
+
+/* --------------------------------------------------------------------------
+   ÁREA DE CHAT SUPERIOR (FONDO OSCURO)
+   -------------------------------------------------------------------------- */
+.chat-display-area {
+  flex: 1;
+  background-color: var(--chat-bg-dark);
+  padding: 70px 24px 20px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chat-bubble-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.chat-bubble-row.bot {
+  justify-content: flex-start;
+  align-self: flex-start;
+  max-width: 85%;
+  animation: slideInLeft 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.chat-bubble-row.user {
+  justify-content: flex-end;
+  align-self: flex-end;
+  max-width: 85%;
+  animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Avatar del Blobatar */
+.bot-avatar-container {
+  width: 55px;
+  height: 55px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bot-avatar-svg {
+  width: 28px;
+  height: 28px;
+}
+
+.bubbles-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-bubble {
+  background-color: var(--chat-bubble-bot);
+  color: #000;
+  padding: 10px 16px;
+  border-radius: 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Respuesta de usuario */
+.chat-bubble-response {
+  background-color: #FFFFFF;
+  color: #222;
+  padding: 8px 18px;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Píldoras finales de ingredientes */
+.final-ingredients-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.final-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background-color: #FFFFFF;
+  color: #111;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  min-width: 140px;
+  animation: popIn 0.3s ease forwards;
+}
+
+.pill-remove-btn {
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.pill-remove-btn:hover {
+  color: #e74c3c;
+}
+
+/* --------------------------------------------------------------------------
+   ÁREA DE CONTROLES INFERIOR (FONDO CLARO)
+   -------------------------------------------------------------------------- */
+.chat-controls-area {
+  height: 220px;
+  background-color: var(--chat-bg-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  box-shadow: inset 0 6px 12px rgba(0,0,0,0.05);
+}
+
+/* Flecha/Círculo Divisor central */
+.controls-separator {
+  width: 44px;
+  height: 44px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  color: #333;
+}
+
+.control-group {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Paso 1: Input Presupuesto */
+.budget-input-group {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+.input-with-symbol {
+  position: relative;
+  flex: 1;
+}
+
+.currency-symbol {
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #444;
+}
+
+.budget-input {
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 2px solid var(--chat-border-dark);
+  border-radius: 25px;
+  padding: 12px 16px 12px 36px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  outline: none;
+}
+
+.send-arrow-btn {
+  background-color: #FFFFFF;
+  color: #333;
+  border: 2px solid var(--chat-border-dark);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.send-arrow-btn:hover {
+  transform: scale(1.05);
+  background-color: #f0f0f0;
+}
+
+/* Paso 2: Botón 'Más' Grande */
+.big-plus-btn {
+  background-color: transparent;
+  color: #222;
+  border: 3px solid #333;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: popIn 0.3s ease forwards;
+}
+
+.big-plus-btn:hover {
+  transform: scale(1.12);
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* Paso 3: Botones Finales */
+.final-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+.modify-ingredients-btn {
+  background-color: #C2C7B1;
+  color: #222;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.modify-ingredients-btn:hover {
+  background-color: #b1b6A0;
+  transform: translateY(-2px);
+}
+
+.final-send-btn {
+  background-color: #B2C9A1;
+  color: #222;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.final-send-btn:hover {
+  transform: scale(1.08);
+  background-color: #9cb88a;
+}
+
+/* --------------------------------------------------------------------------
+   MODAL DE INGREDIENTES
+   -------------------------------------------------------------------------- */
+.ingredients-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 16px;
+  animation: fadeInOverlay 0.2s ease forwards;
+}
+
+.ingredients-modal-content {
+  background-color: #FFFFFF;
+  width: 100%;
+  height: 90%;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  animation: scaleUpCard 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-panels-container {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.modal-panel {
+  flex: 1;
+  background-color: #F5F5F5;
+  border: 1px solid #E0E0E0;
+  border-radius: 12px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.accordion-trigger {
+  width: 100%;
+  background: transparent;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #222;
+  padding: 8px 0;
+  cursor: pointer;
+  border-bottom: 1px solid #DDD;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.category-accordion.open .accordion-content {
+  max-height: 250px;
+  padding-top: 6px;
+}
+
+.db-ingredient-item, .selected-ingredient-pill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FFFFFF;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.add-to-list-btn, .remove-pill-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.add-to-list-btn { color: #27ae60; }
+.remove-pill-btn { color: #e74c3c; }
+
+.modal-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 12px;
+}
+
+.confirm-modal-btn {
+  background-color: #E0E0E0;
+  color: #222;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-modal-btn:hover {
+  background-color: #D0D0D0;
+}
+
+/* --------------------------------------------------------------------------
+   KEYFRAMES / ANIMACIONES
+   -------------------------------------------------------------------------- */
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUpCard {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.recipe-chat-view.closing {
+  animation: fadeOutOverlay 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.recipe-chat-view.closing .chat-card-frame {
+  animation: scaleDownCard 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Keyframes de Salida */
+@keyframes fadeOutOverlay {
+  from {
+    opacity: 1;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  to {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+}
+
+@keyframes scaleDownCard {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
