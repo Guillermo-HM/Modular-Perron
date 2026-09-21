@@ -6,11 +6,9 @@ import "blobatar/gaze.css";
 import "blobatar/motion.css";
 
 const BlobatarIcon = () => {
-  // Inicializamos useGaze
   const { ref, lookAt } = useGaze({ travel: 3 });
 
   useEffect(() => {
-    // Forzamos al hook a apuntar al cursor global una vez montado
     if (lookAt) {
       lookAt("pointer");
     }
@@ -28,8 +26,8 @@ const BlobatarIcon = () => {
 };
 
 const ingredientsDb = {
-  Proteinas: ['pollo', 'pechuga_pollo', 'carne_res', 'lomo_cerdo', 'cerdo', 'pscado_blanco', 'salmon', 'huevo'],
-  Vegetales: ['cebolla', 'cebolla_morada', 'ajo', 'pimiento_morron', 'chile_cerrano', 'brocoli', 'zanahoria', 'tomate', 'pepino', 'calabacita', 'lechuga_romana'],
+  Proteinas: ['pollo', 'pechuga_pollo', 'carne_res', 'lomo_cerdo', 'cerdo', 'pescado_blanco', 'salmon', 'huevo'],
+  Vegetales: ['cebolla', 'cebolla_morada', 'ajo', 'pimiento_morron', 'chile_serrano', 'brocoli', 'zanahoria', 'tomate', 'pepino', 'calabacita', 'lechuga_romana'],
   'Cereales y derivados': ['tortilla_maiz', 'tostadas_maiz', 'pasta', 'arroz_blanco_cocido', 'maiz', 'crutones'],
   Frutas: ['limon', 'jugo_limon', 'jugo_naranja', 'aguacate'],
   Hongos: ['champinones'],
@@ -48,23 +46,24 @@ function RecipeChat({ onBack }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [tempBudgetInput, setTempBudgetInput] = useState("");
   const [isIngredientsModalOpen, setIsIngredientsModalOpen] = useState(false);
-  const [openSections, setOpenSections] = useState({ Carnes: true });
+  const [openSections, setOpenSections] = useState({ Proteinas: true });
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [confirmedIngredients, setConfirmedIngredients] = useState([]);
-  
-  // Nuevo estado para controlar la animación de salida
-  const [isClosing, setIsClosing] = useState(false);
 
+  // Estados de respuesta de la API
+  const [loading, setLoading] = useState(false);
+  const [recipes, setRecipes] = useState([]);
+  const [searched, setSearched] = useState(false);
+
+  const [isClosing, setIsClosing] = useState(false);
   const chatEndRef = useRef(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [currentStep, confirmedIngredients, budget]);
+  }, [currentStep, budget, loading, recipes]);
 
-  // Handler para la salida animada
   const handleClose = () => {
     setIsClosing(true);
-    // Esperamos a que termine la animación de CSS (300ms) antes de desmontar el componente
     setTimeout(() => {
       onBack();
     }, 280);
@@ -103,15 +102,44 @@ function RecipeChat({ onBack }) {
     setCurrentStep(3);
   };
 
-  const handleFinalSend = () => {
-    alert(`¡Datos listos para enviar al backend!\n\nPresupuesto: $${budget}\nIngredientes: ${confirmedIngredients.join(', ')}`);
+  const handleFinalSend = async () => {
+    if (confirmedIngredients.length === 0) {
+      alert("Por favor selecciona al menos un ingrediente.");
+      return;
+    }
+
+    setLoading(true);
+    setSearched(true);
+
+    try {
+      const response = await fetch('http://localhost:3001/api/recomendar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          usuario: 'cristopher',
+          ingredientes: confirmedIngredients,
+          tiempo: 30
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.OK) {
+        setRecipes(data.recetas || []);
+      } else {
+        setRecipes([]);
+      }
+    } catch (error) {
+      console.error('Error al conectar con Prolog:', error);
+      setRecipes([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    /* Agregamos la clase 'closing' si el usuario presionó el botón de regreso */
     <div className={`recipe-chat-view ${isClosing ? 'closing' : ''}`}>
       <div className="chat-card-frame">
-        {/* Botón Volver con handleClose */}
         <button className="chat-back-btn" onClick={handleClose} aria-label="Volver">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
@@ -135,20 +163,47 @@ function RecipeChat({ onBack }) {
               </div>
               <div className="chat-bubble-row bot">
                 <BlobatarIcon />
-                <div className="chat-bubble">¿Alguna preferencia en la comida?</div>
+                <div className="chat-bubble">¿Alguna preferencia en la comida? Selecciona tus ingredientes.</div>
               </div>
             </>
           )}
 
-          {currentStep === 3 && confirmedIngredients.length > 0 && (
-            <div className="chat-bubble-row user">
-              <div className="final-ingredients-container">
-                {confirmedIngredients.map(ing => (
-                  <div key={ing} className="final-pill">
-                    <span>{ing}</span>
-                    <button onClick={() => removeIngredient(ing, setConfirmedIngredients)} className="pill-remove-btn">×</button>
+          {loading && (
+            <div className="chat-bubble-row bot">
+              <BlobatarIcon />
+              <div className="chat-bubble">Buscando las mejores recetas en el motor Prolog... 🍳</div>
+            </div>
+          )}
+
+          {!loading && searched && (
+            <div className="chat-bubble-row bot">
+              <BlobatarIcon />
+              <div className="bubbles-column">
+                <div className="chat-bubble">¡Aquí están tus sugerencias personalizadas!</div>
+                {recipes.length > 0 ? (
+                  <div className="recipes-results-list">
+                    {recipes.map((item, index) => (
+                      <div key={index} className="recipe-card-item" style={{
+                        background: 'rgba(255, 255, 255, 0.15)',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        margin: '6px 0',
+                        color: '#fff'
+                      }}>
+                        <strong style={{ textTransform: 'capitalize' }}>
+                          {item.receta ? item.receta.replace(/_/g, ' ') : String(item).replace(/_/g, ' ')}
+                        </strong>
+                        {item.puntuacion && (
+                          <span style={{ fontSize: '0.85em', opacity: 0.9, display: 'block' }}>
+                            Coincidencia: {item.puntuacion}%
+                          </span>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <div className="chat-bubble">No encontré recetas que coincidan con tus ingredientes.</div>
+                )}
               </div>
             </div>
           )}
@@ -156,7 +211,7 @@ function RecipeChat({ onBack }) {
           <div ref={chatEndRef} />
         </section>
 
-        {/* ÁREA DE CONTROLES INFERIOR */}
+        {/* ÁREA DE CONTROLES INFERIOR (ESPACIO BLANCO/CLARO) */}
         <section className="chat-controls-area">
           <div className="controls-separator">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -195,20 +250,33 @@ function RecipeChat({ onBack }) {
           )}
 
           {currentStep === 3 && (
-            <div className="control-group final-buttons-group">
-              <button className="modify-ingredients-btn" onClick={openModal}>
-                Modificar ingredientes
-              </button>
-              <button className="final-send-btn" onClick={handleFinalSend}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z"/>
-                </svg>
-              </button>
+            <div className="controls-panel-content">
+              {/* VISTA DE INGREDIENTES DENTRO DEL ÁREA DE CONTROL */}
+              <div className="bottom-ingredients-scroll">
+                {confirmedIngredients.map(ing => (
+                  <div key={ing} className="final-pill">
+                    <span>{ing.replace(/_/g, ' ')}</span>
+                    <button onClick={() => removeIngredient(ing, setConfirmedIngredients)} className="pill-remove-btn">×</button>
+                  </div>
+                ))}
+              </div>
+
+              {/* BOTONES DE ACCIÓN */}
+              <div className="control-group final-buttons-group">
+                <button className="modify-ingredients-btn" onClick={openModal}>
+                  Modificar ingredientes
+                </button>
+                <button className="final-send-btn" onClick={handleFinalSend} disabled={loading}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z"/>
+                  </svg>
+                </button>
+              </div>
             </div>
           )}
         </section>
 
-        {/* MODAL INTERNO */}
+        {/* MODAL INTERNO DE SELECCIÓN */}
         {isIngredientsModalOpen && (
           <div className="ingredients-modal-overlay">
             <div className="ingredients-modal-content">
@@ -222,7 +290,7 @@ function RecipeChat({ onBack }) {
                       <div className="accordion-content">
                         {ingredientsDb[cat].map(ing => (
                           <div key={ing} className="db-ingredient-item">
-                            <span>{ing}</span>
+                            <span>{ing.replace(/_/g, ' ')}</span>
                             <button 
                               className="add-to-list-btn" 
                               onClick={() => addIngredient(ing)}
@@ -240,7 +308,7 @@ function RecipeChat({ onBack }) {
                 <div className="modal-panel">
                   {selectedIngredients.map(ing => (
                     <div key={ing} className="selected-ingredient-pill">
-                      <span>{ing}</span>
+                      <span>{ing.replace(/_/g, ' ')}</span>
                       <button className="remove-pill-btn" onClick={() => removeIngredient(ing, setSelectedIngredients)}>×</button>
                     </div>
                   ))}

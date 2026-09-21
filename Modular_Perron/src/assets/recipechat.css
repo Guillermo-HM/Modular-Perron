@@ -385,7 +385,7 @@
   border: 1px solid #E0E0E0;
   border-radius: 12px;
   padding: 10px;
-  overflow-y: auto;
+  overflow-y: auto; /* El scroll completo lo manejará este contenedor */
 }
 
 .accordion-trigger {
@@ -406,12 +406,14 @@
 .accordion-content {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
 }
 
+/* MODIFICADO: Aumentamos el max-height para que quepan todos los ingredientes sin recortarlos */
 .category-accordion.open .accordion-content {
-  max-height: 250px;
+  max-height: 1000px; /* Permite desplegar listas largas completas */
   padding-top: 6px;
+  transition: max-height 0.4s ease-in-out;
 }
 
 .db-ingredient-item, .selected-ingredient-pill {
@@ -522,4 +524,31 @@
     opacity: 0;
     transform: scale(0.92);
   }
+}
+
+/* Contenedor scrolleable de ingredientes en la parte inferior */
+.bottom-ingredients-scroll {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 120px; /* Ajusta según el tamaño deseado */
+  overflow-y: auto;
+  padding: 8px 4px;
+  margin-bottom: 12px;
+}
+
+/* Ajustes opcionales para la barra de desplazamiento */
+.bottom-ingredients-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.bottom-ingredients-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.controls-panel-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
