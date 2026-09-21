@@ -28,11 +28,19 @@ const BlobatarIcon = () => {
 };
 
 const ingredientsDb = {
-  Carnes: ['Res', 'pollo', 'Pescado', 'Cerdo'],
-  Verduras: ['Jitomate', 'Cebolla', 'Limón', 'Lechuga'],
-  Leguminosos: ['Arroz', 'Frijol', 'Garbanzo', 'Lenteja'],
-  Frutas: ['Manzana', 'Plátano', 'Naranja'],
-  Granos: ['Trigo', 'Avena', 'Maíz']
+  Proteinas: ['pollo', 'pechuga_pollo', 'carne_res', 'lomo_cerdo', 'cerdo', 'pscado_blanco', 'salmon', 'huevo'],
+  Vegetales: ['cebolla', 'cebolla_morada', 'ajo', 'pimiento_morron', 'chile_cerrano', 'brocoli', 'zanahoria', 'tomate', 'pepino', 'calabacita', 'lechuga_romana'],
+  'Cereales y derivados': ['tortilla_maiz', 'tostadas_maiz', 'pasta', 'arroz_blanco_cocido', 'maiz', 'crutones'],
+  Frutas: ['limon', 'jugo_limon', 'jugo_naranja', 'aguacate'],
+  Hongos: ['champinones'],
+  Leguminosas: ['garbanzos_cocidos', 'chicharos'],
+  Lacteos: ['queso_fresco', 'media_crema', 'leche', 'mantequilla', 'queso_parmesano', 'yogurt_natural', 'queso_oaxaca', 'queso_panela'],
+  'Grasas y aceites': ['aceite_vegetal', 'aceite_oliva', 'aceite_sesamo'],
+  Hierbas: ['cilantro', 'perejil', 'epazote', 'cebollin', 'jengibre_fresco'],
+  Condimentos: ['sal', 'pimienta', 'oregano', 'comino', 'nuez_moscada', 'paprika', 'ajo_en_polvo'],
+  Salsas: ['salsa_verde', 'salsa_soya', 'mostaza'],
+  Endulzante: ['miel'],
+  Semillas: ['semillas_girasol'],
 };
 
 function RecipeChat({ onBack }) {

@@ -33,26 +33,15 @@ obtener_recomendaciones(
 % 2. ORDENAR LAS RECOMENDACIONES
 % ------------------------------------------------------------------------------
 
-% Ordena las recomendaciones de mayor a menor puntuacion.
-% Si dos recetas tienen la misma puntuacion, se ordenan
-% por el identificador de la receta para mantener un orden estable.
-
 comparar_recomendaciones(
     Orden,
     recomendacion(Receta1, Puntuacion1),
     recomendacion(Receta2, Puntuacion2)
 ) :-
-    compare(OrdenPuntuacion, Puntuacion2, Puntuacion1),
-
-    (
-        OrdenPuntuacion == (=)
-        ->
-        compare(OrdenReceta, Receta1, Receta2),
-        Orden = OrdenReceta
-        ;
-        Orden = OrdenPuntuacion
+    (   Puntuacion1 > Puntuacion2 -> Orden = (<)   % Mayor puntuación va primero
+    ;   Puntuacion1 < Puntuacion2 -> Orden = (>)
+    ;   compare(Orden, Receta1, Receta2)           % Desempate por nombre
     ).
-
 
 ordenar_recomendaciones(
     Recomendaciones,
