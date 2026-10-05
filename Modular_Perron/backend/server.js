@@ -236,7 +236,7 @@ app.post('/api/sincronizar-usuario', async (req, res) => {
 // INICIAR SERVIDOR
 // =====================================================
 
-const port = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, async() => {
     console.log(`Servidor ejecutándose en puerto ${PORT}`);
