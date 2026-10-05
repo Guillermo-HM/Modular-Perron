@@ -232,6 +232,9 @@ app.post('/api/sincronizar-usuario', async (req, res) => {
     }
 });
 
+
+
+
 // =====================================================
 // INICIAR SERVIDOR
 // =====================================================
@@ -241,4 +244,10 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, async() => {
     console.log(`Servidor ejecutándose en puerto ${PORT}`);
     await inicializarProlog();
+});
+
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'ok'
+    });
 });

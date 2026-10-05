@@ -112,7 +112,7 @@ function RecipeChat({ onBack }) {
     setSearched(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/recomendar', {
+      const response = await fetch('https://modular-perron.onrender.com/api/recomendar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
