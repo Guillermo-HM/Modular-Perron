@@ -5,12 +5,20 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY backend/package*.json ./backend/
+
+WORKDIR /app/backend
 
 RUN npm install 
 
-COPY . *
+WORKDIR /app
 
-EXPOSE 3000
+COPY . .
+
+RUN find /app -name "server.js"
+
+WORKDIR /app/backend
+
+EXPOSE 3001
 
 CMD ["node", "server.js"]
