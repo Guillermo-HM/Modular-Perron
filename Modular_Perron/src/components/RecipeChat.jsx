@@ -5,6 +5,7 @@ import { useGaze } from "@blobatar/react/gaze";
 import "blobatar/gaze.css";
 import "blobatar/motion.css";
 
+//Manejo de la API mediante Netlify
 const API_URL = import.meta.env.VITE_API_URL;
 
 const BlobatarIcon = () => {

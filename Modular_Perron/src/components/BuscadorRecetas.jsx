@@ -7,6 +7,9 @@ export function BuscadorRecetas() {
     const [recetas, setRecetas] = useState([]);
     const [cargando, setCargando] = useState(false);
 
+    //manejo de la API mediante netlify
+    const API_URL = Import.meta.env.VITE_API_URL;
+    
     const handleBuscar = async (e) => {
         e.preventDefault();
         setCargando(true);
@@ -18,7 +21,7 @@ export function BuscadorRecetas() {
             .filter((item) => item.length > 0);
 
         try {
-            const respuesta = await fetch('http://localhost:3001/api/recomendar', {
+            const respuesta = await fetch(`${API_URL}/api/recomendar`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
