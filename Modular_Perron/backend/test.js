@@ -1,10 +1,13 @@
 // test.js
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 async function probarEndpoints() {
     console.log('🧪 Iniciando pruebas del backend...\n');
 
     // TEST 1: Limpiar/Registrar alergias del usuario
     console.log('1. Registrando alergias...');
-    const resAlergias = await fetch('http://localhost:3001/api/registrar-alergias', {
+    const resAlergias = await fetch(`${API_URL}/api/registrar-alergias`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -16,7 +19,7 @@ async function probarEndpoints() {
 
     // TEST 2: Prueba con ingredientes para Quesadillas de Champiñones (25 min)
     console.log('\n2. Probando recomendación para Quesadillas de champiñones...');
-    const resQuesadillas = await fetch('http://localhost:3001/api/recomendar', {
+    const resQuesadillas = await fetch(`${API_URL}/api/recomendar/api/recomendar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -38,7 +41,7 @@ async function probarEndpoints() {
 
     // TEST 3: Prueba con ingredientes para Ceviche de pescado (30 min)
     console.log('\n3. Probando recomendación para Ceviche de pescado...');
-    const resCeviche = await fetch('http://localhost:3001/api/recomendar', {
+    const resCeviche = await fetch('https://modular-perron.onrender.com/api/recomendar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -29,6 +29,14 @@ app.get('/routes', (req, res) => {
     });
 });
 
+app.get(`/api/recomendar`, (req, res) => {
+    res.json({
+        ok: true,
+        mensaje: 'GET recomendar funciona'
+    });
+});
+``
+
 app.post('/api/test', (req, res) => {
     console.log("✅ Entró a /api/test");
  
