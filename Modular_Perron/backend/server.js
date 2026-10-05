@@ -8,10 +8,11 @@ const { createClient } = require('@supabase/supabase-js');
 // SUPABASE
 // =====================================================
 
-const SUPABASE_URL = 'https://khmeadsalacxzjljkoqv.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFsa2N6amxqa29xdiIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzgyMTc1MjQxLCJleHAiOjIwOTc3NTEyNDEsInN1cCI6ImFub24ifQ.bGXQaI3ZNB8KgdNYqEoYvbwp4GFKSvtWc4e212kIZxI';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
 // =====================================================
 // EXPRESS
@@ -235,7 +236,9 @@ app.post('/api/sincronizar-usuario', async (req, res) => {
 // INICIAR SERVIDOR
 // =====================================================
 
-app.listen(3001, async () => {
-    console.log('🚀 Servidor backend corriendo en http://localhost:3001');
+const port = process.env.PORT || 3001;
+
+app.listen(PORT, async() => {
+    console.log(`Servidor ejecutándose en puerto ${PORT}`);
     await inicializarProlog();
 });
