@@ -22,6 +22,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get('/routes', (req, res) => {
+    res.json({
+        ok: true,
+        mensaje: 'Backend activo'
+    });
+});
+
 // =====================================================
 // PROLOG
 // =====================================================
@@ -89,6 +96,9 @@ async function inicializarProlog() {
 // =====================================================
 
 app.post('/api/recomendar', async (req, res) => {
+    console.log("🔥 Entró a /api/recomendar");
+    console.log("📦 Body recibido:", req.body);
+
   try {
     const { usuario = 'cristopher', ingredientes = [], tiempo = 30 } = req.body;
 
@@ -196,7 +206,9 @@ app.post('/api/registrar-alergias', async (req, res) => {
 // ENDPOINT 3: SINCRONIZAR DESDE SUPABASE
 // =====================================================
 
-app.post('/api/sincronizar-usuario', async (req, res) => {
+
+
+ app.post('/api/sincronizar-usuario', async (req, res) => {
     const { usuarioId } = req.body;
 
     try {
@@ -230,6 +242,7 @@ app.post('/api/sincronizar-usuario', async (req, res) => {
             error: error.message
         });
     }
+
 });
 
 
@@ -244,10 +257,4 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, async() => {
     console.log(`Servidor ejecutándose en puerto ${PORT}`);
     await inicializarProlog();
-});
-
-app.get('/health', (req, res) => {
-    res.json({
-        status: 'ok'
-    });
 });
