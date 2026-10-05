@@ -5,6 +5,8 @@ import { useGaze } from "@blobatar/react/gaze";
 import "blobatar/gaze.css";
 import "blobatar/motion.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const BlobatarIcon = () => {
   const { ref, lookAt } = useGaze({ travel: 3 });
 
@@ -111,8 +113,10 @@ function RecipeChat({ onBack }) {
     setLoading(true);
     setSearched(true);
 
+    
+
     try {
-      const response = await fetch('https://modular-perron.onrender.com/api/recomendar', {
+      const response = await fetch(`${API_URL}/api/recomendar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
