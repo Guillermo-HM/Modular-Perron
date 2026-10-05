@@ -29,6 +29,14 @@ app.get('/routes', (req, res) => {
     });
 });
 
+app.post('/api/test', (req, res) => {
+    console.log("✅ Entró a /api/test");
+ 
+    res.json({
+        ok: true
+    });
+});
+
 // =====================================================
 // PROLOG
 // =====================================================
@@ -99,6 +107,8 @@ app.post('/api/recomendar', async (req, res) => {
     console.log("🔥 Entró a /api/recomendar");
     console.log("📦 Body recibido:", req.body);
 
+    
+
   try {
     const { usuario = 'cristopher', ingredientes = [], tiempo = 30 } = req.body;
 
@@ -126,6 +136,7 @@ app.post('/api/recomendar', async (req, res) => {
     res.status(500).json({ OK: false, error: error.message });
   }
 });
+
 
 // Función para convertir la lista enlazada { head, tail } de Prolog a un Array de JS
 function parsearListaProlog(prologList) {
@@ -201,6 +212,7 @@ app.post('/api/registrar-alergias', async (req, res) => {
         });
     }
 });
+
 
 // =====================================================
 // ENDPOINT 3: SINCRONIZAR DESDE SUPABASE
