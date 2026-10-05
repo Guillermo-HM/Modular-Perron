@@ -37,13 +37,15 @@ app.get(`/api/recomendar`, (req, res) => {
 });
 ``
 
-app.post('/api/test', (req, res) => {
+app.get('/api/test', (req, res) => {
     console.log("✅ Entró a /api/test");
- 
+
     res.json({
-        ok: true
+        ok: true,
+        mensaje: "test funcionando"
     });
 });
+``
 
 // =====================================================
 // PROLOG
