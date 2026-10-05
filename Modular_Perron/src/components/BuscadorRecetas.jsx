@@ -8,7 +8,7 @@ export function BuscadorRecetas() {
     const [cargando, setCargando] = useState(false);
 
     //manejo de la API mediante netlify
-    const API_URL = Import.meta.env.VITE_API_URL;
+    const API_URL = import.meta.env.VITE_API_URL;
     
     const handleBuscar = async (e) => {
         e.preventDefault();
@@ -27,7 +27,7 @@ export function BuscadorRecetas() {
                 body: JSON.stringify({
                     usuario,
                     ingredientes: listaIngredientes,
-                    tiempoMax: Number(tiempoMax)
+                    tiempo: Number(tiempoMax)
                 })
             });
 
