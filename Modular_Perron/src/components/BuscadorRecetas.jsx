@@ -21,6 +21,7 @@ export function BuscadorRecetas() {
             .filter((item) => item.length > 0);
 
         try {
+            console.log("Usando api");
             const respuesta = await fetch(`${API_URL}/api/test`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
