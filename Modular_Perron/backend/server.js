@@ -37,12 +37,17 @@ app.get(`/api/recomendar`, (req, res) => {
 });
 ``
 
-app.get('/api/test', (req, res) => {
+app.post('/api/test', (req, res) => {
     console.log("✅ Entró a /api/test");
 
     res.json({
         ok: true,
-        mensaje: "test funcionando"
+        recetas: [
+            {
+                receta: "pollo",
+                puntuacion: 95
+            }
+        ]
     });
 });
 ``
