@@ -117,7 +117,7 @@ function RecipeChat({ onBack }) {
     
 
     try {
-      const response = await fetch(`${API_URL}/api/test`, {
+      const response = await fetch(`${API_URL}/api/recomendar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
