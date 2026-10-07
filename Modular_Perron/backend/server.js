@@ -13,7 +13,6 @@ const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const API_URL = import.meta.env.VITE_API_URL;
 
 // =====================================================
 // EXPRESS
