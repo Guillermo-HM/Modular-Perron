@@ -35,6 +35,15 @@ app.get(`/api/recomendar`, (req, res) => {
         mensaje: 'GET recomendar funciona'
     });
 });
+
+app.get('/api/test', (req, res) => {
+    console.log("✅ GET TEST");
+
+    res.json({
+        ok: true,
+        mensaje: "api test funcionando"
+    });
+});
 ``
 
 app.post('/api/test', (req, res) => {
