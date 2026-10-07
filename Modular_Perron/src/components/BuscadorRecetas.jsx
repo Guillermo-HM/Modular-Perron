@@ -22,7 +22,7 @@ export function BuscadorRecetas() {
 
         try {
             console.log("Usando api");
-            const respuesta = await fetch(`${API_URL}/api/test`, {
+            const respuesta = await fetch(`${API_URL}/api/recomendar`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

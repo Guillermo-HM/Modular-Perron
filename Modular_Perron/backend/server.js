@@ -13,6 +13,7 @@ const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 // =====================================================
 // EXPRESS
@@ -22,44 +23,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/routes', (req, res) => {
-    res.json({
-        ok: true,
-        mensaje: 'Backend activo'
-    });
-});
-
-app.get(`/api/recomendar`, (req, res) => {
-    res.json({
-        ok: true,
-        mensaje: 'GET recomendar funciona'
-    });
-});
-
-app.get('/api/test', (req, res) => {
-    console.log("✅ GET TEST");
-
-    res.json({
-        ok: true,
-        mensaje: "api test funcionando"
-    });
-});
-``
-
-app.post('/api/test', (req, res) => {
-    console.log("✅ Entró a /api/test");
-
-    res.json({
-        ok: true,
-        recetas: [
-            {
-                receta: "pollo",
-                puntuacion: 95
-            }
-        ]
-    });
-});
-``
 
 // =====================================================
 // PROLOG
@@ -128,11 +91,6 @@ async function inicializarProlog() {
 // =====================================================
 
 app.post('/api/recomendar', async (req, res) => {
-    console.log("🔥 Entró a /api/recomendar");
-    console.log("📦 Body recibido:", req.body);
-
-    
-
   try {
     const { usuario = 'cristopher', ingredientes = [], tiempo = 30 } = req.body;
 
@@ -198,7 +156,7 @@ function parsearListaProlog(prologList) {
 // ENDPOINT 2: REGISTRAR / ACTUALIZAR ALERGIAS
 // =====================================================
 
-app.post('/api/registrar-alergias', async (req, res) => {
+app.post('${API_URL}/api/registrar-alergias', async (req, res) => {
     const { usuario, alergias } = req.body;
 
     if (!alergias || !Array.isArray(alergias)) {
