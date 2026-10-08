@@ -1,6 +1,6 @@
 // test.js
 
-const API_URL = import.meta.env.VITE_API_URL;
+/*const API_URL = import.meta.env.VITE_API_URL;
 
 async function probarEndpoints() {
     console.log('🧪 Iniciando pruebas del backend...\n');
@@ -16,7 +16,7 @@ async function probarEndpoints() {
         })
     });
     console.log('Respuesta alergias:', await resAlergias.json());
-
+        */
     
     // TEST 2: Prueba con ingredientes para Quesadillas de Champiñones (25 min)
     /*
@@ -65,4 +65,4 @@ async function probarEndpoints() {
 }
 */
 
-probarEndpoints();
+//probarEndpoints();
