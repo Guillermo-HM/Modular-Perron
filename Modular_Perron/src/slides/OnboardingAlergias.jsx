@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
 
+//Manejo de la API mediante Netlify
+const API_URL = import.meta.env.VITE_API_URL;
+
 // Lista de alergias alineada con los átomos de tu archivo Prolog
 const ALERGIAS_DISPONIBLES = [
   { id: 'cacahuate', label: 'Cacahuates / Frutos Secos' },
@@ -43,7 +46,7 @@ export default function OnboardingAlergias({ session, onComplete }) {
       // Usamos la parte local del correo como identificador simple en Prolog
       const usernameProlog = session.user.email.split('@')[0];
 
-      await fetch('http://localhost:3001/api/registrar-alergias', {
+      await fetch(`${API_URL}/api/registrar-alergias`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
