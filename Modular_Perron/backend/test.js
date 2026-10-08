@@ -17,7 +17,9 @@ async function probarEndpoints() {
     });
     console.log('Respuesta alergias:', await resAlergias.json());
 
+    
     // TEST 2: Prueba con ingredientes para Quesadillas de Champiñones (25 min)
+    /*
     console.log('\n2. Probando recomendación para Quesadillas de champiñones...');
     const resQuesadillas = await fetch(`${API_URL}/api/recomendar/api/recomendar`, {
         method: 'POST',
@@ -61,5 +63,6 @@ async function probarEndpoints() {
     });
     console.log('Respuesta recomendación 2:', await resCeviche.json());
 }
+*/
 
 probarEndpoints();
