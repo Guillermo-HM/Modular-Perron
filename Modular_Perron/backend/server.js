@@ -88,7 +88,7 @@ async function inicializarProlog() {
 // =====================================================
 // ENDPOINT 1: OBTENER RECOMENDACIONES
 // =====================================================
-/*
+
 app.post('/api/recomendar', async (req, res) => {
   try {
     const { usuario = 'cristopher', ingredientes = [], tiempo = 30 } = req.body;
@@ -117,7 +117,8 @@ app.post('/api/recomendar', async (req, res) => {
     res.status(500).json({ OK: false, error: error.message });
   }
 });
-*/
+
+//prueba
 
 // Función para convertir la lista enlazada { head, tail } de Prolog a un Array de JS
 function parsearListaProlog(prologList) {
