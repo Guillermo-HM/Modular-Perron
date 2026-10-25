@@ -1,0 +1,155 @@
+
+/* Fondo general */
+.ajustes-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: #f5f6ed;
+  font-family: Arial, sans-serif;
+  color: #263326;
+  box-sizing: border-box;
+}
+
+/* Contenedor principal */
+.ajustes-container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 35px;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+}
+
+.ajustes-volver {
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+  color: #536e4c;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ajustes-header {
+  margin: 25px 0 30px;
+}
+
+.ajustes-header h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+}
+
+.ajustes-header p {
+  margin: 0;
+  color: #758070;
+}
+
+/* Secciones */
+.ajustes-seccion {
+  margin-top: 30px;
+  padding-top: 24px;
+  border-top: 1px solid #e6e9e0;
+}
+
+.ajustes-seccion h2 {
+  margin: 0 0 20px;
+  font-size: 19px;
+}
+
+.ajustes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.ajustes-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ajustes-campo label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ajustes-campo input,
+.ajustes-campo select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d9dfd3;
+  border-radius: 10px;
+  background: #fff;
+  color: #263326;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.ajustes-campo input:focus,
+.ajustes-campo select:focus {
+  outline: 2px solid #a8bd94;
+  border-color: #78946a;
+}
+
+/* Alergias */
+.ajustes-alergias {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ajustes-alergia {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #dce2d6;
+  border-radius: 12px;
+  background: #fafbf7;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.ajustes-alergia.seleccionada {
+  background: #e7efdf;
+  border-color: #88a579;
+}
+
+.ajustes-alergia input {
+  accent-color: #64885b;
+}
+
+.ajustes-guardar {
+  width: 100%;
+  margin-top: 30px;
+  padding: 15px;
+  background: #8fa783;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ajustes-guardar:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+  .ajustes-page {
+    padding: 15px;
+  }
+
+  .ajustes-container {
+    padding: 22px;
+  }
+
+  .ajustes-header h1 {
+    font-size: 25px;
+  }
+
+  .ajustes-grid,
+  .ajustes-alergias {
+    grid-template-columns: 1fr;
+  }
+}
