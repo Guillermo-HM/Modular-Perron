@@ -146,6 +146,12 @@ useEffect(() => {
 
 // Función para guardar o remover receta de Supabase
 const handleToggleSaveRecipe = async (recipeKey) => {
+  // Evitar guardar si por alguna razón la key viene vacía o indefinida
+  if (!recipeKey || typeof recipeKey !== 'string') {
+    console.error('recipeKey inválida:', recipeKey);
+    return;
+  }
+
   try {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -153,10 +159,15 @@ const handleToggleSaveRecipe = async (recipeKey) => {
       return;
     }
 
-    const isAlreadySaved = savedRecipeKeys.includes(recipeKey);
+    // Filtrar solo cadenas válidas del estado actual
+    const currentList = Array.isArray(savedRecipeKeys)
+      ? savedRecipeKeys.filter(k => typeof k === 'string' && k.trim() !== '' && k !== 'null')
+      : [];
+
+    const isAlreadySaved = currentList.includes(recipeKey);
     const updatedList = isAlreadySaved
-      ? savedRecipeKeys.filter(k => k !== recipeKey)
-      : [...savedRecipeKeys, recipeKey];
+      ? currentList.filter(k => k !== recipeKey)
+      : [...currentList, recipeKey];
 
     const { error } = await supabase
       .from('perfiles')
@@ -175,23 +186,26 @@ const handleToggleSaveRecipe = async (recipeKey) => {
 
   // Abre el detalle flotante de la receta seleccionada
   const handleOpenRecipeDetail = (item) => {
-    const key = (item.receta || String(item)).toLowerCase().trim().replace(/\s+/g, '_');
-    const detailData = recipesDetailDb[key] || {
-      nombre: (item.receta || String(item)).replace(/_/g, ' '),
-      tiempo: `${tiempoSeleccionado || 30} min`,
-      ingredientes: confirmedIngredients.map(i => i.replace(/_/g, ' ')),
-      pasos: [
-        'Organizar e inspeccionar los ingredientes.',
-        'Sazonar y cocinar los ingredientes en una sartén a fuego medio.',
-        'Servir caliente y disfrutar.'
-      ]
-    };
+  const rawName = item && typeof item === 'object' ? (item.receta || '') : String(item);
+  const key = rawName.toLowerCase().trim().replace(/\s+/g, '_');
 
-    setActiveRecipeModal({
-      ...detailData,
-      puntuacion: item.puntuacion
-    });
+  const detailData = recipesDetailDb[key] || {
+    nombre: rawName.replace(/_/g, ' '),
+    tiempo: `${tiempoSeleccionado || 30} min`,
+    ingredientes: confirmedIngredients.map(i => i.replace(/_/g, ' ')),
+    pasos: [
+      'Organizar e inspeccionar los ingredientes.',
+      'Sazonar y cocinar los ingredientes en una sartén a fuego medio.',
+      'Servir caliente y disfrutar.'
+    ]
   };
+
+  setActiveRecipeModal({
+    ...detailData,
+    key: key, // 👈 ¡ESTA LÍNEA ES CLAVE! (Antes faltaba incluir la propiedad key)
+    puntuacion: item && typeof item === 'object' ? item.puntuacion : null
+  });
+};
 
   const handleFinalSend = async () => {
     if (confirmedIngredients.length === 0) {
