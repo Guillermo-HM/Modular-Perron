@@ -55,15 +55,15 @@ function App() {
   // 3. VISTAS PARA USUARIOS AUTENTICADOS
   // ============================================
 
-  if (session) {
-    if (needsOnboarding) {
-      return (
-        <OnboardingAlergias
-          session={session}
-          onComplete={() => setNeedsOnboarding(false)}
-        />
-      );
-    }
+  //if (session) {
+  //  if (needsOnboarding) {
+  //    return (
+  //      <OnboardingAlergias
+  //        session={session}
+  //        onComplete={() => setNeedsOnboarding(false)}
+  //      />
+  //    );
+  //  }
 
     const displayName = session.user?.user_metadata?.display_name || "Usuario";
 
