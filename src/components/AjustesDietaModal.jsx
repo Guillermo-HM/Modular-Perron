@@ -173,7 +173,7 @@ export function AjustesDietaModal({ onClose }) {
 
       if (error) throw error;
 
-      alert('Ajustes de dieta actualizados correctamente.');
+      //alert('Ajustes de dieta actualizados correctamente.');
       onClose();
     } catch (err) {
       console.error('Error al guardar ajustes:', err);
