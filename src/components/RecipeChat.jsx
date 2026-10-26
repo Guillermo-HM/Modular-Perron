@@ -116,6 +116,63 @@ function RecipeChat({ onBack }) {
     setCurrentStep(4);
   };
 
+
+  // Estado para rastrear qué recetas tiene guardadas el usuario
+const [savedRecipeKeys, setSavedRecipeKeys] = useState([]);
+
+// Cargar las recetas guardadas del usuario al montar el componente
+useEffect(() => {
+  const fetchSavedRecipes = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const { data, error } = await supabase
+        .from('perfiles')
+        .select('recetas_guardadas')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (!error && data?.recetas_guardadas) {
+        setSavedRecipeKeys(data.recetas_guardadas);
+      }
+    } catch (err) {
+      console.error('Error al cargar recetas guardadas:', err);
+    }
+  };
+
+  fetchSavedRecipes();
+}, []);
+
+// Función para guardar o remover receta de Supabase
+const handleToggleSaveRecipe = async (recipeKey) => {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      alert('Debes iniciar sesión para guardar recetas.');
+      return;
+    }
+
+    const isAlreadySaved = savedRecipeKeys.includes(recipeKey);
+    const updatedList = isAlreadySaved
+      ? savedRecipeKeys.filter(k => k !== recipeKey)
+      : [...savedRecipeKeys, recipeKey];
+
+    const { error } = await supabase
+      .from('perfiles')
+      .update({ recetas_guardadas: updatedList })
+      .eq('id', session.user.id);
+
+    if (error) throw error;
+
+    setSavedRecipeKeys(updatedList);
+  } catch (err) {
+    console.error('Error al actualizar favoritos:', err);
+    alert('No se pudo actualizar tu lista de favoritos.');
+  }
+};
+
+
   // Abre el detalle flotante de la receta seleccionada
   const handleOpenRecipeDetail = (item) => {
     const key = (item.receta || String(item)).toLowerCase().trim().replace(/\s+/g, '_');
@@ -427,6 +484,14 @@ function RecipeChat({ onBack }) {
                     <span className="recipe-score-badge">Coincidencia: {activeRecipeModal.puntuacion}%</span>
                   )}
                 </div>
+
+                {/* BOTÓN GUARDAR / GUARDADA */}
+                <button 
+                  className={`save-recipe-btn ${savedRecipeKeys.includes(activeRecipeModal.key) ? 'saved' : ''}`}
+                  onClick={() => handleToggleSaveRecipe(activeRecipeModal.key)}
+                >
+                  {savedRecipeKeys.includes(activeRecipeModal.key) ? '❤️ En Guardadas' : '🤍 Guardar Receta'}
+                </button>
               </div>
 
               <div className="recipe-detail-body">
