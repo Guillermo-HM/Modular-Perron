@@ -2,7 +2,67 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import '../assets/recipechat.css';
 
-// Base de alérgenos principales con etiquetas y sugerencias claras
+// Íconos SVG reutilizables
+const SVGClose = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+);
+
+const SVGShieldWarning = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    <line x1="12" y1="8" x2="12" y2="12"></line>
+    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+  </svg>
+);
+
+const SVGBan = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+  </svg>
+);
+
+const SVGChevron = ({ open }) => (
+  <svg 
+    width="16" 
+    height="16" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2.2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+    style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }}
+  >
+    <polyline points="6 9 12 15 18 9"></polyline>
+  </svg>
+);
+
+const SVGCheck = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+);
+
+const SVGPlus = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="5" x2="12" y2="19"></line>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+  </svg>
+);
+
+const SVGSave = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+    <polyline points="7 3 7 8 15 8"></polyline>
+  </svg>
+);
+
+// Base de alérgenos principales
 const ALERGENOS_BASE = [
   { key: 'pollo', label: 'Pollo / Pechuga', sub: 'Pollo, Pechuga de pollo' },
   { key: 'res', label: 'Carne de Res', sub: 'Cortes de res, Molida' },
@@ -44,8 +104,7 @@ export function AjustesDietaModal({ onClose }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Estado para desplegar/colapsar las categorías
-  const [openSections, setOpenSections] = useState({ Proteinas: true, Vegetales: false });
+  const [openSections, setOpenSections] = useState({ Proteinas: true });
 
   useEffect(() => {
     fetchPerfilDieta();
@@ -114,7 +173,7 @@ export function AjustesDietaModal({ onClose }) {
 
       if (error) throw error;
 
-      alert('¡Ajustes de dieta guardados correctamente!');
+      alert('Ajustes de dieta actualizados correctamente.');
       onClose();
     } catch (err) {
       console.error('Error al guardar ajustes:', err);
@@ -127,49 +186,56 @@ export function AjustesDietaModal({ onClose }) {
   return (
     <div className="recipe-detail-modal-overlay" onClick={onClose}>
       <div className="recipe-detail-modal-card dieta-modal-card" onClick={e => e.stopPropagation()}>
-        <button className="close-detail-modal-btn" onClick={onClose} aria-label="Cerrar modal">
-          ×
-        </button>
-
+        
+        {/* CABECERA */}
         <div className="dieta-modal-header">
-          <div className="dieta-header-badge">Perfil Nutricional</div>
-          <h2>🥗 Ajustes de Dieta y Restricciones</h2>
-          <p className="pantry-instruction">
-            Personaliza tus alérgenos e ingredientes no deseados. El motor de recomendación los descartará automáticamente de tus recetas.
-          </p>
+          <div>
+            <span className="dieta-header-badge">Perfil Nutricional</span>
+            <h2>Ajustes de Dieta y Restricciones</h2>
+            <p className="dieta-header-desc">
+              Configura tus alérgenos e ingredientes no deseados. El motor de recomendación los excluirá automáticamente de tus recetas.
+            </p>
+          </div>
+          <button className="dieta-close-btn" onClick={onClose} aria-label="Cerrar">
+            <SVGClose />
+          </button>
         </div>
 
         {loading ? (
-          <div className="dieta-loading-box">
+          <div className="dieta-loading-state">
             <div className="dieta-spinner"></div>
-            <p className="loading-text">Cargando tus preferencias de perfil...</p>
+            <span>Cargando preferencias del perfil...</span>
           </div>
         ) : (
-          <div className="dieta-sections-body">
-            {/* SECCIÓN 1: ALERGIAS Y INTOLERANCIAS */}
+          <div className="dieta-modal-content">
+            
+            {/* SECCIÓN 1: ALERGIAS */}
             <section className="dieta-section">
-              <div className="dieta-section-title-row">
-                <h3>⚠️ Alergias e Intolerancias</h3>
-                <span className="dieta-count-badge warning">
-                  {alergias.length} {alergias.length === 1 ? 'activa' : 'activas'}
+              <div className="dieta-section-header">
+                <div className="dieta-section-title">
+                  <SVGShieldWarning />
+                  <h3>Alergias e Intolerancias</h3>
+                </div>
+                <span className={`dieta-pill-badge ${alergias.length > 0 ? 'active-badge' : ''}`}>
+                  {alergias.length} {alergias.length === 1 ? 'seleccionada' : 'seleccionadas'}
                 </span>
               </div>
 
-              <div className="dieta-checkbox-grid">
+              <div className="dieta-allergy-grid">
                 {ALERGENOS_BASE.map(item => {
                   const isChecked = alergias.includes(item.key);
                   return (
                     <div 
                       key={item.key} 
-                      className={`dieta-allergy-card ${isChecked ? 'active' : ''}`}
+                      className={`dieta-allergy-card ${isChecked ? 'selected' : ''}`}
                       onClick={() => toggleAlergia(item.key)}
                     >
-                      <div className="dieta-allergy-checkbox">
-                        {isChecked && <span>✓</span>}
+                      <div className="dieta-checkbox-box">
+                        {isChecked && <SVGCheck />}
                       </div>
-                      <div className="dieta-allergy-info">
-                        <strong>{item.label}</strong>
-                        <small>{item.sub}</small>
+                      <div className="dieta-allergy-details">
+                        <span className="dieta-allergy-name">{item.label}</span>
+                        <span className="dieta-allergy-sub">{item.sub}</span>
                       </div>
                     </div>
                   );
@@ -177,70 +243,77 @@ export function AjustesDietaModal({ onClose }) {
               </div>
             </section>
 
-            {/* SECCIÓN 2: INGREDIENTES A EVITAR (ACORDEÓN CATEGORIZADO) */}
-            <section className="dieta-section" style={{ marginTop: '24px' }}>
-              <div className="dieta-section-title-row">
-                <h3>🚫 Ingredientes que prefieres evitar</h3>
-                <span className="dieta-count-badge danger">
+            {/* SECCIÓN 2: INGREDIENTES A EVITAR */}
+            <section className="dieta-section">
+              <div className="dieta-section-header">
+                <div className="dieta-section-title">
+                  <SVGBan />
+                  <h3>Ingredientes que prefieres evitar</h3>
+                </div>
+                <span className={`dieta-pill-badge ${noGustan.length > 0 ? 'active-badge-danger' : ''}`}>
                   {noGustan.length} {noGustan.length === 1 ? 'excluido' : 'excluidos'}
                 </span>
               </div>
 
-              {/* Resumen flotante de ingredientes no deseados */}
-              <div className="dieta-pantry-summary">
-                <div className="pantry-pills-wrap">
-                  {noGustan.map(ing => (
-                    <span 
-                      key={ing} 
-                      className="dieta-dislike-pill"
-                      onClick={() => toggleNoGusta(ing)}
-                      title="Haz clic para quitar de la lista"
-                    >
-                      {ing.replace(/_/g, ' ')} <small>×</small>
-                    </span>
-                  ))}
-                  {noGustan.length === 0 && (
-                    <em className="dieta-empty-hint">No has seleccionado ningún ingrediente a evitar.</em>
-                  )}
-                </div>
+              {/* Resumen flotante de excluidos */}
+              <div className="dieta-summary-pills-box">
+                {noGustan.length === 0 ? (
+                  <span className="dieta-empty-text">No has seleccionado ningún ingrediente a evitar.</span>
+                ) : (
+                  <div className="dieta-pills-flex">
+                    {noGustan.map(ing => (
+                      <button 
+                        key={ing} 
+                        type="button" 
+                        className="dieta-dislike-pill" 
+                        onClick={() => toggleNoGusta(ing)}
+                      >
+                        <span>{ing.replace(/_/g, ' ')}</span>
+                        <SVGClose />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Acordeón de categorías de ingredientes */}
-              <div className="dieta-accordion-wrapper">
+              {/* Acordeón de categorías */}
+              <div className="dieta-accordion-container">
                 {Object.keys(ingredientsDb).map(cat => {
-                  const catItems = ingredientsDb[cat];
-                  const selectedCountInCat = catItems.filter(i => noGustan.includes(i)).length;
-                  const isOpen = openSections[cat];
+                  const items = ingredientsDb[cat];
+                  const countInCat = items.filter(i => noGustan.includes(i)).length;
+                  const isOpen = !!openSections[cat];
 
                   return (
-                    <div key={cat} className={`dieta-cat-card ${isOpen ? 'open' : ''}`}>
+                    <div key={cat} className={`dieta-accordion-item ${isOpen ? 'is-open' : ''}`}>
                       <button 
                         type="button" 
-                        className="dieta-cat-header" 
+                        className="dieta-accordion-header" 
                         onClick={() => toggleSection(cat)}
                       >
-                        <div className="dieta-cat-title">
+                        <div className="dieta-accordion-title">
                           <span>{cat}</span>
-                          {selectedCountInCat > 0 && (
-                            <span className="dieta-cat-badge">{selectedCountInCat}</span>
+                          {countInCat > 0 && (
+                            <span className="dieta-cat-count-pill">{countInCat}</span>
                           )}
                         </div>
-                        <span className={`dieta-cat-arrow ${isOpen ? 'rotated' : ''}`}>▼</span>
+                        <SVGChevron open={isOpen} />
                       </button>
 
                       {isOpen && (
-                        <div className="dieta-cat-content">
-                          <div className="dieta-pantry-grid">
-                            {catItems.map(ing => {
+                        <div className="dieta-accordion-body">
+                          <div className="dieta-ingredients-wrap">
+                            {items.map(ing => {
                               const isSelected = noGustan.includes(ing);
                               return (
                                 <button
                                   key={ing}
                                   type="button"
-                                  className={`dieta-ingredient-btn ${isSelected ? 'selected' : ''}`}
+                                  className={`dieta-ingredient-chip ${isSelected ? 'active-chip' : ''}`}
                                   onClick={() => toggleNoGusta(ing)}
                                 >
-                                  <span className="btn-icon">{isSelected ? '✕' : '+'}</span>
+                                  <span className="chip-icon">
+                                    {isSelected ? <SVGClose /> : <SVGPlus />}
+                                  </span>
                                   <span>{ing.replace(/_/g, ' ')}</span>
                                 </button>
                               );
@@ -254,28 +327,24 @@ export function AjustesDietaModal({ onClose }) {
               </div>
             </section>
 
-            {/* BOTÓN DE GUARDAR */}
-            <div className="dieta-footer-actions">
-              <button 
-                type="button"
-                className="dieta-save-btn" 
-                onClick={handleGuardarAjustes}
-                disabled={saving}
-              >
-                {saving ? (
-                  <>
-                    <span className="btn-spinner"></span>
-                    <span>Guardando cambios...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>💾 Guardar Preferencias</span>
-                  </>
-                )}
-              </button>
-            </div>
           </div>
         )}
+
+        {/* PIE CON BOTÓN ACCIÓN */}
+        {!loading && (
+          <div className="dieta-modal-footer">
+            <button 
+              type="button"
+              className="dieta-save-submit-btn" 
+              onClick={handleGuardarAjustes}
+              disabled={saving}
+            >
+              <SVGSave />
+              <span>{saving ? 'Guardando cambios...' : 'Guardar Preferencias'}</span>
+            </button>
+          </div>
+        )}
+
       </div>
     </div>
   );
