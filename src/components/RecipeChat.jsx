@@ -6,7 +6,7 @@ import "blobatar/gaze.css";
 import "blobatar/motion.css";
 import { supabase } from "../supabaseClient";
 
-//Manejo de la API mediante Netlify
+// Manejo de la API mediante Netlify / Vite
 const API_URL = import.meta.env.VITE_API_URL;
 
 const BlobatarIcon = () => {
@@ -45,6 +45,82 @@ const ingredientsDb = {
   Semillas: ['semillas_girasol'],
 };
 
+// Base de conocimiento detallada para las tarjetas flotantes
+const recipesDetailDb = {
+  tacos_pollo_caseros: {
+    nombre: 'Tacos de Pollo Caseros',
+    tiempo: '25 min',
+    ingredientes: ['Pechuga de pollo', 'Tortillas de maíz', 'Cebolla', 'Ajo', 'Aceite vegetal', 'Sal', 'Pimienta'],
+    pasos: [
+      'Cortar la pechuga de pollo en tiras o cubos pequeños.',
+      'Sazonar el pollo con sal, pimienta y ajo picado.',
+      'Calentar un poco de aceite en una sartén a fuego medio y freír el pollo con la cebolla picada hasta que esté dorado.',
+      'Calentar las tortillas de maíz en un comal.',
+      'Servir el pollo bien caliente sobre las tortillas y acompañar con tu salsa favorita.'
+    ]
+  },
+  lomo_cerdo_mostaza: {
+    nombre: 'Lomo de Cerdo a la Mostaza',
+    tiempo: '40 min',
+    ingredientes: ['Lomo de cerdo', 'Mostaza', 'Ajo', 'Aceite de oliva', 'Sal', 'Pimienta', 'Miel (opcional)'],
+    pasos: [
+      'Sazonar el lomo de cerdo con sal, pimienta y ajo picado.',
+      'Mezclar la mostaza con un toque de miel o aceite de oliva.',
+      'Untar la mezcla generosamente sobre la carne.',
+      'Sellarlo en una sartén caliente con aceite de oliva por todos sus lados.',
+      'Tapar y cocinar a fuego medio-bajo durante 20-25 minutos hasta que esté suave y bien cocido.'
+    ]
+  },
+  quesadillas_champinones: {
+    nombre: 'Quesadillas de Champiñones',
+    tiempo: '15 min',
+    ingredientes: ['Champiñones', 'Queso Oaxaca / Panela', 'Tortillas de maíz', 'Cebolla', 'Ajo', 'Epazote o Cilantro', 'Sal'],
+    pasos: [
+      'Lavar y rebanar los champiñones.',
+      'Sofreír la cebolla y el ajo finamente picados en una sartén; agregar los champiñones y la hierba aromática.',
+      'Cocinar hasta que se reduzca el jugo de los champiñones y sazonar con sal al gusto.',
+      'Colocar queso y una porción de champiñones dentro de cada tortilla.',
+      'Calentar en el comal a fuego medio hasta que el queso se derrita por completo.'
+    ]
+  },
+  ceviche_pescado: {
+    nombre: 'Ceviche de Pescado Blanco',
+    tiempo: '30 min',
+    ingredientes: ['Pescado blanco', 'Jugo de limón', 'Cebolla morada', 'Tomate', 'Pepino', 'Cilantro', 'Sal', 'Pimienta'],
+    pasos: [
+      'Cortar el pescado blanco en cubos pequeños y colocarlo en un recipiente hondo.',
+      'Cubrir el pescado con el jugo de limón fresco y dejar marinar en refrigeración durante 20 minutos.',
+      'Picar finamente la cebolla morada, el tomate, el pepino y el cilantro.',
+      'Mezclar los vegetales picados con el pescado desmenuzado en el limón.',
+      'Sazonar con sal y pimienta al gusto y servir bien frío sobre tostadas de maíz.'
+    ]
+  },
+  ensalada_pollo: {
+    nombre: 'Ensalada Fresca de Pollo',
+    tiempo: '20 min',
+    ingredientes: ['Pechuga de pollo', 'Lechuga romana', 'Tomate', 'Pepino', 'Crutones', 'Aceite de oliva', 'Sal', 'Pimienta'],
+    pasos: [
+      'Cocinar la pechuga de pollo a la plancha sazonada con sal y pimienta; cortar en tiras.',
+      'Lavar, desinfectar y trocear la lechuga romana.',
+      'Cortar el tomate y el pepino en rodajas o cubos.',
+      'En un tazón grande, integrar la lechuga, el tomate, el pepino y las tiras de pollo.',
+      'Añadir un chorrito de aceite de oliva, decorar con crutones y servir.'
+    ]
+  },
+  carne_res_verduras: {
+    nombre: 'Carne de Res con Verduras',
+    tiempo: '35 min',
+    ingredientes: ['Carne de res', 'Pimiento morrón', 'Brócoli', 'Zanahoria', 'Cebolla', 'Salsa de soya', 'Aceite vegetal'],
+    pasos: [
+      'Cortar la carne de res en fajitas o tiras delgadas.',
+      'Picar los pimientos, la cebolla, la zanahoria y el brócoli en trozos medianos.',
+      'Saltear la carne en una sartén grande o wok con aceite vegetal a fuego alto.',
+      'Agregar las verduras y saltearlas durante 5-7 minutos para que queden crujientes.',
+      'Vertir un chorrito de salsa de soya, mezclar todo bien y servir caliente.'
+    ]
+  }
+};
+
 function RecipeChat({ onBack }) {
   const [budget, setBudget] = useState(0);
   const [currentStep, setCurrentStep] = useState(1);
@@ -59,6 +135,9 @@ function RecipeChat({ onBack }) {
   const [loading, setLoading] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [searched, setSearched] = useState(false);
+
+  // Estado para la ventana flotante de detalle de receta
+  const [activeRecipeModal, setActiveRecipeModal] = useState(null);
 
   const [isClosing, setIsClosing] = useState(false);
   const chatEndRef = useRef(null);
@@ -110,6 +189,26 @@ function RecipeChat({ onBack }) {
     setConfirmedIngredients([...selectedIngredients]);
     setIsIngredientsModalOpen(false);
     setCurrentStep(4);
+  };
+
+  // Abre el detalle flotante de la receta seleccionada
+  const handleOpenRecipeDetail = (item) => {
+    const key = (item.receta || String(item)).toLowerCase().trim().replace(/\s+/g, '_');
+    const detailData = recipesDetailDb[key] || {
+      nombre: (item.receta || String(item)).replace(/_/g, ' '),
+      tiempo: `${tiempoSeleccionado || 30} min`,
+      ingredientes: confirmedIngredients.map(i => i.replace(/_/g, ' ')),
+      pasos: [
+        'Organizar e inspeccionar los ingredientes.',
+        'Sazonar y cocinar los ingredientes en una sartén a fuego medio.',
+        'Servir caliente y disfrutar.'
+      ]
+    };
+
+    setActiveRecipeModal({
+      ...detailData,
+      puntuacion: item.puntuacion
+    });
   };
 
   const handleFinalSend = async () => {
@@ -217,22 +316,23 @@ function RecipeChat({ onBack }) {
             <div className="chat-bubble-row bot">
               <BlobatarIcon />
               <div className="bubbles-column">
-                <div className="chat-bubble">¡Aquí están tus sugerencias personalizadas!</div>
+                <div className="chat-bubble">¡Aquí están tus sugerencias personalizadas! Presiona una opción para ver la receta completa.</div>
                 {recipes.length > 0 ? (
                   <div className="recipes-results-list">
                     {recipes.map((item, index) => (
-                      <div key={index} className="recipe-card-item" style={{
-                        background: 'rgba(255, 255, 255, 0.15)',
-                        padding: '10px 14px',
-                        borderRadius: '10px',
-                        margin: '6px 0',
-                        color: '#fff'
-                      }}>
-                        <strong style={{ textTransform: 'capitalize' }}>
-                          {item.receta ? item.receta.replace(/_/g, ' ') : String(item).replace(/_/g, ' ')}
-                        </strong>
+                      <div 
+                        key={index} 
+                        className="recipe-card-item clickable-recipe"
+                        onClick={() => handleOpenRecipeDetail(item)}
+                      >
+                        <div className="recipe-card-header">
+                          <strong className="recipe-card-title">
+                            {item.receta ? item.receta.replace(/_/g, ' ') : String(item).replace(/_/g, ' ')}
+                          </strong>
+                          <span className="recipe-card-arrow">➔</span>
+                        </div>
                         {item.puntuacion && (
-                          <span style={{ fontSize: '0.85em', opacity: 0.9, display: 'block' }}>
+                          <span className="recipe-card-score">
                             Coincidencia: {item.puntuacion}%
                           </span>
                         )}
@@ -249,7 +349,7 @@ function RecipeChat({ onBack }) {
           <div ref={chatEndRef} />
         </section>
 
-        {/* ÁREA DE CONTROLES INFERIOR (ESPACIO BLANCO/CLARO) */}
+        {/* ÁREA DE CONTROLES INFERIOR (ESPACIO CLARO) */}
         <section className="chat-controls-area">
           <div className="controls-separator">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -334,7 +434,7 @@ function RecipeChat({ onBack }) {
           )}
         </section>
 
-        {/* MODAL INTERNO DE SELECCIÓN */}
+        {/* MODAL INTERNO DE SELECCIÓN DE INGREDIENTES */}
         {isIngredientsModalOpen && (
           <div className="ingredients-modal-overlay">
             <div className="ingredients-modal-content">
@@ -381,6 +481,52 @@ function RecipeChat({ onBack }) {
             </div>
           </div>
         )}
+
+        {/* VENTANA FLOTANTE DE DETALLE DE LA RECETA */}
+        {activeRecipeModal && (
+          <div className="recipe-detail-modal-overlay" onClick={() => setActiveRecipeModal(null)}>
+            <div className="recipe-detail-modal-card" onClick={(e) => e.stopPropagation()}>
+              <button 
+                className="close-detail-modal-btn" 
+                onClick={() => setActiveRecipeModal(null)}
+                aria-label="Cerrar receta"
+              >
+                ×
+              </button>
+
+              <div className="recipe-detail-header">
+                <h2>{activeRecipeModal.nombre}</h2>
+                <div className="recipe-detail-badges">
+                  <span className="recipe-time-badge">⏱ {activeRecipeModal.tiempo}</span>
+                  {activeRecipeModal.puntuacion && (
+                    <span className="recipe-score-badge">Coincidencia: {activeRecipeModal.puntuacion}%</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="recipe-detail-body">
+                <section className="recipe-section">
+                  <h3>Ingredientes necesarios</h3>
+                  <ul className="recipe-ingredients-list">
+                    {activeRecipeModal.ingredientes.map((ing, i) => (
+                      <li key={i}>{ing}</li>
+                    ))}
+                  </ul>
+                </section>
+
+                <section className="recipe-section">
+                  <h3>Pasos de preparación</h3>
+                  <ol className="recipe-steps-list">
+                    {activeRecipeModal.pasos.map((paso, idx) => (
+                      <li key={idx}>{paso}</li>
+                    ))}
+                  </ol>
+                </section>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
