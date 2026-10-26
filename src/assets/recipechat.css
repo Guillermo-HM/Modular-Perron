@@ -2147,3 +2147,84 @@
 .plan-steps-numbered-list li {
   margin-bottom: 6px;
 }
+
+/* =====================================================
+   CORRECCIÓN DE DEFORMACIÓN EN ACORDEONES (FLEXBOX FIX)
+   ===================================================== */
+
+/* 1. Plan Semanal */
+.plan-accordion-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.plan-cat-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #ffffff;
+  flex-shrink: 0; /* Evita que Flexbox comprima la tarjeta */
+}
+
+.plan-cat-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  min-height: 44px; /* Asegura altura suficiente para el texto y botón */
+  background-color: #f8fafc;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease;
+}
+
+.plan-cat-header:hover {
+  background-color: #f1f5f9;
+}
+
+
+/* 2. Ajustes de Dieta */
+.dieta-accordion-wrapper,
+.dieta-accordion-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.dieta-cat-card,
+.dieta-accordion-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #ffffff;
+  flex-shrink: 0; /* Evita que Flexbox comprima la tarjeta */
+}
+
+.dieta-cat-header,
+.dieta-accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  min-height: 44px; /* Asegura altura suficiente */
+  background-color: #f8fafc;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease;
+}
+
+.dieta-cat-header:hover,
+.dieta-accordion-header:hover {
+  background-color: #f1f5f9;
+}
