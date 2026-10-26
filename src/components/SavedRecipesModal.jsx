@@ -95,7 +95,7 @@ export function SavedRecipesModal({ onClose }) {
       <div className="recipe-detail-modal-card saved-recipes-modal" onClick={e => e.stopPropagation()}>
         <button className="close-detail-modal-btn" onClick={onClose}>×</button>
 
-        <h2>❤️ Mis Recetas Guardadas</h2>
+        <h2>Mis Recetas Guardadas</h2>
 
         {loading ? (
           <p className="loading-text">Cargando tus recetas favoritas...</p>
@@ -131,7 +131,7 @@ export function SavedRecipesModal({ onClose }) {
                     onClick={(e) => handleRemoveRecipe(key, e)}
                     title="Eliminar de guardadas"
                   >
-                    🗑️
+                    X
                   </button>
                 </div>
               );

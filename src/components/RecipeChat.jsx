@@ -202,7 +202,7 @@ const handleToggleSaveRecipe = async (recipeKey) => {
 
   setActiveRecipeModal({
     ...detailData,
-    key: key, // 👈 ¡ESTA LÍNEA ES CLAVE! (Antes faltaba incluir la propiedad key)
+    key: key,
     puntuacion: item && typeof item === 'object' ? item.puntuacion : null
   });
 };
@@ -504,7 +504,7 @@ const handleToggleSaveRecipe = async (recipeKey) => {
                   className={`save-recipe-btn ${savedRecipeKeys.includes(activeRecipeModal.key) ? 'saved' : ''}`}
                   onClick={() => handleToggleSaveRecipe(activeRecipeModal.key)}
                 >
-                  {savedRecipeKeys.includes(activeRecipeModal.key) ? '❤️ En Guardadas' : '🤍 Guardar Receta'}
+                  {savedRecipeKeys.includes(activeRecipeModal.key) ? 'En Guardadas' : 'Guardar Receta'}
                 </button>
               </div>
 
