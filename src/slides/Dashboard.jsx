@@ -2,16 +2,19 @@ import { useState } from 'react';
 import '../assets/dashboard.css';
 import RecipeChat from '../components/RecipeChat'; 
 import AjustesUsuario from './AjustesUsuario';
-// 1. IMPORTAR EL NUEVO MODAL DE RECETAS GUARDADAS
 import { SavedRecipesModal } from '../components/SavedRecipesModal'; 
+
+// 1. IMPORTAR EL COMPONENTE DEL PLAN SEMANAL
+import { WeeklyPlanModal } from './WeeklyPlanModal'; 
 
 export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showRecipeChat, setShowRecipeChat] = useState(false);
   const [showAjustes, setShowAjustes] = useState(false);
-  
-  // 2. NUEVO ESTADO PARA CONTROLAR LA VISIBILIDAD DEL MODAL
   const [showSavedModal, setShowSavedModal] = useState(false);
+  
+  // 2. NUEVO ESTADO PARA CONTROLAR LA VENTANA FLOTANTE DEL PLAN SEMANAL
+  const [showPlanModal, setShowPlanModal] = useState(false);
 
   const handleLogoutClick = () => {
     setIsMenuOpen(false);
@@ -43,7 +46,8 @@ export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
       description: 'Organiza tu menú de lunes a domingo optimizando compras para ahorrar tiempo y dinero.',
       image: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=600&q=80',
       buttonText: 'VER PLAN',
-      action: () => alert('Abriendo plan semanal... (Próximamente)'),
+      // 3. CAMBIAR LA ACCIÓN DE ALERT A ABRIR EL MODAL DEL PLAN SEMANAL
+      action: () => setShowPlanModal(true),
     },
     {
       id: 3,
@@ -52,7 +56,6 @@ export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
       description: 'Accede a tu colección personal de platillos guardados y ajusta sus porciones.',
       image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
       buttonText: 'EXPLORAR',
-      // 3. CAMBIAR LA ACCIÓN PARA ABRIR EL MODAL DE FAVORITOS
       action: () => setShowSavedModal(true),
     },
     {
@@ -156,9 +159,14 @@ export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
         <RecipeChat onBack={handleBackToDashboard} />
       )}
 
-      {/* 4. RENDERIZAR LA VENTANA FLOTANTE DE FAVORITOS */}
+      {/* VENTANA FLOTANTE DE RECETAS GUARDADAS */}
       {showSavedModal && (
         <SavedRecipesModal onClose={() => setShowSavedModal(false)} />
+      )}
+
+      {/* 4. VENTANA FLOTANTE DEL PLAN SEMANAL */}
+      {showPlanModal && (
+        <WeeklyPlanModal onClose={() => setShowPlanModal(false)} />
       )}
     </div>
   );
