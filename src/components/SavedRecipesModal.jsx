@@ -16,7 +16,10 @@ export function SavedRecipesModal({ onClose }) {
     try {
       setLoading(true);
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+      if (!session) {
+        setLoading(false);
+        return;
+      }
 
       const { data, error } = await supabase
         .from('perfiles')
@@ -25,9 +28,26 @@ export function SavedRecipesModal({ onClose }) {
         .maybeSingle();
 
       if (error) throw error;
-      setSavedKeys(data?.recetas_guardadas || []);
+
+      let rawList = data?.recetas_guardadas;
+
+      // Validación estricta para asegurar que siempre sea un Arreglo (evita el error .map is not a function)
+      if (Array.isArray(rawList)) {
+        setSavedKeys(rawList);
+      } else if (typeof rawList === 'string' && rawList.trim() !== '') {
+        // Si Supabase devuelve la lista como formato texto literal de Postgres "{receta1,receta2}"
+        const parsed = rawList
+          .replace(/^\{|\}$/g, '')
+          .split(',')
+          .map(s => s.trim().replace(/^"|"$/g, ''))
+          .filter(Boolean);
+        setSavedKeys(parsed);
+      } else {
+        setSavedKeys([]);
+      }
     } catch (err) {
       console.error('Error al cargar recetas guardadas:', err);
+      setSavedKeys([]);
     } finally {
       setLoading(false);
     }
@@ -39,7 +59,8 @@ export function SavedRecipesModal({ onClose }) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
-      const updated = savedKeys.filter(k => k !== keyToRemove);
+      const currentList = Array.isArray(savedKeys) ? savedKeys : [];
+      const updated = currentList.filter(k => k !== keyToRemove);
 
       const { error } = await supabase
         .from('perfiles')
@@ -58,6 +79,8 @@ export function SavedRecipesModal({ onClose }) {
     }
   };
 
+  const safeSavedKeys = Array.isArray(savedKeys) ? savedKeys : [];
+
   return (
     <div className="recipe-detail-modal-overlay" onClick={onClose}>
       <div className="recipe-detail-modal-card saved-recipes-modal" onClick={e => e.stopPropagation()}>
@@ -66,17 +89,17 @@ export function SavedRecipesModal({ onClose }) {
         <h2>❤️ Mis Recetas Guardadas</h2>
 
         {loading ? (
-          <p className="loading-text">Cargando tus recetas favorited...</p>
-        ) : savedKeys.length === 0 ? (
+          <p className="loading-text">Cargando tus recetas favoritas...</p>
+        ) : safeSavedKeys.length === 0 ? (
           <div className="empty-saved-state">
             <p>Aún no has guardado ninguna receta.</p>
             <small>Usa el recomendador para buscar platillos y guardarlos aquí.</small>
           </div>
         ) : (
           <div className="saved-recipes-list">
-            {savedKeys.map(key => {
-              const info = recipesDetailDb[key] || {
-                nombre: key.replace(/_/g, ' '),
+            {safeSavedKeys.map(key => {
+              const info = recipesDetailDb?.[key] || {
+                nombre: String(key).replace(/_/g, ' '),
                 tiempo: '30 min',
                 ingredientes: [],
                 pasos: []
@@ -116,14 +139,14 @@ export function SavedRecipesModal({ onClose }) {
 
             <h4>Ingredientes</h4>
             <ul>
-              {selectedRecipe.ingredientes.map((ing, idx) => (
+              {(Array.isArray(selectedRecipe.ingredientes) ? selectedRecipe.ingredientes : []).map((ing, idx) => (
                 <li key={idx}>{ing}</li>
               ))}
             </ul>
 
             <h4>Pasos</h4>
             <ol>
-              {selectedRecipe.pasos.map((paso, idx) => (
+              {(Array.isArray(selectedRecipe.pasos) ? selectedRecipe.pasos : []).map((paso, idx) => (
                 <li key={idx}>{paso}</li>
               ))}
             </ol>
