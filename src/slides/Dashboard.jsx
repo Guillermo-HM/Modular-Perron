@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import '../assets/dashboard.css';
 import RecipeChat from '../components/RecipeChat'; 
-
 import AjustesUsuario from './AjustesUsuario';
+// 1. IMPORTAR EL NUEVO MODAL DE RECETAS GUARDADAS
+import { SavedRecipesModal } from '../componentsSavedRecipesModal'; 
 
 export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showRecipeChat, setShowRecipeChat] = useState(false);
   const [showAjustes, setShowAjustes] = useState(false);
+  
+  // 2. NUEVO ESTADO PARA CONTROLAR LA VISIBILIDAD DEL MODAL
+  const [showSavedModal, setShowSavedModal] = useState(false);
 
   const handleLogoutClick = () => {
     setIsMenuOpen(false);
@@ -48,7 +52,8 @@ export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
       description: 'Accede a tu colección personal de platillos guardados y ajusta sus porciones.',
       image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
       buttonText: 'EXPLORAR',
-      action: () => alert('Abriendo favoritos... (Próximamente)'),
+      // 3. CAMBIAR LA ACCIÓN PARA ABRIR EL MODAL DE FAVORITOS
+      action: () => setShowSavedModal(true),
     },
     {
       id: 4,
@@ -62,10 +67,10 @@ export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
   ];
 
   if (showAjustes) {
-  return (
-    <AjustesUsuario onBack={() => setShowAjustes(false)} />
-  );
-}
+    return (
+      <AjustesUsuario onBack={() => setShowAjustes(false)} />
+    );
+  }
 
   return (
     <div className="dashboard-wrapper">
@@ -149,6 +154,11 @@ export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
       {/* CHAT INTERACTIVO (Overlay encima del Dashboard) */}
       {showRecipeChat && (
         <RecipeChat onBack={handleBackToDashboard} />
+      )}
+
+      {/* 4. RENDERIZAR LA VENTANA FLOTANTE DE FAVORITOS */}
+      {showSavedModal && (
+        <SavedRecipesModal onClose={() => setShowSavedModal(false)} />
       )}
     </div>
   );
