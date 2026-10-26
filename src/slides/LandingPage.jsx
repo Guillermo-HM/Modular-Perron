@@ -12,7 +12,7 @@ const slides = [
     title: "Cocina a tu medida con IA",
     subtitle: "Recomendaciones personalizadas según tu tiempo, presupuesto y alergias.",
     badge: "Asistente Inteligente",
-    image: slideImg1, // Asignación de la imagen importada
+    image: slideImg1,
   },
   {
     id: 2,

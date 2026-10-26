@@ -91,7 +91,7 @@ app.get('/api/perfil-actual', async (req, res) => {
         const { data: perfil, error: perfilError } =
             await supabaseUsuario
                 .from('perfiles')
-                .select('alergias, has_completed_onboarding')
+                .select('alergias, ingredientes_desagradables, has_completed_onboarding')
                 .eq('id', user.id)
                 .maybeSingle();
 
@@ -356,7 +356,7 @@ function parsearListaProlog(prologList) {
 }
 
 // =====================================================
-// RECOMENDACIONES CON ALERGIAS DESDE SUPABASE
+// RECOMENDACIONES CON ALERGIAS E INGREDIENTES RECHAZADOS DESDE SUPABASE
 // =====================================================
 
 app.post('/api/recomendar-perfil', async (req, res) => {
@@ -400,9 +400,10 @@ app.post('/api/recomendar-perfil', async (req, res) => {
             }
         );
 
+        // MODIFICADO: Incluimos la columna ingredientes_desagradables
         const { data: perfil, error: perfilError } = await supabaseUsuario
             .from('perfiles')
-            .select('alergias, has_completed_onboarding')
+            .select('alergias, ingredientes_desagradables, has_completed_onboarding')
             .eq('id', user.id)
             .maybeSingle();
 
@@ -413,7 +414,7 @@ app.post('/api/recomendar-perfil', async (req, res) => {
             });
         }
 
-        // 4. Mapeo flexible de equivalencias de alergias
+        // 4. Mapeo flexible de equivalencias
         const equivalencias = {
             lacteos: ['leche'],
             lacteo: ['leche'],
@@ -422,22 +423,28 @@ app.post('/api/recomendar-perfil', async (req, res) => {
             marisco: ['crustaceos', 'moluscos']
         };
 
+        // MODIFICADO: Unimos alergias e ingredientes que no le gustan en un solo arreglo
         const alergiasGuardadas = perfil?.alergias || [];
-        const alergiasTraducidas = [];
+        const ingredientesRechazados = perfil?.ingredientes_desagradables || [];
 
-        if (Array.isArray(alergiasGuardadas)) {
-            for (const alergia of alergiasGuardadas) {
-                if (typeof alergia === 'string') {
-                    const nombreLimpio = normalizarPrologAtom(alergia);
-                    const categorias = equivalencias[nombreLimpio] ?? [nombreLimpio];
-                    alergiasTraducidas.push(...categorias);
-                }
+        const listaRestriccionesGuardadas = [
+            ...(Array.isArray(alergiasGuardadas) ? alergiasGuardadas : []),
+            ...(Array.isArray(ingredientesRechazados) ? ingredientesRechazados : [])
+        ];
+
+        const restriccionesTraducidas = [];
+
+        for (const item of listaRestriccionesGuardadas) {
+            if (typeof item === 'string') {
+                const nombreLimpio = normalizarPrologAtom(item);
+                const categorias = equivalencias[nombreLimpio] ?? [nombreLimpio];
+                restriccionesTraducidas.push(...categorias);
             }
         }
 
-        const alergiasUnicas = [...new Set(alergiasTraducidas)];
+        const restriccionesUnicas = [...new Set(restriccionesTraducidas)];
 
-        // 5. Obtener ingredientes y tiempo enviadamente desde React
+        // 5. Obtener ingredientes y tiempo enviados desde React
         const { ingredientes = [], tiempo = 30 } = req.body ?? {};
 
         const listaIngredientes = Array.isArray(ingredientes) ? ingredientes : [];
@@ -455,12 +462,12 @@ app.post('/api/recomendar-perfil', async (req, res) => {
             .map(i => normalizarPrologAtom(i))
             .join(',');
 
-        const alergiasProlog = alergiasUnicas
+        const restriccionesProlog = restriccionesUnicas
             .map(a => normalizarPrologAtom(a))
             .join(',');
 
-        const consulta = `recomendar_con_alergias([${alergiasProlog}], [${ingredientesProlog}], ${tiempoProlog}, Recomendaciones).`;
-        console.log(`🔎 Consulta Prolog (Perfil): ${consulta}`);
+        const consulta = `recomendar_con_alergias([${restriccionesProlog}], [${ingredientesProlog}], ${tiempoProlog}, Recomendaciones).`;
+        console.log(`🔎 Consulta Prolog (Perfil + Restricciones): ${consulta}`);
 
         const resultadoRaw = await callProlog(consulta);
 

@@ -4,15 +4,18 @@ import RecipeChat from '../components/RecipeChat';
 import AjustesUsuario from './AjustesUsuario';
 import { SavedRecipesModal } from '../components/SavedRecipesModal';
 import { WeeklyPlanModal } from '../components/WeeklyPlanModal'; 
+// 1. IMPORTAR EL NUEVO MODAL DE AJUSTES DE DIETA
+import { AjustesDietaModal } from '../components/AjustesDietaModal';
 
 export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showRecipeChat, setShowRecipeChat] = useState(false);
   const [showAjustes, setShowAjustes] = useState(false);
   const [showSavedModal, setShowSavedModal] = useState(false);
-  
-  // 2. NUEVO ESTADO PARA CONTROLAR LA VENTANA FLOTANTE DEL PLAN SEMANAL
   const [showPlanModal, setShowPlanModal] = useState(false);
+  
+  // 2. NUEVO ESTADO PARA CONTROLAR LA VISIBILIDAD DEL MODAL DE DIETA
+  const [showDietaModal, setShowDietaModal] = useState(false);
 
   const handleLogoutClick = () => {
     setIsMenuOpen(false);
@@ -44,7 +47,6 @@ export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
       description: 'Organiza tu menú de lunes a domingo optimizando compras para ahorrar tiempo y dinero.',
       image: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=600&q=80',
       buttonText: 'VER PLAN',
-      // 3. CAMBIAR LA ACCIÓN DE ALERT A ABRIR EL MODAL DEL PLAN SEMANAL
       action: () => setShowPlanModal(true),
     },
     {
@@ -63,7 +65,8 @@ export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
       description: 'Configura tus alergias, restricción de calorías o metas nutricionales específicas.',
       image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80',
       buttonText: 'CONFIGURAR',
-      action: () => alert('Abriendo configuración de dieta... (Próximamente)'),
+      // 3. CAMBIAR ACCIÓN DE ALERT A ABRIR EL MODAL DE DIETA
+      action: () => setShowDietaModal(true),
     },
   ];
 
@@ -162,9 +165,14 @@ export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
         <SavedRecipesModal onClose={() => setShowSavedModal(false)} />
       )}
 
-      {/* 4. VENTANA FLOTANTE DEL PLAN SEMANAL */}
+      {/* VENTANA FLOTANTE DEL PLAN SEMANAL */}
       {showPlanModal && (
         <WeeklyPlanModal onClose={() => setShowPlanModal(false)} />
+      )}
+
+      {/* 4. VENTANA FLOTANTE DE AJUSTES DE DIETA */}
+      {showDietaModal && (
+        <AjustesDietaModal onClose={() => setShowDietaModal(false)} />
       )}
     </div>
   );
