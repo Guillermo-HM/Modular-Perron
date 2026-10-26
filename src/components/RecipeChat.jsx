@@ -6,8 +6,8 @@ import "blobatar/gaze.css";
 import "blobatar/motion.css";
 import { supabase } from "../supabaseClient";
 
-// Manejo flexible de la URL del backend
-const BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(/\/$/, '');
+//Manejo de la API mediante Netlify
+const API_URL = import.meta.env.VITE_API_URL;
 
 const BlobatarIcon = () => {
   const { ref, lookAt } = useGaze({ travel: 3 });
@@ -127,28 +127,19 @@ function RecipeChat({ onBack }) {
     setSearched(true);
 
     try {
-      // 1. Intentar obtener la sesión activa de Supabase
-      const { data: { session } } = await supabase.auth.getSession().catch(() => ({ data: { session: null } }));
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
-      // 2. Determinar endpoint y encabezados según la sesión
-      const endpoint = session?.access_token 
-        ? `${BASE_URL}/api/recomendar-perfil` 
-        : `${BASE_URL}/api/recomendar`;
-
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-
-      if (session?.access_token) {
-        headers['Authorization'] = `Bearer ${session.access_token}`;
+      if (sessionError || !session?.access_token) {
+        throw new Error('Debes iniciar sesión para recibir recomendaciones');
       }
 
-      // 3. Realizar la petición
-      const response = await fetch(endpoint, {
+      const response = await fetch(`${API_URL}/api/recomendar-perfil`, {
         method: 'POST',
-        headers,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`
+        },
         body: JSON.stringify({
-          usuario: 'cristopher',
           ingredientes: confirmedIngredients,
           tiempo: tiempoSeleccionado
         })
@@ -162,7 +153,7 @@ function RecipeChat({ onBack }) {
 
       setRecipes(Array.isArray(data.recetas) ? data.recetas : []);
     } catch (error) {
-      console.error('Error al conectar con el servidor Prolog:', error);
+      console.error('Error al conectar con Prolog:', error);
       setRecipes([]);
     } finally {
       setLoading(false);
@@ -249,7 +240,7 @@ function RecipeChat({ onBack }) {
                     ))}
                   </div>
                 ) : (
-                  <div className="chat-bubble">No encontré recetas que coincidan con tus ingredientes y tiempo.</div>
+                  <div className="chat-bubble">No encontré recetas que coincidan con tus ingredientes.</div>
                 )}
               </div>
             </div>
@@ -258,7 +249,7 @@ function RecipeChat({ onBack }) {
           <div ref={chatEndRef} />
         </section>
 
-        {/* ÁREA DE CONTROLES INFERIOR (ESPACIO CLARO) */}
+        {/* ÁREA DE CONTROLES INFERIOR (ESPACIO BLANCO/CLARO) */}
         <section className="chat-controls-area">
           <div className="controls-separator">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
