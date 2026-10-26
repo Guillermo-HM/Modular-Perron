@@ -2,10 +2,8 @@ import { useState } from 'react';
 import '../assets/dashboard.css';
 import RecipeChat from '../components/RecipeChat'; 
 import AjustesUsuario from './AjustesUsuario';
-import { SavedRecipesModal } from '../components/SavedRecipesModal'; 
-
-// 1. IMPORTAR EL COMPONENTE DEL PLAN SEMANAL
-import { WeeklyPlanModal } from './WeeklyPlanModal'; 
+import { SavedRecipesModal } from '../components/SavedRecipesModal';
+import { WeeklyPlanModal } from '../components/WeeklyPlanModal'; 
 
 export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
