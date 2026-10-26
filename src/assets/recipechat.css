@@ -1095,3 +1095,40 @@
   cursor: pointer;
   margin-top: 12px;
 }
+
+/* Tarjetas de días cliqueables dentro del Plan Semanal */
+.clickable-day-card {
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.clickable-day-card:hover {
+  transform: translateY(-2px);
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.day-recipe-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px 0;
+}
+
+.day-recipe-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a252f;
+  text-transform: capitalize;
+}
+
+.open-detail-arrow {
+  font-size: 0.8rem;
+  color: #2980b9;
+  font-weight: 600;
+}
+
+/* Modal interno sobrepuesto */
+.inner-detail-overlay {
+  z-index: 150 !important;
+}

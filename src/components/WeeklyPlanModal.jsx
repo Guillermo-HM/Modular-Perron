@@ -39,6 +39,9 @@ export function WeeklyPlanModal({ onClose }) {
   const [saving, setSaving] = useState(false);
   const [planHistorialDetalle, setPlanHistorialDetalle] = useState(null);
 
+  // ESTADO PARA ABRIR EL MODAL DE PREPARACIÓN DE LA RECETA
+  const [recipeDetailModal, setRecipeDetailModal] = useState(null);
+
   // Cargar historial de planes guardados desde Supabase
   useEffect(() => {
     fetchHistorialPlanes();
@@ -65,7 +68,6 @@ export function WeeklyPlanModal({ onClose }) {
     }
   };
 
-  // Manejo de la lista de ingredientes de la despensa
   const toggleIngredient = (ing) => {
     setSelectedIngredients(prev => 
       prev.includes(ing) ? prev.filter(i => i !== ing) : [...prev, ing]
@@ -76,11 +78,8 @@ export function WeeklyPlanModal({ onClose }) {
     setOpenSections(prev => ({ ...prev, [cat]: !prev[cat] }));
   };
 
-  // Algoritmo para calcular porcentaje de coincidencia de recetas con la despensa
   const calcularCoincidencia = (recetaIngredientes) => {
     if (!recetaIngredientes || recetaIngredientes.length === 0) return 0;
-    
-    // Normalizar nombres para la comparación
     const despensaLimpia = selectedIngredients.map(i => i.toLowerCase().replace(/_/g, ' '));
     
     let coincidencias = 0;
@@ -93,7 +92,6 @@ export function WeeklyPlanModal({ onClose }) {
     return Math.round((coincidencias / recetaIngredientes.length) * 100);
   };
 
-  // Generación dinámica del menú semanal
   const handleGenerarPlan = () => {
     if (selectedIngredients.length === 0) {
       alert('Por favor selecciona al menos algunos ingredientes para tu despensa semanal.');
@@ -103,7 +101,6 @@ export function WeeklyPlanModal({ onClose }) {
     setLoading(true);
 
     setTimeout(() => {
-      // 1. Evaluar todas las recetas disponibles
       const recetasEvaluadas = Object.keys(recipesDetailDb).map(key => {
         const receta = recipesDetailDb[key];
         const score = calcularCoincidencia(receta.ingredientes);
@@ -115,13 +112,10 @@ export function WeeklyPlanModal({ onClose }) {
         };
       });
 
-      // 2. Ordenar de mayor a menor coincidencia
       recetasEvaluadas.sort((a, b) => b.coincidencia - a.coincidencia);
 
-      // 3. Asignar las mejores recetas a los días de la semana
       const menuSemanal = {};
       DIAS_SEMANA.forEach(({ key: diaKey }, index) => {
-        // Tomar recetas de forma rotativa o repetida si hay pocas
         const recetaElegida = recetasEvaluadas[index % recetasEvaluadas.length] || {
           key: 'generica',
           nombre: 'Platillo a la carta',
@@ -144,7 +138,26 @@ export function WeeklyPlanModal({ onClose }) {
     }, 400);
   };
 
-  // Guardar el plan semanal en Supabase
+  // Abre el modal con la receta completa (Ingredientes y Pasos)
+  const handleOpenRecipeDetail = (item) => {
+    const rawKey = item.key || String(item.nombre || '').toLowerCase().trim().replace(/\s+/g, '_');
+    const detailData = recipesDetailDb[rawKey] || {
+      nombre: item.nombre || 'Receta Especial',
+      tiempo: item.tiempo || '30 min',
+      ingredientes: ['Ingredientes seleccionados de tu despensa'],
+      pasos: [
+        'Organizar e inspeccionar los ingredientes.',
+        'Sazonar y cocinar los ingredientes a fuego medio.',
+        'Servir caliente y disfrutar.'
+      ]
+    };
+
+    setRecipeDetailModal({
+      ...detailData,
+      coincidencia: item.coincidencia
+    });
+  };
+
   const handleGuardarPlan = async () => {
     if (!planGenerado) return;
 
@@ -206,7 +219,7 @@ export function WeeklyPlanModal({ onClose }) {
           </button>
         </div>
 
-        {/* PASO 1: SELECCIONAR INGREDIENTES DE LA DESPENSA */}
+        {/* PASO 1: SELECCIONAR INGREDIENTES */}
         {paso === 1 && (
           <div className="pantry-selection-step">
             <p className="pantry-instruction">
@@ -264,7 +277,7 @@ export function WeeklyPlanModal({ onClose }) {
           </div>
         )}
 
-        {/* PASO 2: VISTA DEL PLAN GENERADO DÍA POR DÍA */}
+        {/* PASO 2: VISTA DEL PLAN GENERADO (TARJETAS CLIQUEABLES) */}
         {paso === 2 && planGenerado && (
           <div className="plan-generated-step">
             <div className="plan-header-info">
@@ -285,7 +298,12 @@ export function WeeklyPlanModal({ onClose }) {
               {DIAS_SEMANA.map(({ key, label }) => {
                 const item = planGenerado.menu[key];
                 return (
-                  <div key={key} className="day-card-item">
+                  <div 
+                    key={key} 
+                    className="day-card-item clickable-day-card"
+                    onClick={() => handleOpenRecipeDetail(item)}
+                    title="Haz clic para ver la receta completa"
+                  >
                     <div className="day-header">
                       <strong>{label}</strong>
                       <span className="match-score-badge">
@@ -293,8 +311,11 @@ export function WeeklyPlanModal({ onClose }) {
                       </span>
                     </div>
 
-                    <div className="day-recipe-name" style={{ textTransform: 'capitalize' }}>
-                      {item.nombre}
+                    <div className="day-recipe-name-row">
+                      <span className="day-recipe-title">
+                        {item.nombre}
+                      </span>
+                      <span className="open-detail-arrow">📖 Ver Receta ➔</span>
                     </div>
 
                     <div className="day-recipe-footer">
@@ -326,14 +347,19 @@ export function WeeklyPlanModal({ onClose }) {
                   {DIAS_SEMANA.map(({ key, label }) => {
                     const item = planHistorialDetalle.menu?.[key] || { nombre: 'Sin registrar', coincidencia: 0 };
                     return (
-                      <div key={key} className="day-card-item readonly">
+                      <div 
+                        key={key} 
+                        className="day-card-item clickable-day-card"
+                        onClick={() => handleOpenRecipeDetail(item)}
+                      >
                         <div className="day-header">
                           <strong>{label}</strong>
                           <span className="match-score-badge">{item.coincidencia}% Coincidencia</span>
                         </div>
-                        <span style={{ textTransform: 'capitalize', fontWeight: 'bold', display: 'block', marginTop: '4px' }}>
-                          {item.nombre}
-                        </span>
+                        <div className="day-recipe-name-row">
+                          <span className="day-recipe-title">{item.nombre}</span>
+                          <span className="open-detail-arrow">📖 ➔</span>
+                        </div>
                       </div>
                     );
                   })}
@@ -361,6 +387,50 @@ export function WeeklyPlanModal({ onClose }) {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* MODAL SOBREPUESTO DE DETALLE DE RECETA Y PREPARACIÓN */}
+        {recipeDetailModal && (
+          <div className="recipe-detail-modal-overlay inner-detail-overlay" onClick={() => setRecipeDetailModal(null)}>
+            <div className="recipe-detail-modal-card" onClick={e => e.stopPropagation()}>
+              <button 
+                className="close-detail-modal-btn" 
+                onClick={() => setRecipeDetailModal(null)}
+              >
+                ×
+              </button>
+
+              <div className="recipe-detail-header">
+                <h2>{recipeDetailModal.nombre}</h2>
+                <div className="recipe-detail-badges">
+                  <span className="recipe-time-badge">⏱ {recipeDetailModal.tiempo}</span>
+                  {recipeDetailModal.coincidencia !== undefined && (
+                    <span className="recipe-score-badge">Coincidencia: {recipeDetailModal.coincidencia}%</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="recipe-detail-body">
+                <section className="recipe-section">
+                  <h3>Ingredientes necesarios</h3>
+                  <ul className="recipe-ingredients-list">
+                    {(recipeDetailModal.ingredientes || []).map((ing, i) => (
+                      <li key={i}>{ing}</li>
+                    ))}
+                  </ul>
+                </section>
+
+                <section className="recipe-section">
+                  <h3>Pasos de preparación</h3>
+                  <ol className="recipe-steps-list">
+                    {(recipeDetailModal.pasos || []).map((pasoText, idx) => (
+                      <li key={idx}>{pasoText}</li>
+                    ))}
+                  </ol>
+                </section>
+              </div>
+            </div>
           </div>
         )}
 
