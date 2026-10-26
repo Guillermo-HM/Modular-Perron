@@ -1185,3 +1185,352 @@
   color: #856404;
   font-weight: 600;
 }
+
+/* =====================================================
+   ESTILOS MEJORADOS: MODAL DE AJUSTES DE DIETA
+   ===================================================== */
+
+.dieta-modal-card {
+  max-width: 680px !important;
+  width: 92% !important;
+  max-height: 88vh !important;
+  overflow-y: auto !important;
+  border-radius: 20px !important;
+  padding: 28px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18) !important;
+  background: #ffffff !important;
+  scroll-behavior: smooth;
+}
+
+/* Header del Modal */
+.dieta-modal-header {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.dieta-header-badge {
+  display: inline-block;
+  background: #eef7f2;
+  color: #27ae60;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+.dieta-modal-header h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 6px 0;
+}
+
+/* Spinner de carga */
+.dieta-loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.dieta-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #27ae60;
+  border-radius: 50%;
+  animation: dietaSpin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes dietaSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Titulares de sección */
+.dieta-section-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.dieta-section-title-row h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #334155;
+  margin: 0;
+}
+
+.dieta-count-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.dieta-count-badge.warning {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.dieta-count-badge.danger {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/* Grilla de Tarjetas de Alérgenos */
+.dieta-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.dieta-allergy-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.dieta-allergy-card:hover {
+  border-color: #cbd5e1;
+  background-color: #f1f5f9;
+}
+
+.dieta-allergy-card.active {
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.08);
+}
+
+.dieta-allergy-checkbox {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 5px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  transition: all 0.2s ease;
+}
+
+.dieta-allergy-card.active .dieta-allergy-checkbox {
+  background-color: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.dieta-allergy-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.dieta-allergy-info strong {
+  font-size: 0.85rem;
+  color: #1e293b;
+}
+
+.dieta-allergy-card.active .dieta-allergy-info strong {
+  color: #991b1b;
+}
+
+.dieta-allergy-info small {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Resumen flotante de Ingredientes Excluidos */
+.dieta-pantry-summary {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.dieta-dislike-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 16px;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: opacity 0.2s ease;
+}
+
+.dieta-dislike-pill:hover {
+  opacity: 0.85;
+}
+
+.dieta-dislike-pill small {
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.dieta-empty-hint {
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+/* Acordeón de Categorías */
+.dieta-accordion-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.dieta-cat-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+  background-color: #ffffff;
+}
+
+.dieta-cat-card.open {
+  border-color: #cbd5e1;
+}
+
+.dieta-cat-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background-color: #f8fafc;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dieta-cat-header:hover {
+  background-color: #f1f5f9;
+}
+
+.dieta-cat-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.dieta-cat-badge {
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+.dieta-cat-arrow {
+  font-size: 0.7rem;
+  color: #64748b;
+  transition: transform 0.2s ease;
+}
+
+.dieta-cat-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.dieta-cat-content {
+  padding: 10px 12px;
+  background-color: #ffffff;
+  border-top: 1px solid #f1f5f9;
+}
+
+.dieta-pantry-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dieta-ingredient-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: all 0.18s ease;
+}
+
+.dieta-ingredient-btn:hover {
+  background-color: #e2e8f0;
+}
+
+.dieta-ingredient-btn.selected {
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+  color: #dc2626;
+  font-weight: 700;
+}
+
+/* Botón de Guardar */
+.dieta-footer-actions {
+  margin-top: 22px;
+}
+
+.dieta-save-btn {
+  width: 100%;
+  background-color: #27ae60;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.dieta-save-btn:hover:not(:disabled) {
+  background-color: #219150;
+  transform: translateY(-1px);
+}
+
+.dieta-save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

@@ -2,25 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import '../assets/recipechat.css';
 
-// Base de alérgenos principales
+// Base de alérgenos principales con etiquetas y sugerencias claras
 const ALERGENOS_BASE = [
-  { key: 'pollo', label: 'Pollo, Pechuga de pollo' },
-  { key: 'res', label: 'Carne de res' },
-  { key: 'cerdo', label: 'Lomo de cerdo, Cerdo' },
-  { key: 'pescado', label: 'Pescado blanco, Salmon' },
-  { key: 'huevo', label: 'Huevo' },
-  { key: 'leche', label: 'Queso fresco, Media crema, Leche, Mantequilla, Queso parmesano, Yogurt natural, Queso Oaxaca, Queso panela' },
-  { key: 'maiz', label: 'Tortilla de maiz, Tostada de maiz, Maiz' },
-  { key: 'trigo', label: 'Pasta, Crutones' },
-  { key: 'soya', label: 'Salsa de soya' },
-  { key: 'mostaza', label: 'Mostaza' },
-  { key: 'sesamo', label: 'Aceite de sesamo' },
-  { key: 'chile', label: 'Chile serrano' },
-  { key: 'crustaseos', label: 'Camaron, Langosta, Jaiba' },
-  { key: 'moluscos', label: 'Pulpo, Langosta, Jaiba' },
-  { key: 'nueces_arbol', label: 'Nuez de castilla, Nuez pecana, Almendra, Pistache, Nuez india' },
-  { key: 'citricos', label: 'Limon, Naranja, Jugo de limon, Jugo de naranja' },
-  { key: 'leguminosas', label: 'Frijol, Grarbanzo, Lenteja' }
+  { key: 'pollo', label: 'Pollo / Pechuga', sub: 'Pollo, Pechuga de pollo' },
+  { key: 'res', label: 'Carne de Res', sub: 'Cortes de res, Molida' },
+  { key: 'cerdo', label: 'Carne de Cerdo', sub: 'Lomo, Tocino, Cerdo' },
+  { key: 'pescado', label: 'Pescado', sub: 'Pescado blanco, Salmón' },
+  { key: 'huevo', label: 'Huevo', sub: 'Blanco, Rojo, Yema' },
+  { key: 'leche', label: 'Lácteos / Leche', sub: 'Quesos, Crema, Yogur, Mantequilla' },
+  { key: 'maiz', label: 'Maíz / Tortilla', sub: 'Tortillas, Tostadas, Maíz' },
+  { key: 'trigo', label: 'Trigo / Gluten', sub: 'Pastas, Pan, Crutones' },
+  { key: 'soya', label: 'Soya', sub: 'Salsa de soya, Tofu' },
+  { key: 'mostaza', label: 'Mostaza', sub: 'Mostaza preparada/semilla' },
+  { key: 'sesamo', label: 'Sésamo / Ajonjolí', sub: 'Aceite de sésamo, Ajonjolí' },
+  { key: 'chile', label: 'Chiles Picantes', sub: 'Chile serrano, Jalapeño' },
+  { key: 'crustaseos', label: 'Crustáceos', sub: 'Camarón, Langosta, Jaiba' },
+  { key: 'moluscos', label: 'Moluscos', sub: 'Pulpo, Calamar, Ostión' },
+  { key: 'nueces_arbol', label: 'Nueces de Árbol', sub: 'Almendra, Nuez, Pistache' },
+  { key: 'citricos', label: 'Cítricos', sub: 'Limón, Naranja, Toronja' },
+  { key: 'leguminosas', label: 'Leguminosas', sub: 'Frijol, Garbanzo, Lenteja' }
 ];
 
 // Base completa de ingredientes organizada por categorías
@@ -44,8 +44,8 @@ export function AjustesDietaModal({ onClose }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Estado para desplegar/colapsar las categorías del acordeón
-  const [openSections, setOpenSections] = useState({ Proteinas: true, Vegetales: true });
+  // Estado para desplegar/colapsar las categorías
+  const [openSections, setOpenSections] = useState({ Proteinas: true, Vegetales: false });
 
   useEffect(() => {
     fetchPerfilDieta();
@@ -127,102 +127,153 @@ export function AjustesDietaModal({ onClose }) {
   return (
     <div className="recipe-detail-modal-overlay" onClick={onClose}>
       <div className="recipe-detail-modal-card dieta-modal-card" onClick={e => e.stopPropagation()}>
-        <button className="close-detail-modal-btn" onClick={onClose}>×</button>
+        <button className="close-detail-modal-btn" onClick={onClose} aria-label="Cerrar modal">
+          ×
+        </button>
 
-        <h2>🥗 Ajustes de Dieta y Restricciones</h2>
-        <p className="pantry-instruction">
-          Configura tus alergias e ingredientes que no te gustan para que el motor los excluya automáticamente de todas tus recomendaciones.
-        </p>
+        <div className="dieta-modal-header">
+          <div className="dieta-header-badge">Perfil Nutricional</div>
+          <h2>🥗 Ajustes de Dieta y Restricciones</h2>
+          <p className="pantry-instruction">
+            Personaliza tus alérgenos e ingredientes no deseados. El motor de recomendación los descartará automáticamente de tus recetas.
+          </p>
+        </div>
 
         {loading ? (
-          <p className="loading-text">Cargando tus preferencias de perfil...</p>
+          <div className="dieta-loading-box">
+            <div className="dieta-spinner"></div>
+            <p className="loading-text">Cargando tus preferencias de perfil...</p>
+          </div>
         ) : (
           <div className="dieta-sections-body">
             {/* SECCIÓN 1: ALERGIAS Y INTOLERANCIAS */}
             <section className="dieta-section">
-              <h3>⚠️ Alergias e Intolerancias</h3>
+              <div className="dieta-section-title-row">
+                <h3>⚠️ Alergias e Intolerancias</h3>
+                <span className="dieta-count-badge warning">
+                  {alergias.length} {alergias.length === 1 ? 'activa' : 'activas'}
+                </span>
+              </div>
+
               <div className="dieta-checkbox-grid">
                 {ALERGENOS_BASE.map(item => {
                   const isChecked = alergias.includes(item.key);
                   return (
-                    <label 
+                    <div 
                       key={item.key} 
-                      className={`dieta-pill-checkbox ${isChecked ? 'active-allergy' : ''}`}
+                      className={`dieta-allergy-card ${isChecked ? 'active' : ''}`}
+                      onClick={() => toggleAlergia(item.key)}
                     >
-                      <input 
-                        type="checkbox" 
-                        checked={isChecked} 
-                        onChange={() => toggleAlergia(item.key)} 
-                      />
-                      <span>{item.label}</span>
-                    </label>
+                      <div className="dieta-allergy-checkbox">
+                        {isChecked && <span>✓</span>}
+                      </div>
+                      <div className="dieta-allergy-info">
+                        <strong>{item.label}</strong>
+                        <small>{item.sub}</small>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
             </section>
 
-            {/* SECCIÓN 2: INGREDIENTES A EVITAR (CON ACORDEÓN CATEGORIZADO) */}
-            <section className="dieta-section" style={{ marginTop: '18px' }}>
-              <h3>🚫 Ingredientes que prefieres evitar</h3>
+            {/* SECCIÓN 2: INGREDIENTES A EVITAR (ACORDEÓN CATEGORIZADO) */}
+            <section className="dieta-section" style={{ marginTop: '24px' }}>
+              <div className="dieta-section-title-row">
+                <h3>🚫 Ingredientes que prefieres evitar</h3>
+                <span className="dieta-count-badge danger">
+                  {noGustan.length} {noGustan.length === 1 ? 'excluido' : 'excluidos'}
+                </span>
+              </div>
 
-              {/* Resumen de ingredientes rechazados seleccionados */}
-              <div className="pantry-selected-summary" style={{ marginBottom: '10px' }}>
-                <strong>Excluidos actualmente ({noGustan.length}):</strong>
+              {/* Resumen flotante de ingredientes no deseados */}
+              <div className="dieta-pantry-summary">
                 <div className="pantry-pills-wrap">
                   {noGustan.map(ing => (
                     <span 
                       key={ing} 
-                      className="pantry-pill active" 
-                      style={{ backgroundColor: '#e74c3c' }} 
+                      className="dieta-dislike-pill"
                       onClick={() => toggleNoGusta(ing)}
+                      title="Haz clic para quitar de la lista"
                     >
-                      {ing.replace(/_/g, ' ')} ×
+                      {ing.replace(/_/g, ' ')} <small>×</small>
                     </span>
                   ))}
                   {noGustan.length === 0 && (
-                    <em style={{ fontSize: '0.85rem', color: '#888' }}>No has excluido ningún ingrediente aún.</em>
+                    <em className="dieta-empty-hint">No has seleccionado ningún ingrediente a evitar.</em>
                   )}
                 </div>
               </div>
 
-              {/* Acordeón de categorías */}
-              <div className="pantry-categories-accordion" style={{ maxHeight: '220px' }}>
-                {Object.keys(ingredientsDb).map(cat => (
-                  <div key={cat} className="pantry-cat-group">
-                    <button className="pantry-cat-trigger" onClick={() => toggleSection(cat)}>
-                      {cat} <span>{openSections[cat] ? '▲' : '▼'}</span>
-                    </button>
-                    {openSections[cat] && (
-                      <div className="pantry-items-grid">
-                        {ingredientsDb[cat].map(ing => {
-                          const isSelected = noGustan.includes(ing);
-                          return (
-                            <button
-                              key={ing}
-                              className={`pantry-item-btn ${isSelected ? 'selected' : ''}`}
-                              style={isSelected ? { backgroundColor: '#fde8e8', borderColor: '#e74c3c', color: '#c0392b', fontWeight: 'bold' } : {}}
-                              onClick={() => toggleNoGusta(ing)}
-                            >
-                              {isSelected ? '✕ ' : '+ '}
-                              {ing.replace(/_/g, ' ')}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                ))}
+              {/* Acordeón de categorías de ingredientes */}
+              <div className="dieta-accordion-wrapper">
+                {Object.keys(ingredientsDb).map(cat => {
+                  const catItems = ingredientsDb[cat];
+                  const selectedCountInCat = catItems.filter(i => noGustan.includes(i)).length;
+                  const isOpen = openSections[cat];
+
+                  return (
+                    <div key={cat} className={`dieta-cat-card ${isOpen ? 'open' : ''}`}>
+                      <button 
+                        type="button" 
+                        className="dieta-cat-header" 
+                        onClick={() => toggleSection(cat)}
+                      >
+                        <div className="dieta-cat-title">
+                          <span>{cat}</span>
+                          {selectedCountInCat > 0 && (
+                            <span className="dieta-cat-badge">{selectedCountInCat}</span>
+                          )}
+                        </div>
+                        <span className={`dieta-cat-arrow ${isOpen ? 'rotated' : ''}`}>▼</span>
+                      </button>
+
+                      {isOpen && (
+                        <div className="dieta-cat-content">
+                          <div className="dieta-pantry-grid">
+                            {catItems.map(ing => {
+                              const isSelected = noGustan.includes(ing);
+                              return (
+                                <button
+                                  key={ing}
+                                  type="button"
+                                  className={`dieta-ingredient-btn ${isSelected ? 'selected' : ''}`}
+                                  onClick={() => toggleNoGusta(ing)}
+                                >
+                                  <span className="btn-icon">{isSelected ? '✕' : '+'}</span>
+                                  <span>{ing.replace(/_/g, ' ')}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </section>
 
-            <button 
-              className="save-plan-db-btn" 
-              onClick={handleGuardarAjustes}
-              disabled={saving}
-              style={{ width: '100%', marginTop: '16px', padding: '12px', fontSize: '0.95rem' }}
-            >
-              {saving ? 'Guardando...' : '💾 Guardar Preferencias'}
-            </button>
+            {/* BOTÓN DE GUARDAR */}
+            <div className="dieta-footer-actions">
+              <button 
+                type="button"
+                className="dieta-save-btn" 
+                onClick={handleGuardarAjustes}
+                disabled={saving}
+              >
+                {saving ? (
+                  <>
+                    <span className="btn-spinner"></span>
+                    <span>Guardando cambios...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>💾 Guardar Preferencias</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         )}
       </div>
