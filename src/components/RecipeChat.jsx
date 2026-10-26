@@ -47,9 +47,8 @@ const ingredientsDb = {
 };
 
 function RecipeChat({ onBack }) {
-  const [budget, setBudget] = useState(0);
+  const [budget, setBudget] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
-  const [tempBudgetInput, setTempBudgetInput] = useState("");
   const [tiempoSeleccionado, setTiempoSeleccionado] = useState(null);
   const [isIngredientsModalOpen, setIsIngredientsModalOpen] = useState(false);
   const [openSections, setOpenSections] = useState({ Proteinas: true });
@@ -78,12 +77,9 @@ function RecipeChat({ onBack }) {
     }, 280);
   };
 
-  const handleSendBudget = () => {
-    const val = parseFloat(tempBudgetInput);
-    if (!isNaN(val) && val >= 0) {
-      setBudget(val);
-      setCurrentStep(2);
-    }
+  const seleccionarPresupuesto = (titulo, rango) => {
+    setBudget(`${titulo} (${rango})`);
+    setCurrentStep(2);
   };
 
   const seleccionarTiempo = (minutos) => {
@@ -116,96 +112,92 @@ function RecipeChat({ onBack }) {
     setCurrentStep(4);
   };
 
-
   // Estado para rastrear qué recetas tiene guardadas el usuario
-const [savedRecipeKeys, setSavedRecipeKeys] = useState([]);
+  const [savedRecipeKeys, setSavedRecipeKeys] = useState([]);
 
-// Cargar las recetas guardadas del usuario al montar el componente
-useEffect(() => {
-  const fetchSavedRecipes = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
+  // Cargar las recetas guardadas del usuario al montar el componente
+  useEffect(() => {
+    const fetchSavedRecipes = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
 
-      const { data, error } = await supabase
-        .from('perfiles')
-        .select('recetas_guardadas')
-        .eq('id', session.user.id)
-        .maybeSingle();
+        const { data, error } = await supabase
+          .from('perfiles')
+          .select('recetas_guardadas')
+          .eq('id', session.user.id)
+          .maybeSingle();
 
-      if (!error && data?.recetas_guardadas) {
-        setSavedRecipeKeys(data.recetas_guardadas);
+        if (!error && data?.recetas_guardadas) {
+          setSavedRecipeKeys(data.recetas_guardadas);
+        }
+      } catch (err) {
+        console.error('Error al cargar recetas guardadas:', err);
       }
-    } catch (err) {
-      console.error('Error al cargar recetas guardadas:', err);
-    }
-  };
+    };
 
-  fetchSavedRecipes();
-}, []);
+    fetchSavedRecipes();
+  }, []);
 
-// Función para guardar o remover receta de Supabase
-const handleToggleSaveRecipe = async (recipeKey) => {
-  // Evitar guardar si por alguna razón la key viene vacía o indefinida
-  if (!recipeKey || typeof recipeKey !== 'string') {
-    console.error('recipeKey inválida:', recipeKey);
-    return;
-  }
-
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      alert('Debes iniciar sesión para guardar recetas.');
+  // Función para guardar o remover receta de Supabase
+  const handleToggleSaveRecipe = async (recipeKey) => {
+    if (!recipeKey || typeof recipeKey !== 'string') {
+      console.error('recipeKey inválida:', recipeKey);
       return;
     }
 
-    // Filtrar solo cadenas válidas del estado actual
-    const currentList = Array.isArray(savedRecipeKeys)
-      ? savedRecipeKeys.filter(k => typeof k === 'string' && k.trim() !== '' && k !== 'null')
-      : [];
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        alert('Debes iniciar sesión para guardar recetas.');
+        return;
+      }
 
-    const isAlreadySaved = currentList.includes(recipeKey);
-    const updatedList = isAlreadySaved
-      ? currentList.filter(k => k !== recipeKey)
-      : [...currentList, recipeKey];
+      const currentList = Array.isArray(savedRecipeKeys)
+        ? savedRecipeKeys.filter(k => typeof k === 'string' && k.trim() !== '' && k !== 'null')
+        : [];
 
-    const { error } = await supabase
-      .from('perfiles')
-      .update({ recetas_guardadas: updatedList })
-      .eq('id', session.user.id);
+      const isAlreadySaved = currentList.includes(recipeKey);
+      const updatedList = isAlreadySaved
+        ? currentList.filter(k => k !== recipeKey)
+        : [...currentList, recipeKey];
 
-    if (error) throw error;
+      const { error } = await supabase
+        .from('perfiles')
+        .update({ recetas_guardadas: updatedList })
+        .eq('id', session.user.id);
 
-    setSavedRecipeKeys(updatedList);
-  } catch (err) {
-    console.error('Error al actualizar favoritos:', err);
-    alert('No se pudo actualizar tu lista de favoritos.');
-  }
-};
+      if (error) throw error;
 
+      setSavedRecipeKeys(updatedList);
+    } catch (err) {
+      console.error('Error al actualizar favoritos:', err);
+      alert('No se pudo actualizar tu lista de favoritos.');
+    }
+  };
 
   // Abre el detalle flotante de la receta seleccionada
   const handleOpenRecipeDetail = (item) => {
-  const rawName = item && typeof item === 'object' ? (item.receta || '') : String(item);
-  const key = rawName.toLowerCase().trim().replace(/\s+/g, '_');
+    const rawName = item && typeof item === 'object' ? (item.receta || '') : String(item);
+    const key = rawName.toLowerCase().trim().replace(/\s+/g, '_');
 
-  const detailData = recipesDetailDb[key] || {
-    nombre: rawName.replace(/_/g, ' '),
-    tiempo: `${tiempoSeleccionado || 30} min`,
-    ingredientes: confirmedIngredients.map(i => i.replace(/_/g, ' ')),
-    pasos: [
-      'Organizar e inspeccionar los ingredientes.',
-      'Sazonar y cocinar los ingredientes en una sartén a fuego medio.',
-      'Servir caliente y disfrutar.'
-    ]
+    const detailData = recipesDetailDb[key] || {
+      nombre: rawName.replace(/_/g, ' '),
+      tiempo: `${tiempoSeleccionado || 30} min`,
+      ingredientes: confirmedIngredients.map(i => i.replace(/_/g, ' ')),
+      pasos: [
+        'Organizar e inspeccionar los ingredientes.',
+        'Sazonar y cocinar los ingredientes en una sartén a fuego medio.',
+        'Servir caliente y disfrutar.'
+      ]
+    };
+
+    setActiveRecipeModal({
+      ...detailData,
+      key: key,
+      puntuacion: item && typeof item === 'object' ? item.puntuacion : null
+    });
   };
-
-  setActiveRecipeModal({
-    ...detailData,
-    key: key,
-    puntuacion: item && typeof item === 'object' ? item.puntuacion : null
-  });
-};
 
   const handleFinalSend = async () => {
     if (confirmedIngredients.length === 0) {
@@ -277,7 +269,7 @@ const handleToggleSaveRecipe = async (recipeKey) => {
           {currentStep >= 2 && (
             <>
               <div className="chat-bubble-row user">
-                <div className="chat-bubble-response">${budget}</div>
+                <div className="chat-bubble-response">{budget}</div>
               </div>
               <div className="chat-bubble-row bot">
                 <BlobatarIcon />
@@ -304,7 +296,7 @@ const handleToggleSaveRecipe = async (recipeKey) => {
           {loading && (
             <div className="chat-bubble-row bot">
               <BlobatarIcon />
-              <div className="chat-bubble">Buscando las mejores recetas en el motor Prolog... 🍳</div>
+              <div className="chat-bubble">Buscando las mejores recetas en el motor Prolog...</div>
             </div>
           )}
 
@@ -354,22 +346,31 @@ const handleToggleSaveRecipe = async (recipeKey) => {
           </div>
 
           {currentStep === 1 && (
-            <div className="control-group budget-input-group">
-              <div className="input-with-symbol">
-                <span className="currency-symbol">$</span>
-                <input
-                  type="number"
-                  value={tempBudgetInput}
-                  onChange={(e) => setTempBudgetInput(e.target.value)}
-                  placeholder="0"
-                  className="budget-input"
-                />
-              </div>
-              <button className="send-arrow-btn" onClick={handleSendBudget}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z"/>
-                </svg>
-              </button>
+            <div className="control-group" style={{ gap: '10px', flexWrap: 'wrap' }}>
+              {[
+                { titulo: 'Bajo', rango: 'de 50$ a 100$' },
+                { titulo: 'Medio', rango: 'de 100$ a 150$' },
+                { titulo: 'Alto', rango: 'de 150$ a 200$' }
+              ].map(opcion => (
+                <button
+                  key={opcion.titulo}
+                  type="button"
+                  className="modify-ingredients-btn"
+                  onClick={() => seleccionarPresupuesto(opcion.titulo, opcion.rango)}
+                  style={{ 
+                    minWidth: '120px', 
+                    padding: '10px 14px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    gap: '2px' 
+                  }}
+                >
+                  <span style={{ fontWeight: '700', fontSize: '0.92rem' }}>{opcion.titulo}</span>
+                  <span style={{ fontSize: '0.75rem', opacity: 0.85, fontWeight: 'normal' }}>{opcion.rango}</span>
+                </button>
+              ))}
             </div>
           )}
 
