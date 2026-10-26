@@ -4,12 +4,23 @@ import '../assets/recipechat.css';
 
 // Base de alérgenos principales
 const ALERGENOS_BASE = [
-  { key: 'lacteos', label: 'Lácteos (Leche, Queso, Mantequilla)' },
-  { key: 'gluten', label: 'Gluten / Trigo' },
+  { key: 'pollo', label: 'Pollo, Pechuga de pollo' },
+  { key: 'res', label: 'Carne de res' },
+  { key: 'cerdo', label: 'Lomo de cerdo, Cerdo' },
+  { key: 'pescado', label: 'Pescado blanco, Salmon' },
   { key: 'huevo', label: 'Huevo' },
-  { key: 'pescado', label: 'Pescado' },
-  { key: 'mariscos', label: 'Mariscos y Crustáceos' },
-  { key: 'soya', label: 'Soya' }
+  { key: 'leche', label: 'Queso fresco, Media crema, Leche, Mantequilla, Queso parmesano, Yogurt natural, Queso Oaxaca, Queso panela' },
+  { key: 'maiz', label: 'Tortilla de maiz, Tostada de maiz, Maiz' },
+  { key: 'trigo', label: 'Pasta, Crutones' },
+  { key: 'soya', label: 'Salsa de soya' },
+  { key: 'mostaza', label: 'Mostaza' },
+  { key: 'sesamo', label: 'Aceite de sesamo' },
+  { key: 'chile', label: 'Chile serrano' },
+  { key: 'crustaseos', label: 'Camaron, Langosta, Jaiba' },
+  { key: 'moluscos', label: 'Pulpo, Langosta, Jaiba' },
+  { key: 'nueces_arbol', label: 'Nuez de castilla, Nuez pecana, Almendra, Pistache, Nuez india' },
+  { key: 'citricos', label: 'Limon, Naranja, Jugo de limon, Jugo de naranja' },
+  { key: 'leguminosas', label: 'Frijol, Grarbanzo, Lenteja' }
 ];
 
 // Base completa de ingredientes organizada por categorías
