@@ -55,7 +55,7 @@ function App() {
   // 3. VISTAS PARA USUARIOS AUTENTICADOS
   // ============================================
 
-  //if (session) {
+  if (session) {
   //  if (needsOnboarding) {
   //    return (
   //      <OnboardingAlergias
