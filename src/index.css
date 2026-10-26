@@ -9,3 +9,96 @@ html, body, #root {
 *, *::before, *::after {
   box-sizing: inherit;
 }
+
+/* =====================================================
+   AJUSTES RESPONSIVOS PARA DISPOSITIVOS MÓVILES
+   ===================================================== */
+@media (max-width: 768px) {
+
+  /* 1. Ajuste del Header / Barra de navegación */
+  header, .navbar, .nav-container {
+    padding: 10px 16px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .logo-container, .brand-title {
+    font-size: 1.1rem !important;
+    white-space: nowrap !important;
+  }
+
+  .auth-buttons, .nav-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .login-btn, .signup-btn {
+    padding: 6px 10px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .profile-icon, .avatar-btn {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  /* 2. Banner / Carrusel sin barras negras */
+  .hero-container, .carousel-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .hero-card, .carousel-slide {
+    width: 100% !important;
+    min-height: 420px !important;
+    height: auto !important;
+    padding: 32px 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 3. Textos adaptables */
+  .hero-card h1, 
+  .hero-card h2,
+  .hero-title {
+    font-size: 1.8rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .hero-card p,
+  .hero-subtitle {
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
+    max-width: 90% !important;
+    margin: 0 auto !important;
+  }
+
+  /* 4. Flechas de navegación del carrusel */
+  .carousel-arrow, .arrow-btn {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 5 !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    border-radius: 50% !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .carousel-arrow.left, .arrow-btn.prev {
+    left: 8px !important;
+  }
+
+  .carousel-arrow.right, .arrow-btn.next {
+    right: 8px !important;
+  }
+}
