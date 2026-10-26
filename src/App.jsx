@@ -4,7 +4,6 @@ import LandingPage from "./slides/LandingPage";
 import Login from "./login/login";
 import SignUp from "./login/SignUp";
 import Dashboard from "./slides/Dashboard";
-import OnboardingAlergias from "./slides/OnboardingAlergias"; // Importamos el nuevo onboarding
 
 function App() {
   const [session, setSession] = useState(null);
@@ -56,15 +55,7 @@ function App() {
   // ============================================
 
   if (session) {
-  //  if (needsOnboarding) {
-  //    return (
-  //      <OnboardingAlergias
-  //        session={session}
-  //        onComplete={() => setNeedsOnboarding(false)}
-  //      />
-  //    );
-  //  }
-
+    
     const displayName = session.user?.user_metadata?.display_name || "Usuario";
 
     return (
