@@ -956,3 +956,142 @@
   font-size: 0.8rem;
   color: #777;
 }
+
+/* Selección de Despensa para Plan Semanal */
+.pantry-instruction {
+  font-size: 0.88rem;
+  color: #555;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.pantry-selected-summary {
+  background-color: #f0f7f4;
+  border: 1px solid #d1e7dd;
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+}
+
+.pantry-pills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+  max-height: 90px;
+  overflow-y: auto;
+}
+
+.pantry-pill {
+  background-color: #27ae60;
+  color: #ffffff;
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+
+.pantry-pill:hover {
+  opacity: 0.85;
+}
+
+.pantry-categories-accordion {
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 8px;
+  margin-bottom: 14px;
+}
+
+.pantry-cat-group {
+  margin-bottom: 8px;
+}
+
+.pantry-cat-trigger {
+  width: 100%;
+  background: #f8f9fa;
+  border: 1px solid #eee;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  color: #333;
+}
+
+.pantry-items-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+}
+
+.pantry-item-btn {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pantry-item-btn.selected {
+  background-color: #e8f8f5;
+  border-color: #27ae60;
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.generate-plan-action-btn {
+  width: 100%;
+  background-color: #27ae60;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.generate-plan-action-btn:hover {
+  background-color: #219150;
+}
+
+/* Insignia de Porcentaje de Coincidencia */
+.match-score-badge {
+  background-color: #e8f8f5;
+  color: #27ae60;
+  font-size: 0.78rem;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+
+.save-plan-db-btn {
+  background-color: #2980b9;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.back-to-pantry-btn {
+  background: transparent;
+  border: none;
+  color: #2980b9;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-top: 12px;
+}
