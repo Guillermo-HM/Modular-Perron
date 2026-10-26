@@ -355,9 +355,9 @@ function parsearListaProlog(prologList) {
   return resultado;
 }
 
- // =====================================================
- // RECOMENDACIONES CON ALERGIAS DESDE SUPABASE
- // =====================================================
+// =====================================================
+// RECOMENDACIONES CON ALERGIAS DESDE SUPABASE
+// =====================================================
 
 app.post('/api/recomendar-perfil', async (req, res) => {
     try {
@@ -380,48 +380,31 @@ app.post('/api/recomendar-perfil', async (req, res) => {
 
         const token = authorization.substring(7);
 
-        // 2. Verificar la identidad
-const { data: { user }, error: authError } =
-    await supabase.auth.getUser(token);
+        // 2. Verificar la identidad con Supabase
+        const { data: { user }, error: authError } = await supabase.auth.getUser(token);
 
-if (authError || !user) {
-    console.error('Error de autenticación Supabase:', {
-        mensaje: authError?.message,
-        codigo: authError?.code,
-        estado: authError?.status,
-        usuarioEncontrado: Boolean(user)
-    });
-
-    return res.status(401).json({
-        OK: false,
-        error: 'Sesión inválida o expirada'
-    });
-}
-
-// 3. Consultar el perfil respetando RLS
-const supabaseUsuario = createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY,
-    {
-        global: {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        },
-        auth: {
-            persistSession: false,
-            autoRefreshToken: false,
-            detectSessionInUrl: false
+        if (authError || !user) {
+            return res.status(401).json({
+                OK: false,
+                error: 'Sesión inválida o expirada'
+            });
         }
-    }
-);
 
-        const { data: perfil, error: perfilError } =
-            await supabaseUsuario
-                .from('perfiles')
-                .select('alergias, has_completed_onboarding')
-                .eq('id', user.id)
-                .maybeSingle();
+        // 3. Consultar el perfil respetando RLS
+        const supabaseUsuario = createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY,
+            {
+                global: { headers: { Authorization: `Bearer ${token}` } },
+                auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+            }
+        );
+
+        const { data: perfil, error: perfilError } = await supabaseUsuario
+            .from('perfiles')
+            .select('alergias, has_completed_onboarding')
+            .eq('id', user.id)
+            .maybeSingle();
 
         if (perfilError) {
             return res.status(500).json({
@@ -430,82 +413,45 @@ const supabaseUsuario = createClient(
             });
         }
 
-        if (!perfil || !perfil.has_completed_onboarding) {
-            return res.status(409).json({
-                OK: false,
-                error: 'El usuario debe completar su perfil'
-            });
-        }
-
-        // 4. Traducir las alergias a categorías de Prolog
+        // 4. Mapeo flexible de equivalencias de alergias
         const equivalencias = {
             lacteos: ['leche'],
+            lacteo: ['leche'],
             gluten: ['trigo'],
-            mariscos: ['crustaceos', 'moluscos']
+            mariscos: ['crustaceos', 'moluscos'],
+            marisco: ['crustaceos', 'moluscos']
         };
 
-        const alergiasReconocidas = new Set([
-            'leche', 'trigo', 'huevo', 'pescado',
-            'crustaceos', 'moluscos', 'soya'
-        ]);
-
-        const alergiasGuardadas = perfil.alergias;
-
-        if (!Array.isArray(alergiasGuardadas)) {
-            return res.status(422).json({
-                OK: false,
-                error: 'El perfil no tiene un formato válido de alergias'
-            });
-        }
-
+        const alergiasGuardadas = perfil?.alergias || [];
         const alergiasTraducidas = [];
 
-        for (const alergia of alergiasGuardadas) {
-            if (typeof alergia !== 'string') {
-                return res.status(422).json({
-                    OK: false,
-                    error: 'Existe una alergia con formato inválido'
-                });
+        if (Array.isArray(alergiasGuardadas)) {
+            for (const alergia of alergiasGuardadas) {
+                if (typeof alergia === 'string') {
+                    const nombreLimpio = normalizarPrologAtom(alergia);
+                    const categorias = equivalencias[nombreLimpio] ?? [nombreLimpio];
+                    alergiasTraducidas.push(...categorias);
+                }
             }
-
-            const nombre = alergia.trim().toLowerCase();
-            const categorias = equivalencias[nombre] ?? [nombre];
-
-            if (!categorias.every(a => alergiasReconocidas.has(a))) {
-                return res.status(422).json({
-                    OK: false,
-                    error: 'Existe una alergia sin reglas de filtrado'
-                });
-            }
-
-            alergiasTraducidas.push(...categorias);
         }
 
         const alergiasUnicas = [...new Set(alergiasTraducidas)];
 
-        // 5. Obtener ingredientes y tiempo desde React
+        // 5. Obtener ingredientes y tiempo enviadamente desde React
         const { ingredientes = [], tiempo = 30 } = req.body ?? {};
 
-        if (!Array.isArray(ingredientes) ||
-            ingredientes.length === 0 ||
-            !ingredientes.every(i => typeof i === 'string')) {
+        const listaIngredientes = Array.isArray(ingredientes) ? ingredientes : [];
+        if (listaIngredientes.length === 0) {
             return res.status(400).json({
                 OK: false,
                 error: 'Debes enviar una lista válida de ingredientes'
             });
         }
 
-        const tiempoProlog = Number(tiempo);
+        const tiempoProlog = Number(tiempo) || 30;
 
-        if (!Number.isFinite(tiempoProlog) || tiempoProlog <= 0) {
-            return res.status(400).json({
-                OK: false,
-                error: 'Tiempo inválido'
-            });
-        }
-
-        // 6. Preparar la consulta para Prolog
-        const ingredientesProlog = ingredientes
+        // 6. Preparar y ejecutar la consulta en Prolog
+        const ingredientesProlog = listaIngredientes
             .map(i => normalizarPrologAtom(i))
             .join(',');
 
@@ -513,21 +459,15 @@ const supabaseUsuario = createClient(
             .map(a => normalizarPrologAtom(a))
             .join(',');
 
-        const consulta =
-            `recomendar_con_alergias(` +
-            `[${alergiasProlog}], ` +
-            `[${ingredientesProlog}], ` +
-            `${tiempoProlog}, ` +
-            `Recomendaciones).`;
+        const consulta = `recomendar_con_alergias([${alergiasProlog}], [${ingredientesProlog}], ${tiempoProlog}, Recomendaciones).`;
+        console.log(`🔎 Consulta Prolog (Perfil): ${consulta}`);
 
-        // 7. Ejecutar el sistema experto
         const resultadoRaw = await callProlog(consulta);
 
         const recetasFormateadas = parsearListaProlog(
             resultadoRaw?.Recomendaciones
         );
 
-        // 8. Devolver las recomendaciones
         return res.json({
             OK: true,
             recetas: recetasFormateadas
