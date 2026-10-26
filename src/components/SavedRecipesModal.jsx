@@ -3,6 +3,16 @@ import { supabase } from '../supabaseClient';
 import { recipesDetailDb } from './recipesDetailDb';
 import '../assets/recipechat.css';
 
+// Función para limpiar llaves con caracteres extra o comillas
+const sanitizarKey = (rawKey) => {
+  if (!rawKey) return '';
+  return String(rawKey)
+    .replace(/[\[\]"'\\]/g, '') // Elimina [, ], ", ', \
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '_');      // Convierte espacios en _
+};
+
 export function SavedRecipesModal({ onClose }) {
   const [savedKeys, setSavedKeys] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,21 +40,22 @@ export function SavedRecipesModal({ onClose }) {
       if (error) throw error;
 
       let rawList = data?.recetas_guardadas;
+      let keysProcesadas = [];
 
-      // Validación estricta para asegurar que siempre sea un Arreglo (evita el error .map is not a function)
       if (Array.isArray(rawList)) {
-        setSavedKeys(rawList);
+        keysProcesadas = rawList.map(sanitizarKey).filter(Boolean);
       } else if (typeof rawList === 'string' && rawList.trim() !== '') {
-        // Si Supabase devuelve la lista como formato texto literal de Postgres "{receta1,receta2}"
-        const parsed = rawList
+        keysProcesadas = rawList
           .replace(/^\{|\}$/g, '')
           .split(',')
-          .map(s => s.trim().replace(/^"|"$/g, ''))
+          .map(sanitizarKey)
           .filter(Boolean);
-        setSavedKeys(parsed);
-      } else {
-        setSavedKeys([]);
       }
+
+      // Eliminar duplicados
+      const keysUnicas = [...new Set(keysProcesadas)];
+      setSavedKeys(keysUnicas);
+
     } catch (err) {
       console.error('Error al cargar recetas guardadas:', err);
       setSavedKeys([]);
@@ -59,9 +70,9 @@ export function SavedRecipesModal({ onClose }) {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
 
-      const currentList = Array.isArray(savedKeys) ? savedKeys : [];
-      const updated = currentList.filter(k => k !== keyToRemove);
+      const updated = savedKeys.filter(k => k !== keyToRemove);
 
+      // Guardar el arreglo simple directamente en Supabase
       const { error } = await supabase
         .from('perfiles')
         .update({ recetas_guardadas: updated })
@@ -79,8 +90,6 @@ export function SavedRecipesModal({ onClose }) {
     }
   };
 
-  const safeSavedKeys = Array.isArray(savedKeys) ? savedKeys : [];
-
   return (
     <div className="recipe-detail-modal-overlay" onClick={onClose}>
       <div className="recipe-detail-modal-card saved-recipes-modal" onClick={e => e.stopPropagation()}>
@@ -90,19 +99,19 @@ export function SavedRecipesModal({ onClose }) {
 
         {loading ? (
           <p className="loading-text">Cargando tus recetas favoritas...</p>
-        ) : safeSavedKeys.length === 0 ? (
+        ) : savedKeys.length === 0 ? (
           <div className="empty-saved-state">
             <p>Aún no has guardado ninguna receta.</p>
             <small>Usa el recomendador para buscar platillos y guardarlos aquí.</small>
           </div>
         ) : (
           <div className="saved-recipes-list">
-            {safeSavedKeys.map(key => {
-              const info = recipesDetailDb?.[key] || {
-                nombre: String(key).replace(/_/g, ' '),
+            {savedKeys.map(key => {
+              const info = recipesDetailDb[key] || {
+                nombre: key.replace(/_/g, ' '),
                 tiempo: '30 min',
-                ingredientes: [],
-                pasos: []
+                ingredientes: ['Consultar ingredientes en el recomendador'],
+                pasos: ['Pasos no disponibles']
               };
 
               return (
@@ -112,7 +121,9 @@ export function SavedRecipesModal({ onClose }) {
                   onClick={() => setSelectedRecipe({ ...info, key })}
                 >
                   <div className="saved-recipe-info">
-                    <strong>{info.nombre}</strong>
+                    <strong style={{ textTransform: 'capitalize' }}>
+                      {info.nombre || key.replace(/_/g, ' ')}
+                    </strong>
                     <span>⏱ {info.tiempo}</span>
                   </div>
                   <button 
@@ -128,25 +139,25 @@ export function SavedRecipesModal({ onClose }) {
           </div>
         )}
 
-        {/* SUB-MODAL DE DETALLE DE LA RECETA SELECCIONADA */}
+        {/* VISTA DETALLADA DE LA RECETA SELECCIONADA */}
         {selectedRecipe && (
           <div className="sub-recipe-detail-view">
             <button className="back-to-list-btn" onClick={() => setSelectedRecipe(null)}>
               ← Volver a la lista
             </button>
-            <h3>{selectedRecipe.nombre}</h3>
+            <h3 style={{ textTransform: 'capitalize' }}>{selectedRecipe.nombre}</h3>
             <span className="recipe-time-badge">⏱ {selectedRecipe.tiempo}</span>
 
             <h4>Ingredientes</h4>
             <ul>
-              {(Array.isArray(selectedRecipe.ingredientes) ? selectedRecipe.ingredientes : []).map((ing, idx) => (
+              {(selectedRecipe.ingredientes || []).map((ing, idx) => (
                 <li key={idx}>{ing}</li>
               ))}
             </ul>
 
             <h4>Pasos</h4>
             <ol>
-              {(Array.isArray(selectedRecipe.pasos) ? selectedRecipe.pasos : []).map((paso, idx) => (
+              {(selectedRecipe.pasos || []).map((paso, idx) => (
                 <li key={idx}>{paso}</li>
               ))}
             </ol>
