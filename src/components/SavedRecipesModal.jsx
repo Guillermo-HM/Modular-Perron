@@ -131,7 +131,7 @@ export function SavedRecipesModal({ onClose }) {
                     onClick={(e) => handleRemoveRecipe(key, e)}
                     title="Eliminar de guardadas"
                   >
-                    X
+                    ⓧ
                   </button>
                 </div>
               );
