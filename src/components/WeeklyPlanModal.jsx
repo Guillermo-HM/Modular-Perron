@@ -288,7 +288,7 @@ export function WeeklyPlanModal({ onClose }) {
       if (error) throw error;
 
       setPlanesPasados(nuevoHistorial);
-      alert('Plan Semanal guardado con éxito en tu perfil.');
+      //alert('Plan Semanal guardado con éxito en tu perfil.');
     } catch (err) {
       console.error('Error al guardar el plan:', err);
       alert('Ocurrió un error al guardar el plan.');
