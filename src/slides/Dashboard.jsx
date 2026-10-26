@@ -3,7 +3,7 @@ import '../assets/dashboard.css';
 import RecipeChat from '../components/RecipeChat'; 
 import AjustesUsuario from './AjustesUsuario';
 // 1. IMPORTAR EL NUEVO MODAL DE RECETAS GUARDADAS
-import { SavedRecipesModal } from '../componentsSavedRecipesModal'; 
+import { SavedRecipesModal } from '../components/SavedRecipesModal'; 
 
 export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
