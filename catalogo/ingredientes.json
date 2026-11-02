@@ -1,0 +1,1771 @@
+[
+  {
+    "id": "carne_res_molida",
+    "nombre": "carne de res molida",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "res"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "atun_agua",
+    "nombre": "atún en agua escurrido",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "pescado"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "atun",
+      "atun_en_agua"
+    ]
+  },
+  {
+    "id": "camaron",
+    "nombre": "camarón pelado y sin vena",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "crustaceos"
+    ],
+    "posiblesAlergenos": [
+      "sulfitos"
+    ],
+    "alias": [
+      "camarones",
+      "camaron_pelado"
+    ]
+  },
+  {
+    "id": "tomatillo",
+    "nombre": "tomatillo (tomate verde)",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [
+      "tomatillo"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "tomate_verde"
+    ]
+  },
+  {
+    "id": "espinaca",
+    "nombre": "espinacas",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "papa",
+    "nombre": "papa",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "nopal",
+    "nombre": "nopal",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "chile_poblano",
+    "nombre": "chile poblano",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [
+      "chile"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "chile_guajillo",
+    "nombre": "chile guajillo",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [
+      "chile"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "chile_pasilla",
+    "nombre": "chile pasilla",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [
+      "chile"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "bolillo",
+    "nombre": "bolillo de trigo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [
+      "leche",
+      "huevo"
+    ],
+    "alias": []
+  },
+  {
+    "id": "totopos_maiz",
+    "nombre": "totopos de maíz",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "maiz"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "tortilla_harina",
+    "nombre": "tortilla de harina de trigo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "fideo",
+    "nombre": "fideo seco de trigo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [
+      "huevo"
+    ],
+    "alias": []
+  },
+  {
+    "id": "harina_trigo",
+    "nombre": "harina de trigo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "fideos_arroz",
+    "nombre": "fideos de arroz secos",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": [
+      "fideo_de_arroz"
+    ]
+  },
+  {
+    "id": "fresa",
+    "nombre": "fresas",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "frijoles_cocidos",
+    "nombre": "frijoles cocidos y escurridos",
+    "grupo": "Leguminosas",
+    "tipo": "leguminosa",
+    "alergenos": [
+      "leguminosas"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "frijol_cocido"
+    ]
+  },
+  {
+    "id": "lentejas_secas",
+    "nombre": "lentejas secas",
+    "grupo": "Leguminosas",
+    "tipo": "leguminosa",
+    "alergenos": [
+      "leguminosas"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "albahaca",
+    "nombre": "albahaca",
+    "grupo": "Hierbas",
+    "tipo": "hierba",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "chile_chipotle_adobado",
+    "nombre": "chile chipotle adobado",
+    "grupo": "Salsas",
+    "tipo": "salsa",
+    "alergenos": [
+      "chile",
+      "jitomate"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "crema_cacahuate",
+    "nombre": "crema de cacahuate pura, sin leche",
+    "grupo": "Salsas",
+    "tipo": "salsa",
+    "alergenos": [
+      "cacahuate",
+      "leguminosas"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "crema_de_cacahuate",
+      "mantequilla_de_mani"
+    ]
+  },
+  {
+    "id": "almendra",
+    "nombre": "almendras",
+    "grupo": "Frutos secos",
+    "tipo": "semilla",
+    "alergenos": [
+      "nueces_arbol"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "almendras"
+    ]
+  },
+  {
+    "id": "agua",
+    "nombre": "agua",
+    "grupo": "Otros",
+    "tipo": "otro",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "pollo",
+    "nombre": "pollo",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "pollo"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "pechuga_pollo",
+    "nombre": "pechuga de pollo",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "pollo"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "pechuga_de_pollo"
+    ]
+  },
+  {
+    "id": "carne_res",
+    "nombre": "carne res",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "res"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "lomo_cerdo",
+    "nombre": "lomo cerdo",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "cerdo"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "cerdo",
+    "nombre": "cerdo",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "cerdo"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "pescado_blanco",
+    "nombre": "pescado blanco",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "pescado"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "salmon",
+    "nombre": "salmón",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "pescado"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "huevo",
+    "nombre": "huevo",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "huevo"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "tortilla_maiz",
+    "nombre": "tortilla de maíz",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "maiz"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "tostadas_maiz",
+    "nombre": "tostadas maiz",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "maiz"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "pasta",
+    "nombre": "pasta seca de trigo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "gluten",
+      "trigo"
+    ],
+    "posiblesAlergenos": [
+      "huevo"
+    ],
+    "alias": []
+  },
+  {
+    "id": "arroz_blanco_cocido",
+    "nombre": "arroz blanco cocido y refrigerado",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": [
+      "arroz_cocido"
+    ]
+  },
+  {
+    "id": "maiz",
+    "nombre": "maíz cocido",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "maiz"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "crutones",
+    "nombre": "crutones",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "gluten",
+      "trigo"
+    ],
+    "posiblesAlergenos": [
+      "leche"
+    ],
+    "alias": []
+  },
+  {
+    "id": "cebolla",
+    "nombre": "cebolla",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "cebolla_morada",
+    "nombre": "cebolla morada",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "ajo",
+    "nombre": "ajo",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "pimiento_morron",
+    "nombre": "pimiento morron",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "chile_serrano",
+    "nombre": "chile serrano",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [
+      "chile"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "brocoli",
+    "nombre": "brócoli",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": [
+      "brocoli_fresco"
+    ]
+  },
+  {
+    "id": "zanahoria",
+    "nombre": "zanahoria",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "tomate",
+    "nombre": "tomate (jitomate)",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [
+      "jitomate"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "jitomate",
+      "jitomates",
+      "tomate_rojo"
+    ]
+  },
+  {
+    "id": "pepino",
+    "nombre": "pepino",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "calabacita",
+    "nombre": "calabacita",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "lechuga_romana",
+    "nombre": "lechuga romana",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "limon",
+    "nombre": "limón",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [
+      "citricos"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "jugo_limon",
+    "nombre": "jugo de limón",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [
+      "citricos"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "jugo_naranja",
+    "nombre": "jugo naranja",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [
+      "citricos"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "aguacate",
+    "nombre": "aguacate",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [
+      "aguacate"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "champinones",
+    "nombre": "champiñones",
+    "grupo": "Hongos",
+    "tipo": "hongo",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": [
+      "champinon",
+      "champinones"
+    ]
+  },
+  {
+    "id": "garbanzos_cocidos",
+    "nombre": "garbanzos cocidos",
+    "grupo": "Leguminosas",
+    "tipo": "leguminosa",
+    "alergenos": [
+      "leguminosas"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "garbanzo_cocido"
+    ]
+  },
+  {
+    "id": "chicharos",
+    "nombre": "chícharos",
+    "grupo": "Leguminosas",
+    "tipo": "leguminosa",
+    "alergenos": [
+      "leguminosas"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "queso_fresco",
+    "nombre": "queso fresco",
+    "grupo": "Lacteos",
+    "tipo": "lacteo",
+    "alergenos": [
+      "leche"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "media_crema",
+    "nombre": "media crema",
+    "grupo": "Lacteos",
+    "tipo": "lacteo",
+    "alergenos": [
+      "leche"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "leche",
+    "nombre": "leche",
+    "grupo": "Lacteos",
+    "tipo": "lacteo",
+    "alergenos": [
+      "leche"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "mantequilla",
+    "nombre": "mantequilla",
+    "grupo": "Lacteos",
+    "tipo": "lacteo",
+    "alergenos": [
+      "leche"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "queso_parmesano",
+    "nombre": "queso parmesano",
+    "grupo": "Lacteos",
+    "tipo": "lacteo",
+    "alergenos": [
+      "leche"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "yogurt_natural",
+    "nombre": "yogurt natural",
+    "grupo": "Lacteos",
+    "tipo": "lacteo",
+    "alergenos": [
+      "leche"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "queso_oaxaca",
+    "nombre": "queso Oaxaca",
+    "grupo": "Lacteos",
+    "tipo": "lacteo",
+    "alergenos": [
+      "leche"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "queso_panela",
+    "nombre": "queso panela",
+    "grupo": "Lacteos",
+    "tipo": "lacteo",
+    "alergenos": [
+      "leche"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "aceite_vegetal",
+    "nombre": "aceite vegetal",
+    "grupo": "Grasas y aceites",
+    "tipo": "grasa",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "aceite_oliva",
+    "nombre": "aceite de oliva",
+    "grupo": "Grasas y aceites",
+    "tipo": "grasa",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "aceite_sesamo",
+    "nombre": "aceite de sésamo",
+    "grupo": "Grasas y aceites",
+    "tipo": "grasa",
+    "alergenos": [
+      "sesamo"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "cilantro",
+    "nombre": "cilantro",
+    "grupo": "Hierbas",
+    "tipo": "hierba",
+    "alergenos": [
+      "cilantro"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "perejil",
+    "nombre": "perejil",
+    "grupo": "Hierbas",
+    "tipo": "hierba",
+    "alergenos": [
+      "perejil"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "epazote",
+    "nombre": "epazote",
+    "grupo": "Hierbas",
+    "tipo": "hierba",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "cebollin",
+    "nombre": "cebollin",
+    "grupo": "Hierbas",
+    "tipo": "hierba",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "jengibre_fresco",
+    "nombre": "jengibre fresco",
+    "grupo": "Hierbas",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "sal",
+    "nombre": "sal",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "pimienta",
+    "nombre": "pimienta",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "oregano",
+    "nombre": "orégano",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "comino",
+    "nombre": "comino",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "nuez_moscada",
+    "nombre": "nuez moscada",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "paprika",
+    "nombre": "paprika",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "ajo_en_polvo",
+    "nombre": "ajo en polvo",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "salsa_verde",
+    "nombre": "salsa verde de tomatillo y chile",
+    "grupo": "Salsas",
+    "tipo": "salsa",
+    "alergenos": [
+      "tomatillo",
+      "chile"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "salsa_soya",
+    "nombre": "salsa de soya (puede contener trigo)",
+    "grupo": "Salsas",
+    "tipo": "salsa",
+    "alergenos": [
+      "trigo",
+      "gluten",
+      "soya"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "salsa_de_soya"
+    ]
+  },
+  {
+    "id": "mostaza",
+    "nombre": "mostaza",
+    "grupo": "Salsas",
+    "tipo": "salsa",
+    "alergenos": [
+      "mostaza"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "miel",
+    "nombre": "miel",
+    "grupo": "Endulzante",
+    "tipo": "endulzante",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "semillas_girasol",
+    "nombre": "semillas girasol",
+    "grupo": "Semillas",
+    "tipo": "semilla",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "coliflor",
+    "nombre": "Coliflor",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "aceituna",
+    "nombre": "Aceituna",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [],
+    "posiblesAlergenos": [
+      "sulfitos"
+    ],
+    "alias": []
+  },
+  {
+    "id": "alcaparra",
+    "nombre": "Alcaparra",
+    "grupo": "Salsas",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [
+      "sulfitos"
+    ],
+    "alias": []
+  },
+  {
+    "id": "col",
+    "nombre": "Col",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "pure_tomate",
+    "nombre": "Puré de tomate",
+    "grupo": "Salsas",
+    "tipo": "salsa",
+    "alergenos": [
+      "jitomate"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "arroz_crudo",
+    "nombre": "Arroz crudo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "arroz_sushi",
+    "nombre": "Arroz para sushi crudo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "arroz_basmati",
+    "nombre": "Arroz basmati crudo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "arroz_arborio",
+    "nombre": "Arroz arborio crudo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "calamar",
+    "nombre": "Calamar limpio",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "moluscos"
+    ],
+    "posiblesAlergenos": [
+      "sulfitos"
+    ],
+    "alias": []
+  },
+  {
+    "id": "mejillon",
+    "nombre": "Carne de mejillón sin concha",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "moluscos"
+    ],
+    "posiblesAlergenos": [
+      "sulfitos"
+    ],
+    "alias": [
+      "mejillones"
+    ]
+  },
+  {
+    "id": "coco_rallado",
+    "nombre": "Coco rallado sin azúcar",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [
+      "coco"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "pan_molido",
+    "nombre": "Pan molido de trigo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [
+      "leche",
+      "huevo",
+      "sesamo"
+    ],
+    "alias": []
+  },
+  {
+    "id": "alga_nori",
+    "nombre": "Alga nori",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "wakame_seco",
+    "nombre": "Wakame seco",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "ajonjoli",
+    "nombre": "Ajonjolí",
+    "grupo": "Semillas",
+    "tipo": "semilla",
+    "alergenos": [
+      "sesamo"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "sesamo",
+      "ajonjoli_tostado"
+    ]
+  },
+  {
+    "id": "azucar",
+    "nombre": "Azúcar",
+    "grupo": "Endulzante",
+    "tipo": "endulzante",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "miso",
+    "nombre": "Miso",
+    "grupo": "Salsas",
+    "tipo": "salsa",
+    "alergenos": [
+      "soya"
+    ],
+    "posiblesAlergenos": [
+      "gluten",
+      "trigo"
+    ],
+    "alias": []
+  },
+  {
+    "id": "tofu",
+    "nombre": "Tofu firme",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "soya"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "maicena",
+    "nombre": "Fécula de maíz",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "maiz"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "udon",
+    "nombre": "Fideos udon de trigo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "shiitake",
+    "nombre": "Shiitake fresco",
+    "grupo": "Hongos",
+    "tipo": "hongo",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "garam_masala",
+    "nombre": "Garam masala con canela",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [
+      "canela"
+    ],
+    "posiblesAlergenos": [
+      "mostaza"
+    ],
+    "alias": []
+  },
+  {
+    "id": "curcuma",
+    "nombre": "Cúrcuma",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "lenteja_roja",
+    "nombre": "Lenteja roja seca",
+    "grupo": "Leguminosas",
+    "tipo": "leguminosa",
+    "alergenos": [
+      "leguminosas"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "leche_coco",
+    "nombre": "Leche de coco",
+    "grupo": "Lacteos y alternativas",
+    "tipo": "otro",
+    "alergenos": [
+      "coco"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "nuez_india",
+    "nombre": "Nuez de la India",
+    "grupo": "Frutos secos",
+    "tipo": "semilla",
+    "alergenos": [
+      "nueces_arbol"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "nuez_de_la_india",
+      "nuez_de_india",
+      "castana_de_caju"
+    ]
+  },
+  {
+    "id": "pina",
+    "nombre": "Piña",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "fideos_trigo",
+    "nombre": "Fideos de trigo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [
+      "huevo"
+    ],
+    "alias": [
+      "fideo_de_trigo"
+    ]
+  },
+  {
+    "id": "cacahuate",
+    "nombre": "Cacahuate tostado sin cáscara",
+    "grupo": "Frutos secos",
+    "tipo": "semilla",
+    "alergenos": [
+      "cacahuate",
+      "leguminosas"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "cacahuates",
+      "mani",
+      "manies"
+    ]
+  },
+  {
+    "id": "tamarindo_pulpa",
+    "nombre": "Pulpa de tamarindo sin azúcar",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "salsa_pescado",
+    "nombre": "Salsa de pescado",
+    "grupo": "Salsas",
+    "tipo": "salsa",
+    "alergenos": [
+      "pescado"
+    ],
+    "posiblesAlergenos": [
+      "trigo",
+      "gluten",
+      "soya"
+    ],
+    "alias": []
+  },
+  {
+    "id": "chile_arbol",
+    "nombre": "Chile de árbol",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [
+      "chile"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "vinagre_arroz",
+    "nombre": "Vinagre de arroz",
+    "grupo": "Salsas",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [
+      "sulfitos"
+    ],
+    "alias": []
+  },
+  {
+    "id": "papel_arroz",
+    "nombre": "Papel de arroz",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "edamame",
+    "nombre": "Edamame sin vaina",
+    "grupo": "Leguminosas",
+    "tipo": "leguminosa",
+    "alergenos": [
+      "soya",
+      "leguminosas"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "manzana",
+    "nombre": "Manzana",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "laminas_lasana",
+    "nombre": "Láminas de lasaña",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [
+      "huevo"
+    ],
+    "alias": []
+  },
+  {
+    "id": "queso_mozzarella",
+    "nombre": "Queso mozzarella",
+    "grupo": "Lacteos",
+    "tipo": "lacteo",
+    "alergenos": [
+      "leche"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "queso_mozarela"
+    ]
+  },
+  {
+    "id": "requeson",
+    "nombre": "Requesón",
+    "grupo": "Lacteos",
+    "tipo": "lacteo",
+    "alergenos": [
+      "leche"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "tocino_cerdo",
+    "nombre": "Tocino de cerdo",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "cerdo"
+    ],
+    "posiblesAlergenos": [
+      "soya",
+      "leche",
+      "sulfitos"
+    ],
+    "alias": []
+  },
+  {
+    "id": "anchoa",
+    "nombre": "Anchoa en conserva",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "pescado"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "calabaza_castilla",
+    "nombre": "Calabaza de Castilla pelada",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "noquis_papa",
+    "nombre": "Ñoquis de papa preparados",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [
+      "huevo",
+      "leche"
+    ],
+    "alias": []
+  },
+  {
+    "id": "polenta",
+    "nombre": "Polenta de maíz",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "maiz"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "base_pizza",
+    "nombre": "Base de pizza preparada",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [
+      "huevo",
+      "leche",
+      "soya"
+    ],
+    "alias": []
+  },
+  {
+    "id": "berenjena",
+    "nombre": "Berenjena",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "alubias_cocidas",
+    "nombre": "Alubias cocidas",
+    "grupo": "Leguminosas",
+    "tipo": "leguminosa",
+    "alergenos": [
+      "leguminosas"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "apio",
+    "nombre": "Apio",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [
+      "apio"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "tahini",
+    "nombre": "Tahini de sésamo",
+    "grupo": "Salsas",
+    "tipo": "salsa",
+    "alergenos": [
+      "sesamo"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "lentejas_cocidas",
+    "nombre": "Lentejas cocidas",
+    "grupo": "Leguminosas",
+    "tipo": "leguminosa",
+    "alergenos": [
+      "leguminosas"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "avena",
+    "nombre": "Avena en hojuelas",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [],
+    "posiblesAlergenos": [
+      "gluten",
+      "trigo"
+    ],
+    "alias": []
+  },
+  {
+    "id": "pan_hamburguesa",
+    "nombre": "Pan para hamburguesa",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [
+      "huevo",
+      "leche",
+      "sesamo",
+      "soya"
+    ],
+    "alias": []
+  },
+  {
+    "id": "quinoa",
+    "nombre": "Quinoa cruda",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "betabel",
+    "nombre": "Betabel",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "nuez_pecana",
+    "nombre": "Nuez pecana",
+    "grupo": "Frutos secos",
+    "tipo": "semilla",
+    "alergenos": [
+      "nueces_arbol"
+    ],
+    "posiblesAlergenos": [],
+    "alias": [
+      "nuez"
+    ]
+  },
+  {
+    "id": "bulgur",
+    "nombre": "Trigo bulgur",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "cuscus",
+    "nombre": "Cuscús de trigo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "platano_macho",
+    "nombre": "Plátano macho",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "platano",
+    "nombre": "Plátano",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "pan_integral",
+    "nombre": "Pan integral de trigo",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "posiblesAlergenos": [
+      "leche",
+      "huevo",
+      "sesamo",
+      "soya"
+    ],
+    "alias": []
+  },
+  {
+    "id": "polvo_hornear",
+    "nombre": "Polvo para hornear",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [
+      "trigo",
+      "gluten"
+    ],
+    "alias": []
+  },
+  {
+    "id": "canela",
+    "nombre": "Canela molida",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [
+      "canela"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "cacao",
+    "nombre": "Cacao sin azúcar",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [
+      "cacao"
+    ],
+    "posiblesAlergenos": [
+      "leche"
+    ],
+    "alias": []
+  },
+  {
+    "id": "chia",
+    "nombre": "Chía",
+    "grupo": "Semillas",
+    "tipo": "semilla",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "mango",
+    "nombre": "Mango",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [
+      "mango"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "pasas",
+    "nombre": "Pasas",
+    "grupo": "Frutas",
+    "tipo": "fruta",
+    "alergenos": [],
+    "posiblesAlergenos": [
+      "sulfitos"
+    ],
+    "alias": []
+  },
+  {
+    "id": "maiz_pozolero",
+    "nombre": "Maíz pozolero precocido",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "maiz"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "rabano",
+    "nombre": "Rábano",
+    "grupo": "Vegetales",
+    "tipo": "vegetal",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "semilla_calabaza",
+    "nombre": "Semillas de calabaza peladas",
+    "grupo": "Semillas",
+    "tipo": "semilla",
+    "alergenos": [
+      "semilla_calabaza"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "masa_harina_maiz",
+    "nombre": "Harina de maíz nixtamalizada",
+    "grupo": "Cereales y derivados",
+    "tipo": "cereal",
+    "alergenos": [
+      "maiz"
+    ],
+    "posiblesAlergenos": [],
+    "alias": []
+  },
+  {
+    "id": "achiote_pasta",
+    "nombre": "Pasta de achiote",
+    "grupo": "Condimentos",
+    "tipo": "condimento",
+    "alergenos": [],
+    "posiblesAlergenos": [
+      "trigo",
+      "gluten",
+      "soya",
+      "sulfitos"
+    ],
+    "alias": []
+  },
+  {
+    "id": "chorizo_cerdo",
+    "nombre": "Chorizo de cerdo",
+    "grupo": "Proteinas",
+    "tipo": "proteina",
+    "alergenos": [
+      "cerdo",
+      "chile"
+    ],
+    "posiblesAlergenos": [
+      "trigo",
+      "gluten",
+      "soya",
+      "leche",
+      "sulfitos"
+    ],
+    "alias": []
+  },
+  {
+    "id": "hojas_tamal",
+    "nombre": "Hojas secas para tamal",
+    "grupo": "Otros",
+    "tipo": "envoltura",
+    "alergenos": [],
+    "posiblesAlergenos": [],
+    "alias": []
+  }
+]

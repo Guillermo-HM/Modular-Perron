@@ -1,0 +1,190 @@
+[
+  {
+    "id": "gluten",
+    "nombre": "Gluten",
+    "alias": []
+  },
+  {
+    "id": "pollo",
+    "nombre": "Pollo",
+    "alias": []
+  },
+  {
+    "id": "res",
+    "nombre": "Carne de res",
+    "alias": []
+  },
+  {
+    "id": "cerdo",
+    "nombre": "Carne de cerdo",
+    "alias": []
+  },
+  {
+    "id": "pescado",
+    "nombre": "Pescado",
+    "alias": []
+  },
+  {
+    "id": "huevo",
+    "nombre": "Huevo",
+    "alias": []
+  },
+  {
+    "id": "leche",
+    "nombre": "Leche y lácteos",
+    "alias": [
+      "lacteos",
+      "lacteo",
+      "lactosa"
+    ]
+  },
+  {
+    "id": "maiz",
+    "nombre": "Maíz",
+    "alias": []
+  },
+  {
+    "id": "trigo",
+    "nombre": "Trigo",
+    "alias": []
+  },
+  {
+    "id": "soya",
+    "nombre": "Soya",
+    "alias": []
+  },
+  {
+    "id": "mostaza",
+    "nombre": "Mostaza",
+    "alias": []
+  },
+  {
+    "id": "sesamo",
+    "nombre": "Sésamo / Ajonjolí",
+    "alias": [
+      "ajonjoli"
+    ]
+  },
+  {
+    "id": "cacahuate",
+    "nombre": "Cacahuate",
+    "alias": [
+      "mani"
+    ]
+  },
+  {
+    "id": "crustaceos",
+    "nombre": "Crustáceos",
+    "alias": [
+      "crustaseos",
+      "mariscos",
+      "marisco"
+    ]
+  },
+  {
+    "id": "nueces_arbol",
+    "nombre": "Nueces de árbol / Almendra",
+    "alias": [
+      "frutos_secos",
+      "nueces"
+    ]
+  },
+  {
+    "id": "jitomate",
+    "nombre": "Jitomate",
+    "alias": []
+  },
+  {
+    "id": "tomatillo",
+    "nombre": "Tomatillo",
+    "alias": []
+  },
+  {
+    "id": "chile",
+    "nombre": "Chiles",
+    "alias": []
+  },
+  {
+    "id": "aguacate",
+    "nombre": "Aguacate",
+    "alias": []
+  },
+  {
+    "id": "mango",
+    "nombre": "Mango",
+    "alias": []
+  },
+  {
+    "id": "papaya",
+    "nombre": "Papaya",
+    "alias": []
+  },
+  {
+    "id": "citricos",
+    "nombre": "Cítricos",
+    "alias": []
+  },
+  {
+    "id": "cacao",
+    "nombre": "Cacao",
+    "alias": []
+  },
+  {
+    "id": "cilantro",
+    "nombre": "Cilantro",
+    "alias": []
+  },
+  {
+    "id": "perejil",
+    "nombre": "Perejil",
+    "alias": []
+  },
+  {
+    "id": "leguminosas",
+    "nombre": "Leguminosas",
+    "alias": []
+  },
+  {
+    "id": "semilla_calabaza",
+    "nombre": "Semilla de calabaza",
+    "alias": []
+  },
+  {
+    "id": "canela",
+    "nombre": "Canela",
+    "alias": []
+  },
+  {
+    "id": "apio",
+    "nombre": "Apio",
+    "alias": []
+  },
+  {
+    "id": "sulfitos",
+    "nombre": "Sulfitos",
+    "alias": []
+  },
+  {
+    "id": "moluscos",
+    "nombre": "Moluscos",
+    "alias": [
+      "mariscos",
+      "marisco"
+    ]
+  },
+  {
+    "id": "insectos",
+    "nombre": "Insectos",
+    "alias": []
+  },
+  {
+    "id": "altramuz",
+    "nombre": "Altramuz",
+    "alias": []
+  },
+  {
+    "id": "coco",
+    "nombre": "Coco",
+    "alias": []
+  }
+]

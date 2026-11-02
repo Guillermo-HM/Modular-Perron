@@ -43,7 +43,7 @@ ingredientes_coincidentes(
     Disponibles,
     Total
 ) :-
-    memberchk(Ingrediente, Disponibles),
+    ingrediente_disponible(Ingrediente, Disponibles),
     ingredientes_coincidentes(Resto, Disponibles, Coincidentes),
     Total is Coincidentes + 1.
 
@@ -52,7 +52,7 @@ ingredientes_coincidentes(
     Disponibles,
     Total
 ) :-
-    \+ memberchk(Ingrediente, Disponibles),
+    \+ ingrediente_disponible(Ingrediente, Disponibles),
     ingredientes_coincidentes(Resto, Disponibles, Total).
 
 
@@ -67,8 +67,16 @@ puntuacion_ingredientes(Receta, Disponibles, Puntuacion) :-
     ingredientes_esenciales(Receta, Esenciales),
     length(Esenciales, TotalEsenciales),
     ingredientes_coincidentes(Esenciales, Disponibles, Coincidentes),
+    findall(Ingrediente, ingrediente_receta(Receta, Ingrediente, _, _, opcional), Opcionales),
+    length(Opcionales, TotalOpcionales),
+    ingredientes_coincidentes(Opcionales, Disponibles, OpcionalesCoincidentes),
     peso(ingredientes, Peso),
-    Puntuacion is (Coincidentes / TotalEsenciales) * Peso.
+    TotalPonderado is 2 * TotalEsenciales + TotalOpcionales,
+    Puntuacion is ((2 * Coincidentes + OpcionalesCoincidentes) / TotalPonderado) * Peso.
+
+ingrediente_disponible(Ingrediente, Disponibles) :-
+    member(Disponible, Disponibles),
+    ingredientes_equivalentes(Ingrediente, Disponible), !.
 
 
 % ------------------------------------------------------------------------------
@@ -143,10 +151,7 @@ puntuacion_receta_con_alergias(
     ),
 
     % Obtener ingredientes esenciales
-    ingredientes_esenciales(
-        Receta,
-        Esenciales
-    ),
+    findall(Ingrediente, ingrediente_receta(Receta, Ingrediente, _, _, _), Esenciales),
 
     % Contar ingredientes coincidentes
     ingredientes_coincidentes(

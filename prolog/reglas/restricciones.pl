@@ -16,7 +16,12 @@ intolerancia_usuario(ana, lactosa).
 
 % Detectar alérgenos en una receta
 contiene_alergeno(Receta, Alergeno) :-
-    alergeno_receta(Receta, Alergeno).
+    alergeno_equivalente(Alergeno, Canonico),
+    alergeno_receta(Receta, Canonico).
+
+contiene_alergeno(Receta, Ingrediente) :-
+    ingrediente_receta(Receta, Registrado, _, _, _),
+    ingredientes_equivalentes(Ingrediente, Registrado).
 
 
 % Existe conflicto si el usuario tiene una alergia presente en la receta

@@ -3,6 +3,31 @@ const cors = require('cors');
 const path = require('path');
 const SwiplStdio = require('swipl-stdio');
 const { createClient } = require('@supabase/supabase-js');
+const { calcularCatalogo, verificarCostosProlog, validarPresupuesto } = require('./costos.cjs');
+const costosRecetas = calcularCatalogo();
+// Impide publicar precios nuevos con un filtro Prolog antiguo.
+verificarCostosProlog(costosRecetas);
+
+function agregarCostos(recetas) {
+  return recetas.map(item => {
+    const costo = costosRecetas.get(item.receta);
+
+    if (!costo) {
+      throw new Error('Receta sin costo registrado');
+    }
+
+    return {
+      ...item,
+      receta: costo.receta,
+      costoEstimado: costo.costoEstimado,
+      costoPorPersona: costo.costoPorPersona,
+      porciones: costo.porciones,
+      fechaPrecios: costo.fechaPrecios,
+      incluyeOpcionales: costo.incluyeOpcionales,
+      usaPreciosEstimados: costo.usaPreciosEstimados
+    };
+  });
+}
 
 // =====================================================
 // SUPABASE
@@ -237,8 +262,10 @@ app.post('/api/recomendar', async (req, res) => {
         const {
             ingredientes = [],
             tiempo = 30,
-            alergias = []
+            alergias = [],
+            presupuestoMaximo
         } = req.body;
+        const limitePresupuesto = validarPresupuesto(presupuestoMaximo);
 
         // -----------------------------
         // INGREDIENTES
@@ -284,7 +311,9 @@ app.post('/api/recomendar', async (req, res) => {
         // CONSULTA A PROLOG
         // -----------------------------
 
-        const consulta =
+        const consulta = limitePresupuesto !== null
+            ? `recomendar_con_presupuesto([${alergiasProlog}], [${ingredientesProlog}], ${tiempoProlog}, ${limitePresupuesto * 100}, Recomendaciones).`
+            :
             `recomendar_con_alergias(` +
             `[${alergiasProlog}], ` +
             `[${ingredientesProlog}], ` +
@@ -301,7 +330,7 @@ app.post('/api/recomendar', async (req, res) => {
             ? resultadoRaw.Recomendaciones
             : null;
 
-        const recetasFormateadas = parsearListaProlog(listaRaw);
+        const recetasFormateadas = agregarCostos(parsearListaProlog(listaRaw));
 
         res.json({
             OK: true,
@@ -314,7 +343,7 @@ app.post('/api/recomendar', async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        res.status(error.status || 500).json({
             OK: false,
             error: error.message
         });
@@ -445,7 +474,8 @@ app.post('/api/recomendar-perfil', async (req, res) => {
         const restriccionesUnicas = [...new Set(restriccionesTraducidas)];
 
         // 5. Obtener ingredientes y tiempo enviados desde React
-        const { ingredientes = [], tiempo = 30 } = req.body ?? {};
+        const { ingredientes = [], tiempo = 30, presupuestoMaximo } = req.body ?? {};
+        const limitePresupuesto = validarPresupuesto(presupuestoMaximo);
 
         const listaIngredientes = Array.isArray(ingredientes) ? ingredientes : [];
         if (listaIngredientes.length === 0) {
@@ -455,7 +485,10 @@ app.post('/api/recomendar-perfil', async (req, res) => {
             });
         }
 
-        const tiempoProlog = Number(tiempo) || 30;
+        const tiempoProlog = Number(tiempo);
+        if (!Number.isFinite(tiempoProlog) || tiempoProlog <= 0) {
+            return res.status(400).json({ OK: false, error: 'Tiempo inválido' });
+        }
 
         // 6. Preparar y ejecutar la consulta en Prolog
         const ingredientesProlog = listaIngredientes
@@ -466,14 +499,16 @@ app.post('/api/recomendar-perfil', async (req, res) => {
             .map(a => normalizarPrologAtom(a))
             .join(',');
 
-        const consulta = `recomendar_con_alergias([${restriccionesProlog}], [${ingredientesProlog}], ${tiempoProlog}, Recomendaciones).`;
+        const consulta = limitePresupuesto !== null
+            ? `recomendar_con_presupuesto([${restriccionesProlog}], [${ingredientesProlog}], ${tiempoProlog}, ${limitePresupuesto * 100}, Recomendaciones).`
+            : `recomendar_con_alergias([${restriccionesProlog}], [${ingredientesProlog}], ${tiempoProlog}, Recomendaciones).`;
         console.log(`🔎 Consulta Prolog (Perfil + Restricciones): ${consulta}`);
 
         const resultadoRaw = await callProlog(consulta);
 
-        const recetasFormateadas = parsearListaProlog(
+        const recetasFormateadas = agregarCostos(parsearListaProlog(
             resultadoRaw?.Recomendaciones
-        );
+        ));
 
         return res.json({
             OK: true,
@@ -483,9 +518,9 @@ app.post('/api/recomendar-perfil', async (req, res) => {
     } catch (error) {
         console.error('Error al recomendar:', error);
 
-        return res.status(500).json({
+        return res.status(error.status || 500).json({
             OK: false,
-            error: 'No se pudieron generar recomendaciones'
+            error: error.status === 400 ? error.message : 'No se pudieron generar recomendaciones'
         });
     }
 });

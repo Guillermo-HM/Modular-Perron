@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { recipesDetailDb } from './recipesDetailDb';
 import '../assets/recipechat.css';
+import { ingredientsDb, nombreIngrediente } from '../data/catalogoIngredientes';
 
 // Íconos SVG estilizados
 const SVGClose = () => (
@@ -116,19 +117,7 @@ const SVGBookOpen = () => (
 );
 
 // Base de ingredientes organizados por categorías
-const ingredientsDb = {
-  Proteinas: ['pollo', 'pechuga_pollo', 'carne_res', 'lomo_cerdo', 'cerdo', 'pescado_blanco', 'salmon', 'huevo'],
-  Vegetales: ['cebolla', 'cebolla_morada', 'ajo', 'pimiento_morron', 'chile_serrano', 'brocoli', 'zanahoria', 'tomate', 'pepino', 'calabacita', 'lechuga_romana'],
-  'Cereales y derivados': ['tortilla_maiz', 'tostadas_maiz', 'pasta', 'arroz_blanco_cocido', 'maiz', 'crutones'],
-  Frutas: ['limon', 'jugo_limon', 'jugo_naranja', 'aguacate'],
-  Hongos: ['champinones'],
-  Leguminosas: ['garbanzos_cocidos', 'chicharos'],
-  Lacteos: ['queso_fresco', 'media_crema', 'leche', 'mantequilla', 'queso_parmesano', 'yogurt_natural', 'queso_oaxaca', 'queso_panela'],
-  'Grasas y aceites': ['aceite_vegetal', 'aceite_oliva', 'aceite_sesamo'],
-  Hierbas: ['cilantro', 'perejil', 'epazote', 'cebollin', 'jengibre_fresco'],
-  Condimentos: ['sal', 'pimienta', 'oregano', 'comino', 'nuez_moscada', 'paprika', 'ajo_en_polvo'],
-  Salsas: ['salsa_verde', 'salsa_soya', 'mostaza']
-};
+
 
 const DIAS_SEMANA = [
   { key: 'lunes', label: 'Lunes' },
@@ -213,7 +202,7 @@ export function WeeklyPlanModal({ onClose }) {
     setTimeout(() => {
       const recetasEvaluadas = Object.keys(recipesDetailDb).map(key => {
         const receta = recipesDetailDb[key];
-        const score = calcularCoincidencia(receta.ingredientes);
+        const score = calcularCoincidencia(receta.ingredientesIds || receta.ingredientes);
         return {
           key,
           nombre: receta.nombre,
@@ -371,7 +360,7 @@ export function WeeklyPlanModal({ onClose }) {
                       className="plan-selected-pill"
                       onClick={() => toggleIngredient(ing)}
                     >
-                      <span>{ing.replace(/_/g, ' ')}</span>
+                      <span>{nombreIngrediente(ing)}</span>
                       <SVGClose />
                     </button>
                   ))}
@@ -419,7 +408,7 @@ export function WeeklyPlanModal({ onClose }) {
                                   <span className="chip-icon">
                                     {isSelected ? <SVGCheck /> : <SVGPlus />}
                                   </span>
-                                  <span>{ing.replace(/_/g, ' ')}</span>
+                                  <span>{nombreIngrediente(ing)}</span>
                                 </button>
                               );
                             })}
@@ -635,6 +624,11 @@ export function WeeklyPlanModal({ onClose }) {
               </div>
 
               <div className="plan-inner-body">
+                {recipeDetailModal.descripcion && <p>{recipeDetailModal.descripcion}</p>}
+                <p>Ingredientes para {recipeDetailModal.porciones || 2} personas.</p>
+                <p>El plan semanal compara ingredientes y no filtra alergias. Revisa cada receta y las etiquetas antes de prepararla.</p>
+                {recipeDetailModal.fuente && <p><a href={recipeDetailModal.fuente} target="_blank" rel="noopener noreferrer">Fuente de referencia (versión adaptada)</a></p>}
+                {recipeDetailModal.fuente && recipeDetailModal.fuenteTipo && <p>{recipeDetailModal.fuenteTipo}</p>}
                 <section className="plan-recipe-section">
                   <h3>Ingredientes necesarios</h3>
                   <ul className="plan-ingredients-bullet-list">

@@ -2,16 +2,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import '../assets/ajustesUsuario.css';
+import { ALERGIAS, normalizarAlergias } from '../data/catalogoIngredientes';
 
-const ALERGIAS = [
-  { id: 'cacahuate', nombre: 'Cacahuates / Frutos Secos' },
-  { id: 'mariscos', nombre: 'Mariscos y Crustáceos' },
-  { id: 'lacteos', nombre: 'Lácteos / Lactosa' },
-  { id: 'gluten', nombre: 'Gluten / Trigo' },
-  { id: 'huevo', nombre: 'Huevo' },
-  { id: 'soya', nombre: 'Soya' },
-  { id: 'pescado', nombre: 'Pescado' },
-];
+
 
 export default function AjustesUsuario({ onBack }) {
   const [nombre, setNombre] = useState('');
@@ -60,7 +53,7 @@ export default function AjustesUsuario({ onBack }) {
         setApellido(perfil.apellido ?? '');
         setComensales(perfil.comensales_habituales ?? 1);
         setPreferencia(perfil.preferencia_alimentaria ?? '');
-        setAlergias(perfil.alergias ?? []);
+        setAlergias(normalizarAlergias(perfil.alergias));
 
       } catch (error) {
         console.error('Error al cargar perfil:', error);

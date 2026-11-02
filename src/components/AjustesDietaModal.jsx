@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import '../assets/recipechat.css';
+import { ingredientsDb, nombreIngrediente, ALERGENOS_BASE, normalizarAlergias } from '../data/catalogoIngredientes';
 
 // Íconos SVG reutilizables
 const SVGClose = () => (
@@ -63,40 +64,10 @@ const SVGSave = () => (
 );
 
 // Base de alérgenos principales
-const ALERGENOS_BASE = [
-  { key: 'pollo', label: 'Pollo / Pechuga', sub: 'Pollo, Pechuga de pollo' },
-  { key: 'res', label: 'Carne de Res', sub: 'Cortes de res, Molida' },
-  { key: 'cerdo', label: 'Carne de Cerdo', sub: 'Lomo, Tocino, Cerdo' },
-  { key: 'pescado', label: 'Pescado', sub: 'Pescado blanco, Salmón' },
-  { key: 'huevo', label: 'Huevo', sub: 'Blanco, Rojo, Yema' },
-  { key: 'leche', label: 'Lácteos / Leche', sub: 'Quesos, Crema, Yogur, Mantequilla' },
-  { key: 'maiz', label: 'Maíz / Tortilla', sub: 'Tortillas, Tostadas, Maíz' },
-  { key: 'trigo', label: 'Trigo / Gluten', sub: 'Pastas, Pan, Crutones' },
-  { key: 'soya', label: 'Soya', sub: 'Salsa de soya, Tofu' },
-  { key: 'mostaza', label: 'Mostaza', sub: 'Mostaza preparada/semilla' },
-  { key: 'sesamo', label: 'Sésamo / Ajonjolí', sub: 'Aceite de sésamo, Ajonjolí' },
-  { key: 'chile', label: 'Chiles Picantes', sub: 'Chile serrano, Jalapeño' },
-  { key: 'crustaseos', label: 'Crustáceos', sub: 'Camarón, Langosta, Jaiba' },
-  { key: 'moluscos', label: 'Moluscos', sub: 'Pulpo, Calamar, Ostión' },
-  { key: 'nueces_arbol', label: 'Nueces de Árbol', sub: 'Almendra, Nuez, Pistache' },
-  { key: 'citricos', label: 'Cítricos', sub: 'Limón, Naranja, Toronja' },
-  { key: 'leguminosas', label: 'Leguminosas', sub: 'Frijol, Garbanzo, Lenteja' }
-];
+
 
 // Base completa de ingredientes organizada por categorías
-const ingredientsDb = {
-  Proteinas: ['pollo', 'pechuga_pollo', 'carne_res', 'lomo_cerdo', 'cerdo', 'pescado_blanco', 'salmon', 'huevo'],
-  Vegetales: ['cebolla', 'cebolla_morada', 'ajo', 'pimiento_morron', 'chile_serrano', 'brocoli', 'zanahoria', 'tomate', 'pepino', 'calabacita', 'lechuga_romana'],
-  'Cereales y derivados': ['tortilla_maiz', 'tostadas_maiz', 'pasta', 'arroz_blanco_cocido', 'maiz', 'crutones'],
-  Frutas: ['limon', 'jugo_limon', 'jugo_naranja', 'aguacate'],
-  Hongos: ['champinones'],
-  Leguminosas: ['garbanzos_cocidos', 'chicharos'],
-  Lacteos: ['queso_fresco', 'media_crema', 'leche', 'mantequilla', 'queso_parmesano', 'yogurt_natural', 'queso_oaxaca', 'queso_panela'],
-  'Grasas y aceites': ['aceite_vegetal', 'aceite_oliva', 'aceite_sesamo'],
-  Hierbas: ['cilantro', 'perejil', 'epazote', 'cebollin', 'jengibre_fresco'],
-  Condimentos: ['sal', 'pimienta', 'oregano', 'comino', 'nuez_moscada', 'paprika', 'ajo_en_polvo'],
-  Salsas: ['salsa_verde', 'salsa_soya', 'mostaza']
-};
+
 
 export function AjustesDietaModal({ onClose }) {
   const [alergias, setAlergias] = useState([]);
@@ -128,7 +99,7 @@ export function AjustesDietaModal({ onClose }) {
       if (error) throw error;
 
       if (data) {
-        setAlergias(Array.isArray(data.alergias) ? data.alergias : []);
+        setAlergias(normalizarAlergias(data.alergias));
         setNoGustan(Array.isArray(data.ingredientes_desagradables) ? data.ingredientes_desagradables : []);
       }
     } catch (err) {
@@ -268,7 +239,7 @@ export function AjustesDietaModal({ onClose }) {
                         className="dieta-dislike-pill" 
                         onClick={() => toggleNoGusta(ing)}
                       >
-                        <span>{ing.replace(/_/g, ' ')}</span>
+                        <span>{nombreIngrediente(ing)}</span>
                         <SVGClose />
                       </button>
                     ))}
@@ -314,7 +285,7 @@ export function AjustesDietaModal({ onClose }) {
                                   <span className="chip-icon">
                                     {isSelected ? <SVGClose /> : <SVGPlus />}
                                   </span>
-                                  <span>{ing.replace(/_/g, ' ')}</span>
+                                  <span>{nombreIngrediente(ing)}</span>
                                 </button>
                               );
                             })}
