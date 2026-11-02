@@ -195,6 +195,11 @@ export function SavedRecipesModal({ onClose }) {
               </div>
 
               <div className="saved-sections-wrapper">
+                {selectedRecipe.descripcion && <p>{selectedRecipe.descripcion}</p>}
+                <p>Ingredientes para {selectedRecipe.porciones || 2} personas.</p>
+                <p>Revisa las etiquetas y evita el contacto con tus alérgenos; los filtros no garantizan ausencia de trazas.</p>
+                {selectedRecipe.fuente && <p><a href={selectedRecipe.fuente} target="_blank" rel="noopener noreferrer">Fuente de referencia (versión adaptada)</a></p>}
+                {selectedRecipe.fuente && selectedRecipe.fuenteTipo && <p>{selectedRecipe.fuenteTipo}</p>}
                 <section className="saved-detail-section">
                   <div className="saved-section-title">
                     <SVGUtensils />

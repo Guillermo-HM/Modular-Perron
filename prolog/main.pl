@@ -8,6 +8,7 @@
 :- consult('reglas/compatibilidad.pl').
 :- consult('reglas/puntuacion.pl').
 :- consult('reglas/recomendacion.pl').
+:- consult('reglas/presupuesto.pl').
 
 % Consulta principal exposed para ser llamada
 recomendar_para_usuario(Usuario, IngredientesDisponibles, TiempoDisponible, Resultado) :-
