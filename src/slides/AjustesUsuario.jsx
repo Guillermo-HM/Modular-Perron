@@ -1,233 +1,210 @@
-
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import '../assets/ajustesUsuario.css';
-import { ALERGIAS, normalizarAlergias } from '../data/catalogoIngredientes';
-
-
+import '../assets/Crud.css'; // Asegúrate de enlazar el CSS
 
 export default function AjustesUsuario({ onBack }) {
+  const [user, setUser] = useState(null);
+  
+  // Estados para Datos Personales
+  const [displayName, setDisplayName] = useState('');
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
-  const [comensales, setComensales] = useState(1);
-  const [preferencia, setPreferencia] = useState('');
-  const [alergias, setAlergias] = useState([]);
 
-  const [cargandoPerfil, setCargandoPerfil] = useState(true);
-  const [errorPerfil, setErrorPerfil] = useState('');
+  // Estados para Credenciales
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
+  const [loading, setLoading] = useState(false);
 
-  // ==========================================
-  // 1. CARGAR PERFIL DESDE SUPABASE
-  // ==========================================
+  const [toastMessage, setToastMessage] = useState(null);
+
   useEffect(() => {
-    let activo = true;
+    const fetchUserData = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUser(user);
+        
+        // 1. Obtener Display Name del sistema de Auth
+        setDisplayName(user.user_metadata?.display_name || '');
+        setEmail(user.email || '');
 
-    const cargarPerfil = async () => {
-      try {
-        const {
-          data: { user },
-          error: authError,
-        } = await supabase.auth.getUser();
-
-        if (authError || !user) {
-          throw new Error('No se encontró una sesión activa.');
-        }
-
-        const { data: perfil, error } = await supabase
+        // 2. Obtener Nombre y Apellido de la tabla perfiles
+        const { data } = await supabase
           .from('perfiles')
-          .select(
-            'nombre, apellido, comensales_habituales, preferencia_alimentaria, alergias'
-          )
+          .select('nombre, apellido')
           .eq('id', user.id)
-          .maybeSingle();
-
-        if (error) throw error;
-
-        if (!perfil) {
-          throw new Error('No se encontró el perfil del usuario.');
-        }
-
-        if (!activo) return;
-
-        setNombre(perfil.nombre ?? '');
-        setApellido(perfil.apellido ?? '');
-        setComensales(perfil.comensales_habituales ?? 1);
-        setPreferencia(perfil.preferencia_alimentaria ?? '');
-        setAlergias(normalizarAlergias(perfil.alergias));
-
-      } catch (error) {
-        console.error('Error al cargar perfil:', error);
-
-        if (activo) {
-          setErrorPerfil(error.message);
-        }
-      } finally {
-        if (activo) {
-          setCargandoPerfil(false);
+          .single();
+          
+        if (data) {
+          setNombre(data.nombre || '');
+          setApellido(data.apellido || '');
         }
       }
     };
-
-    cargarPerfil();
-
-    return () => {
-      activo = false;
-    };
+    fetchUserData();
   }, []);
 
-  // ==========================================
-  // 2. SELECCIONAR O QUITAR ALERGIAS
-  // ==========================================
-  const cambiarAlergia = (id) => {
-    setAlergias((actuales) =>
-      actuales.includes(id)
-        ? actuales.filter((alergia) => alergia !== id)
-        : [...actuales, id]
-    );
+  // --- FUNCIONES DE ACTUALIZACIÓN ---
+
+  const showToast = (message) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 3000);
   };
 
-  // ==========================================
-  // 3. INTERFAZ DE AJUSTES
-  // ==========================================
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      // Actualiza Auth (El display name del saludo superior)
+      const { error: authError } = await supabase.auth.updateUser({
+        data: { display_name: displayName }
+      });
+      if (authError) throw authError;
+
+      // Actualiza Base de Datos (Nombre y Apellido reales)
+      const { error: dbError } = await supabase
+        .from('perfiles')
+        .update({ nombre, apellido })
+        .eq('id', user.id);
+      if (dbError) throw dbError;
+
+      showToast('Perfil actualizado. (Recarga la página para ver el cambio)');
+    } catch (error) {
+      showToast('Error: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateEmail = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ email });
+      if (error) throw error;
+      showToast('Revisa tu bandeja de entrada para confirmar el cambio.');
+    } catch (error) {
+      showToast('Error: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) throw error;
+      showToast('Contraseña actualizada con éxito.');
+      setPassword('');
+    } catch (error) {
+      showToast('Error: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="ajustes-page">
-      <div className="ajustes-container">
-
-        <button
-          type="button"
-          className="ajustes-volver"
-          onClick={onBack}
-        >
-          ← Volver al Dashboard
+    <div className="settings-wrapper">
+      <div className="settings-card">
+        
+        <button className="settings-back-btn" onClick={onBack}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+          Volver al inicio
         </button>
 
-        <div className="ajustes-header">
-          <h1>⚙️ Ajustes de Usuario</h1>
-          <p>Personaliza tu experiencia en CookSmart.</p>
-        </div>
+        <h2 className="settings-main-title">Configuración de cuenta</h2>
 
-        {cargandoPerfil && (
-          <p>Cargando tus datos...</p>
-        )}
-
-        {errorPerfil && (
-          <p style={{ color: '#c62828' }}>
-            Error: {errorPerfil}
-          </p>
-        )}
-
-        <section className="ajustes-seccion">
-          <h2>Información personal</h2>
-
-          <div className="ajustes-grid">
-            <div className="ajustes-campo">
-              <label htmlFor="nombre">Nombre</label>
-              <input
-                id="nombre"
-                type="text"
-                placeholder="Tu nombre"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                disabled={cargandoPerfil || Boolean(errorPerfil)}
+        {/* 1. SECCIÓN: DATOS PERSONALES */}
+        <section className="settings-section">
+          <h3 className="settings-subtitle">Datos Personales</h3>
+          <form onSubmit={handleUpdateProfile}>
+            <div className="input-group">
+              <label>Nombre de Usuario (Visible en el menú)</label>
+              <input 
+                type="text" 
+                value={displayName} 
+                onChange={(e) => setDisplayName(e.target.value)} 
               />
             </div>
+            <div className="input-row">
+              <div className="input-group">
+                <label>Nombre </label>
+                <input 
+                  type="text" 
+                  value={nombre} 
+                  onChange={(e) => setNombre(e.target.value)} 
+                />
+              </div>
+              <div className="input-group">
+                <label>Apellido</label>
+                <input 
+                  type="text" 
+                  value={apellido} 
+                  onChange={(e) => setApellido(e.target.value)} 
+                />
+              </div>
+            </div>
+            <button type="submit" className="settings-btn-primary" disabled={loading}>
+              Guardar Perfil
+            </button>
+          </form>
+        </section>
 
-            <div className="ajustes-campo">
-              <label htmlFor="apellido">Apellido</label>
-              <input
-                id="apellido"
-                type="text"
-                placeholder="Tu apellido"
-                value={apellido}
-                onChange={(e) => setApellido(e.target.value)}
-                disabled={cargandoPerfil || Boolean(errorPerfil)}
+        <hr className="settings-divider" />
+
+        {/* 2. SECCIÓN: CORREO */}
+        <section className="settings-section">
+          <h3 className="settings-subtitle">Correo Electrónico</h3>
+          <form onSubmit={handleUpdateEmail}>
+            <div className="input-group">
+              <label>Nuevo Correo</label>
+              <input 
+                type="email" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                placeholder="ejemplo@correo.com"
               />
             </div>
-          </div>
+            <button type="submit" className="settings-btn-secondary" disabled={loading}>
+              Actualizar Correo
+            </button>
+          </form>
         </section>
 
-        <section className="ajustes-seccion">
-          <h2>Preferencias culinarias</h2>
+        <hr className="settings-divider" />
 
-          <div className="ajustes-grid">
-            <div className="ajustes-campo">
-              <label htmlFor="comensales">
-                ¿Para cuántas personas cocinas?
-              </label>
-
-              <select
-                id="comensales"
-                value={comensales}
-                onChange={(e) =>
-                  setComensales(Number(e.target.value))
-                }
-                disabled={cargandoPerfil || Boolean(errorPerfil)}
-              >
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((cantidad) => (
-                  <option key={cantidad} value={cantidad}>
-                    {cantidad} {cantidad === 1 ? 'persona' : 'personas'}
-                  </option>
-                ))}
-              </select>
+        {/* 3. SECCIÓN: CONTRASEÑA */}
+        <section className="settings-section">
+          <h3 className="settings-subtitle">Seguridad</h3>
+          <form onSubmit={handleUpdatePassword}>
+            <div className="input-group">
+              <label>Nueva Contraseña</label>
+              <input 
+                type="password" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                placeholder="Mínimo 6 caracteres"
+                minLength={6}
+              />
             </div>
-
-            <div className="ajustes-campo">
-              <label htmlFor="preferencia">
-                Preferencia alimentaria
-              </label>
-
-              <select
-                id="preferencia"
-                value={preferencia}
-                onChange={(e) => setPreferencia(e.target.value)}
-                disabled={cargandoPerfil || Boolean(errorPerfil)}
-              >
-                <option value="">Sin preferencia</option>
-                <option value="vegetariana">Vegetariana</option>
-                <option value="pollo">Prefiero pollo</option>
-                <option value="pescado">Prefiero pescado</option>
-                <option value="variada">Comida variada</option>
-              </select>
-            </div>
-          </div>
+            <button type="submit" className="settings-btn-secondary" disabled={loading}>
+              Cambiar Contraseña
+            </button>
+          </form>
         </section>
-
-        <section className="ajustes-seccion">
-          <h2>Alergias y restricciones alimentarias</h2>
-
-          <div className="ajustes-alergias">
-            {ALERGIAS.map((alergia) => {
-              const seleccionada = alergias.includes(alergia.id);
-
-              return (
-                <label
-                  key={alergia.id}
-                  className={`ajustes-alergia ${
-                    seleccionada ? 'seleccionada' : ''
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={seleccionada}
-                    onChange={() => cambiarAlergia(alergia.id)}
-                    disabled={cargandoPerfil || Boolean(errorPerfil)}
-                  />
-                  <span>{alergia.nombre}</span>
-                </label>
-              );
-            })}
-          </div>
-        </section>
-
-        <button
-          type="button"
-          className="ajustes-guardar"
-          disabled
-        >
-          Guardar cambios (próximamente)
-        </button>
 
       </div>
+
+      {toastMessage && (
+        <div className = "custom-toast">
+          {toastMessage}
+        </div>
+      )}
+
     </div>
   );
 }

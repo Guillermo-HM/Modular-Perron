@@ -12,6 +12,7 @@
   "dependencies": {
     "@blobatar/react": "^2.7.0",
     "@supabase/supabase-js": "^2.116.0",
+    "all": "^0.0.0",
     "blobatar": "^2.7.0",
     "boring-avatars": "^2.0.4",
     "cors": "^2.8.6",

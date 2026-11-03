@@ -1,10 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../assets/landing.css"; // Importación del CSS modular externo
 import { AnimatedLogo } from "../components/animated-logo"; // Importación del logo animado
+import { Blobatar } from "@blobatar/react";
+import { useGaze } from "@blobatar/react/gaze";
+import "blobatar/gaze.css";
+import "blobatar/motion.css";
 
 import slideImg1 from "../assets/images/arroz.jpg";
 import slideImg2 from "../assets/images/pizzas.jpg";
 import slideImg3 from "../assets/images/pollo-y-papas.jpg";
+
+const BlobatarIcon = () => {
+  const { ref, lookAt } = useGaze({ travel: 3 });
+
+  useEffect(() => {
+    if (lookAt) {
+      lookAt("pointer");
+    }
+  }, [lookAt]);
+
+  return (
+    <div className="bot-avatar-land">
+      <Blobatar
+        ref={ref}
+        name="Cooki"
+        animate="always"
+      />
+    </div>
+  );
+};
 
 const slides = [
   {
@@ -48,9 +72,10 @@ function LandingPage({ onLoginClick, onSignUpClick }) {
         <div className="landing-brand">
           {/* Logo animado integrado */}
           
+          <AnimatedLogo size={35} className="brand-icon" />
           <span className="brand-cook">Cook</span>
           <span className="brand-smart">Smart</span>
-          <AnimatedLogo size={35} className="brand-icon" />
+          
         </div>
         <div className="nav-buttons">
           <button className="btn-login" onClick={onLoginClick}>
@@ -136,17 +161,34 @@ function LandingPage({ onLoginClick, onSignUpClick }) {
               <div className="chat-status-dot" />
               <span>CookSmart AI Bot</span>
             </div>
-            <div className="chat-bubble-bot">
-              "¡Hola! 👋 Cuéntame: ¿cuánto tiempo tienes para cocinar hoy y qué ingredientes tienes a la mano?"
-            </div>
+
+            <div className = "chat-message-row"> 
+              <BlobatarIcon/>
+              <div classname = "chat-message-column">
+                <div className="chat-bubble-bot">
+                  "Primero iniciemos con algunas preguntas"
+                </div>
+                <div className = "chat-message-row">
+                  <div className="chat-bubble-bot">
+                    "¿Cuanto tiempo tienes disponible?"
+                  </div>
+                </div>
+              </div>
+            </div>    
+
             <div className="chat-bubble-user">
               "Tengo 20 minutos, $100 pesos y no puedo comer lácteos."
             </div>
-            <div className="chat-bubble-bot">
-              "¡Entendido! Te recomiendo un <strong>Salteado de Pollo con Verduras y Arroz</strong>. ¿Quieres ver la receta paso a paso?"
-            </div>
-          </div>
 
+            <div className ="chat-message-row">
+              <BlobatarIcon/>
+              <div className = "chat-message-column">
+                <div className="chat-bubble-bot">
+                  "¡Entendido! Te recomiendo un <strong>Salteado de Pollo con Verduras y Arroz</strong>. ¿Quieres ver la receta paso a paso?"
+                </div>
+              </div>
+            </div>
+        </div>
           {/* Descripción */}
           <div className="feature-text-content">
             <h2 className="feature-title">Un asistente de cocina que te escucha</h2>
@@ -158,7 +200,7 @@ function LandingPage({ onLoginClick, onSignUpClick }) {
               <span className="tag">⚡ Recetas rápidas</span>
               <span className="tag">🥑 Dietas & Alergias</span>
               <span className="tag">💰 Ajustado a tu bolsillo</span>
-              <span className="tag">🔥 Conteo calórico</span>
+              
             </div>
           </div>
         </div>

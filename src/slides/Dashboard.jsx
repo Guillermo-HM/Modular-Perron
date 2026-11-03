@@ -1,179 +1,508 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import '../assets/dashboard.css';
-import RecipeChat from '../components/RecipeChat'; 
+
+import RecipeChat from '../components/RecipeChat';
 import AjustesUsuario from './AjustesUsuario';
 import { SavedRecipesModal } from '../components/SavedRecipesModal';
-import { WeeklyPlanModal } from '../components/WeeklyPlanModal'; 
-// 1. IMPORTAR EL NUEVO MODAL DE AJUSTES DE DIETA
+import { WeeklyPlanModal } from '../components/WeeklyPlanModal';
 import { AjustesDietaModal } from '../components/AjustesDietaModal';
 
+import { CiBookmark } from "react-icons/ci";
+
 export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
+
+  // NAVEGACIÓN
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('inicio');
+
+  // MODALES Y COMPONENTES
   const [showRecipeChat, setShowRecipeChat] = useState(false);
   const [showAjustes, setShowAjustes] = useState(false);
   const [showSavedModal, setShowSavedModal] = useState(false);
   const [showPlanModal, setShowPlanModal] = useState(false);
-  
-  // 2. NUEVO ESTADO PARA CONTROLAR LA VISIBILIDAD DEL MODAL DE DIETA
   const [showDietaModal, setShowDietaModal] = useState(false);
+
+  // CERRAR MENÚ MÓVIL CON ESCAPE
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsMobileMenuOpen(false);
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  // ACCIONES PRINCIPALES
+  const startNewRecipeFlow = () => {
+    setActiveSection('recetas');
+    setIsMobileMenuOpen(false);
+    setShowRecipeChat(true);
+  };
+
+  const openWeeklyPlan = () => {
+    setActiveSection('planes');
+    setIsMobileMenuOpen(false);
+    setShowPlanModal(true);
+  };
+
+  const openSavedRecipes = () => {
+    setActiveSection('favoritos');
+    setIsMobileMenuOpen(false);
+    setShowSavedModal(true);
+  };
+
+  const openDietSettings = () => {
+    setActiveSection('perfil');
+    setIsMobileMenuOpen(false);
+    setShowDietaModal(true);
+  };
+
+  const openUserSettings = () => {
+    setIsMenuOpen(false);
+    setIsMobileMenuOpen(false);
+    setShowAjustes(true);
+  };
 
   const handleLogoutClick = () => {
     setIsMenuOpen(false);
     if (onLogout) onLogout();
   };
 
-  const startNewRecipeFlow = () => {
-    setShowRecipeChat(true);
-  };
+  // NAVEGACIÓN
+  const navigationItems = [
+    {
+      id: 'inicio',
+      label: 'Inicio',
+      icon: '⌂',
+      action: () => {
+        setActiveSection('inicio');
+        setIsMobileMenuOpen(false);
+      }
+    },
+    {
+      id: 'recetas',
+      label: 'Nueva receta',
+      icon: '✦',
+      action: startNewRecipeFlow
+    },
+    {
+      id: 'planes',
+      label: 'Plan semanal',
+      icon: '▦',
+      action: openWeeklyPlan
+    },
+    {
+      id: 'favoritos',
+      label: 'Favoritos',
+      icon: '♡',
+      action: openSavedRecipes
+    },
+    {
+      id: 'perfil',
+      label: 'Perfil nutricional',
+      icon: '◉',
+      action: openDietSettings
+    }
+  ];
 
-  const handleBackToDashboard = () => {
-    setShowRecipeChat(false);
-  };
-
+  // TARJETAS PRINCIPALES
   const dashboardCardsData = [
     {
       id: 1,
-      title: 'Nueva Receta',
-      badge: 'IA Generativa',
-      description: 'Genera una receta totalmente personalizada ingresando tu presupuesto actual, ingredientes disponibles y tiempo máximo.',
-      image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&q=80',
-      buttonText: 'COMENZAR',
-      action: startNewRecipeFlow, 
+      title: 'Nueva receta',
+      badge: 'IA GENERATIVA',
+      description:
+        'Genera platillos personalizados según tus ingredientes, presupuesto y tiempo disponible.',
+      image:
+        'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=85',
+      icon: '✦',
+      buttonText: 'Crear receta',
+      action: startNewRecipeFlow
     },
     {
       id: 2,
-      title: 'Plan Semanal',
-      badge: 'Organización',
-      description: 'Organiza tu menú de lunes a domingo optimizando compras para ahorrar tiempo y dinero.',
-      image: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=600&q=80',
-      buttonText: 'VER PLAN',
-      action: () => setShowPlanModal(true),
+      title: 'Plan semanal',
+      badge: 'ORGANIZACIÓN',
+      description:
+        'Organiza tus comidas de lunes a domingo y optimiza tus compras.',
+      image:
+        'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=85',
+      icon: '▦',
+      buttonText: 'Ver planificación',
+      action: openWeeklyPlan
     },
     {
       id: 3,
-      title: 'Recetas Guardadas',
-      badge: 'Favoritos',
-      description: 'Accede a tu colección personal de platillos guardados y ajusta sus porciones.',
-      image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80',
-      buttonText: 'EXPLORAR',
-      action: () => setShowSavedModal(true),
+      title: 'Recetas guardadas',
+      badge: 'TU COLECCIÓN',
+      description:
+        'Accede a tus platillos favoritos y consulta las recetas que has guardado.',
+      image:
+        'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=85',
+      icon: '♡',
+      buttonText: 'Explorar recetas',
+      action: openSavedRecipes
     },
     {
       id: 4,
-      title: 'Ajustes de Dieta',
-      badge: 'Perfil Nutricional',
-      description: 'Configura tus alergias, restricción de calorías o metas nutricionales específicas.',
-      image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80',
-      buttonText: 'CONFIGURAR',
-      // 3. CAMBIAR ACCIÓN DE ALERT A ABRIR EL MODAL DE DIETA
-      action: () => setShowDietaModal(true),
-    },
+      title: 'Perfil nutricional',
+      badge: 'PERSONALIZACIÓN',
+      description:
+        'Configura tus alergias, restricciones y objetivos nutricionales.',
+      image:
+        'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=85',
+      icon: '◉',
+      buttonText: 'Configurar perfil',
+      action: openDietSettings
+    }
   ];
 
+  // PANTALLA DE AJUSTES DE USUARIO
   if (showAjustes) {
     return (
-      <AjustesUsuario onBack={() => setShowAjustes(false)} />
+      <AjustesUsuario
+        onBack={() => setShowAjustes(false)}
+      />
     );
   }
 
   return (
-    <div className="dashboard-wrapper">
-      {/* HEADER / NAVBAR SUPERIOR */}
-      <header className="dashboard-header">
-        <div className="welcome-pill">
-          <span>Bienvenido de nuevo, <strong>{username}</strong></span>
+    <div
+      className={`cs-dashboard ${
+        isSidebarCollapsed ? 'sidebar-collapsed' : ''
+      } ${
+        isMobileMenuOpen ? 'mobile-menu-open' : ''
+      }`}
+    >
+
+      {/* OVERLAY PARA MÓVILES */}
+      <div
+        className="cs-mobile-overlay"
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+
+      {/* SIDEBAR */}
+      <aside className="cs-sidebar" id="csSidebar">
+
+        {/* LOGOTIPO */}
+        <div className="cs-brand">
+          <div className="cs-brand-icon">
+            <img 
+              src = "public\cooklogo.png"
+              alt = "CookSmart Logo"
+              className = "cs-brand-image"
+            />
+          </div>
+          <span className="cs-brand-name">CookSmart</span>
         </div>
 
-        <div className="menu-container">
-          <button 
-            className="menu-toggle-btn"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Abrir menú de usuario"
+        {/* BOTÓN CONTRAER */}
+        <button
+          className="cs-collapse-btn"
+          onClick={() =>
+            setIsSidebarCollapsed(!isSidebarCollapsed)
+          }
+          aria-label={
+            isSidebarCollapsed
+              ? 'Expandir menú'
+              : 'Contraer menú'
+          }
+          title={
+            isSidebarCollapsed
+              ? 'Expandir menú'
+              : 'Contraer menú'
+          }
+        >
+          {isSidebarCollapsed ? '→' : '←'}
+        </button>
+
+        <span className="cs-nav-label">
+          MENÚ PRINCIPAL
+        </span>
+
+        {/* NAVEGACIÓN */}
+        <nav className="cs-navigation">
+          {navigationItems.map((item) => (
+            <button
+              key={item.id}
+              className={`cs-nav-item ${
+                activeSection === item.id ? 'active' : ''
+              }`}
+              onClick={item.action}
+              title={
+                isSidebarCollapsed ? item.label : undefined
+              }
+            >
+              <span className="cs-nav-icon">
+                {item.icon}
+              </span>
+
+              <span className="cs-nav-text">
+                {item.label}
+              </span>
+            </button>
+          ))}
+        </nav>
+
+        {/* USUARIO EN SIDEBAR */}
+        <div className="cs-sidebar-bottom">
+          <button
+            className="cs-user-mini"
+            onClick={openUserSettings}
+            title="Configuración de usuario"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-            </svg>
+            <div className="cs-avatar">
+              {username.substring(0, 2).toUpperCase()}
+            </div>
+
+            <div className="cs-user-info">
+              <strong>{username}</strong>
+              <span>Mi cuenta</span>
+            </div>
           </button>
-
-          {isMenuOpen && (
-            <div className="user-dropdown-menu">
-              <button 
-                className="dropdown-item"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setShowAjustes(true);
-                }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-                <span>Ajustes de Usuario</span>
-              </button>
-              
-              <button className="dropdown-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/>
-                </svg>
-                <span>Configuraciones</span>
-              </button>
-
-              <div className="dropdown-divider" />
-
-              <button className="dropdown-item logout-item" onClick={handleLogoutClick}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-                </svg>
-                <span>Cerrar Sesión</span>
-              </button>
-            </div>
-          )}
         </div>
-      </header>
 
-      {/* CUADRÍCULA DE TARJETAS */}
-      <main className="dashboard-grid">
-        {dashboardCardsData.map((card) => (
-          <div key={card.id} className="card-container">
-            <div className="card-back-info">
-              <p>{card.description}</p>
+      </aside>
+
+      {/* CONTENIDO PRINCIPAL */}
+      <main className="cs-main">
+
+        {/* HEADER */}
+        <header className="cs-header">
+
+          <div className="cs-header-left">
+
+            <button
+              className="cs-mobile-menu"
+              onClick={() =>
+                setIsMobileMenuOpen(!isMobileMenuOpen)
+              }
+              aria-label="Abrir navegación"
+              aria-expanded={isMobileMenuOpen}
+            >
+              ☰
+            </button>
+
+            <span className="cs-breadcrumb">
+              Inicio <span>/</span> Dashboard
+            </span>
+
+          </div>
+
+          <div className="cs-header-right">
+
+            <div className="cs-menu-container">
+
+              <button
+                className="cs-header-avatar"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Abrir menú de usuario"
+                aria-expanded={isMenuOpen}
+              >
+                {username.substring(0, 2).toUpperCase()}
+              </button>
+
+              {isMenuOpen && (
+                <div className="cs-user-dropdown">
+
+                  <div className="cs-dropdown-header">
+                    <strong>{username}</strong>
+                    <span>Cuenta CookSmart</span>
+                  </div>
+
+                  <button
+                    onClick={openUserSettings}
+                  >
+                    <span>♙</span>
+                    Ajustes de usuario
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      openDietSettings();
+                    }}
+                  >
+                    <span>◉</span>
+                    Perfil nutricional
+                  </button>
+
+                  <div className="cs-dropdown-divider" />
+
+                  <button
+                    className="cs-logout-button"
+                    onClick={handleLogoutClick}
+                  >
+                    <span>↪</span>
+                    Cerrar sesión
+                  </button>
+
+                </div>
+              )}
+
             </div>
 
-            <div className="card-front">
-              <div className="card-image-wrapper">
-                <img src={card.image} alt={card.title} className="card-image" />
-                <div className="card-image-overlay" />
-                <span className="card-badge">{card.badge}</span>
-              </div>
-              <div className="card-content">
-                <h3 className="card-title">{card.title}</h3>
-                <button className="card-action-btn" onClick={card.action}>
-                  {card.buttonText}
-                </button>
-              </div>
+          </div>
+        </header>
+
+        {/* BIENVENIDA */}
+        <section className="cs-welcome">
+
+          <div>
+            <span className="cs-eyebrow">
+              TU ESPACIO INTELIGENTE DE COCINA
+            </span>
+
+            <h1>
+              ¡Hola de nuevo, {username}! 
+            </h1>
+
+            <p>
+              ¿Qué vamos a preparar hoy?
+            </p>
+          </div>
+
+        </section>
+
+        {/* BANNER PRINCIPAL */}
+        <section className="cs-hero">
+
+          <div className="cs-hero-content">
+
+            <span className="cs-hero-tag">
+              ✦ RECOMENDACIONES INTELIGENTES
+            </span>
+
+            <h2>
+              Come mejor, organiza mejor.
+            </h2>
+
+            <p>
+              Descubre recetas personalizadas según tus
+              ingredientes, presupuesto y objetivos nutricionales.
+            </p>
+
+            <button
+              className="cs-hero-button"
+              onClick={startNewRecipeFlow}
+            >
+              Crear mi receta <span>→</span>
+            </button>
+
+          </div>
+
+          <div className="cs-hero-decoration">
+            🥗
+          </div>
+
+        </section>
+
+        {/* TARJETAS */}
+        <section className="cs-section">
+
+          <div className="cs-section-heading">
+            <div>
+              <h2>Tu espacio de trabajo</h2>
+              <p>
+                Todo lo que necesitas para organizar tu alimentación.
+              </p>
             </div>
           </div>
-        ))}
+
+          <div className="cs-card-grid">
+
+            {dashboardCardsData.map((card) => (
+
+              <article
+                key={card.id}
+                className="cs-feature-card"
+              >
+
+                <div className="cs-card-image">
+
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    loading="lazy"
+                  />
+
+                  <span className="cs-card-tag">
+                    {card.badge}
+                  </span>
+
+                </div>
+
+                <div className="cs-card-body">
+
+                  <div className="cs-card-icon">
+                    {card.icon}
+                  </div>
+
+                  <h3>{card.title}</h3>
+
+                  <p>{card.description}</p>
+
+                  <button
+                    className="cs-card-link"
+                    onClick={card.action}
+                  >
+                    {card.buttonText}
+                    <span>→</span>
+                  </button>
+
+                </div>
+
+              </article>
+
+            ))}
+
+          </div>
+
+        </section>
+
+        {/* FOOTER */}
+        <footer className="cs-footer">
+          <span>CookSmart © 2026</span>
+          <span>Alimentación inteligente, todos los días.</span>
+        </footer>
+
       </main>
 
-      {/* CHAT INTERACTIVO (Overlay encima del Dashboard) */}
+      {/* MODALES Y COMPONENTES EXISTENTES */}
+
       {showRecipeChat && (
-        <RecipeChat onBack={handleBackToDashboard} />
+        <RecipeChat
+          onBack={() => setShowRecipeChat(false)}
+        />
       )}
 
-      {/* VENTANA FLOTANTE DE RECETAS GUARDADAS */}
       {showSavedModal && (
-        <SavedRecipesModal onClose={() => setShowSavedModal(false)} />
+        <SavedRecipesModal
+          onClose={() => setShowSavedModal(false)}
+        />
       )}
 
-      {/* VENTANA FLOTANTE DEL PLAN SEMANAL */}
       {showPlanModal && (
-        <WeeklyPlanModal onClose={() => setShowPlanModal(false)} />
+        <WeeklyPlanModal
+          onClose={() => setShowPlanModal(false)}
+        />
       )}
 
-      {/* 4. VENTANA FLOTANTE DE AJUSTES DE DIETA */}
       {showDietaModal && (
-        <AjustesDietaModal onClose={() => setShowDietaModal(false)} />
+        <AjustesDietaModal
+          onClose={() => setShowDietaModal(false)}
+        />
       )}
+
     </div>
   );
 };

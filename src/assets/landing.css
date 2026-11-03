@@ -335,7 +335,7 @@
    -------------------------------------------------------------------------- */
 .feature-section {
   flex: 1;
-  padding: 50px 20px;
+  padding: 40px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -394,9 +394,9 @@
 
 .chat-bubble-bot {
   background-color: var(--color-chat-bot);
-  padding: 12px 16px;
+  padding: 10px 12px;
   border-radius: 14px 14px 14px 4px;
-  font-size: 0.85rem;
+  font-size: 0.65rem;
   line-height: 1.45;
   color: #E2E8F0;
   border: 1px solid #2A3B18;
@@ -404,9 +404,9 @@
 
 .chat-bubble-user {
   background-color: var(--color-chat-user);
-  padding: 12px 16px;
+  padding: 10px 12px;
   border-radius: 14px 14px 4px 14px;
-  font-size: 0.85rem;
+  font-size: 0.65rem;
   line-height: 1.45;
   align-self: flex-end;
   color: #FFFFFF;
@@ -453,6 +453,35 @@
   background-color: #E2E6D2;
   transform: translateY(-2px);
 }
+
+/* Avatar del Blobatar */
+.bot-avatar-land {
+  width: 35px;
+  height: 35px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bot-avatar-svg-land {
+  width: 28px;
+  height: 28px;
+}
+
+.chat-message-row{
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.chat-message-column{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 
 /* --------------------------------------------------------------------------
    4. FOOTER

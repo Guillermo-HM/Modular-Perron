@@ -1,261 +1,831 @@
-/* ==========================================================================
-   DASHBOARD / HOME PAGE STYLES
-   ========================================================================== */
 
-.dashboard-wrapper {
-  min-height: 100vh;
-  background-color: var(--color-bg-page);
-  padding: 24px 32px;
+/* =====================================================
+   COOKSMART - MODERN DASHBOARD
+   Forest Green / Minimalist / Responsive
+   ===================================================== */
+
+:root {
+  --cs-forest: #243B2B;
+  --cs-forest-light: #344E39;
+  --cs-olive: #526B49;
+  --cs-sage: #A8B88C;
+  --cs-cream: #F4F2E9;
+  --cs-white: #FFFFFF;
+  --cs-text: #253329;
+  --cs-muted: #788174;
+  --cs-border: #E5E7DC;
+
+  --cs-sidebar-width: 260px;
+  --cs-sidebar-mini: 82px;
+
+  --cs-radius: 18px;
+  --cs-shadow: 0 5px 20px rgba(36,59,43,.06);
+}
+
+/* RESET */
+
+.cs-dashboard,
+.cs-dashboard * {
   box-sizing: border-box;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: var(--color-brand-dark);
 }
 
-/* --------------------------------------------------------------------------
-   1. HEADER SUPERIOR
-   -------------------------------------------------------------------------- */
-.dashboard-header {
+.cs-dashboard {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 36px;
-  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--cs-cream);
+  color: var(--cs-text);
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-.welcome-pill {
-  background-color: var(--color-nav-bg);
-  color: var(--color-brand-dark);
-  padding: 10px 24px;
-  border-radius: 20px;
-  font-size: 1rem;
-  border: 1px solid var(--color-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-}
+/* =====================================================
+   SIDEBAR
+   ===================================================== */
 
-.welcome-pill strong {
-  color: var(--color-chat-user);
-}
+.cs-sidebar {
+  width: var(--cs-sidebar-width);
+  min-width: var(--cs-sidebar-width);
+  height: 100vh;
 
-.menu-container {
-  position: relative;
-}
+  position: sticky;
+  top: 0;
+  z-index: 100;
 
-.menu-toggle-btn {
-  background-color: var(--color-nav-bg);
-  color: var(--color-brand-dark);
-  border: 1px solid var(--color-border);
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s var(--transition-smooth);
-}
-
-.menu-toggle-btn:hover {
-  background-color: var(--color-border);
-}
-
-/* Menú Desplegable (Dropdown) */
-.user-dropdown-menu {
-  position: absolute;
-  top: 52px;
-  right: 0;
-  width: 210px;
-  background-color: var(--color-nav-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
-  padding: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  z-index: 100;
-  animation: fadeIn 0.2s ease-out;
+
+  padding: 25px 16px;
+
+  background: var(--cs-forest);
+  color: white;
+
+  transition:
+    width .3s ease,
+    min-width .3s ease;
 }
 
-.dropdown-item {
+.cs-brand {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 4px 8px;
+  margin-bottom: 35px;
+  min-height: 43px;
+}
+
+.cs-brand-icon {
+  width: 45px;
+  height: 45px;
+  min-width: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cs-brand-image{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.cs-brand-name {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -.6px;
+  white-space: nowrap;
+}
+
+.cs-collapse-btn {
+  position: absolute;
+  top: 30px;
+  right: -17px;
+
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid var(--cs-border);
+  border-radius: 10px;
+
+  background: white;
+  color: var(--cs-forest);
+
+  cursor: pointer;
+  font-size: 18px;
+
+  z-index: 110;
+}
+
+.cs-collapse-btn:hover {
+  background: var(--cs-cream);
+}
+
+.cs-nav-label {
+  padding: 0 12px;
+  margin-bottom: 14px;
+
+  color: #AAB9A7;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.cs-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.cs-nav-item {
+  width: 100%;
+  min-height: 46px;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 12px 14px;
+
   background: transparent;
   border: none;
-  padding: 10px 14px;
-  border-radius: 10px;
-  color: var(--color-brand-dark);
-  font-size: 0.88rem;
+  border-radius: 12px;
+
+  color: #D5DED3;
+  font-family: inherit;
+  font-size: 13px;
   font-weight: 600;
+
   cursor: pointer;
   text-align: left;
-  transition: background-color 0.2s ease;
+  white-space: nowrap;
+
+  transition: .2s ease;
 }
 
-.dropdown-item:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+.cs-nav-item:hover {
+  background: rgba(255,255,255,.09);
+  color: white;
 }
 
-/* --------------------------------------------------------------------------
-   2. CUADRÍCULA DE TARJETAS
-   -------------------------------------------------------------------------- */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px 40px;
-  max-width: 1100px;
-  margin: 0 auto;
+.cs-nav-item.active {
+  background: var(--cs-sage);
+  color: var(--cs-forest);
 }
 
-.card-container {
-  position: relative;
-  height: 250px;
-  display: flex;
-  align-items: center;
-}
-
-/* Capa Trasera (Información desplegada) */
-.card-back-info {
-  position: absolute;
-  right: 0;
-  width: 90%;
-  height: 90%;
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
-  border-radius: 24px;
-  padding: 20px 24px 20px 45%;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
-  z-index: 1;
-}
-
-.card-back-info p {
-  margin: 0;
-  font-size: 0.88rem;
-  line-height: 1.5;
-  color: #4A5243;
-}
-
-/* Capa Frontal Interactiva */
-.card-front {
-  position: absolute;
-  left: 0;
-  width: 52%;
-  height: 100%;
-  background-color: var(--color-chat-bot);
-  border-radius: 28px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
-  z-index: 2;
-  transition: transform 0.3s var(--transition-smooth), box-shadow 0.3s var(--transition-smooth);
-}
-
-.card-container:hover .card-front {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
-}
-
-/* Imagen y Overlay */
-.card-image-wrapper {
-  position: relative;
-  height: 130px;
-  width: 100%;
-}
-
-.card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-image-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(29, 35, 24, 0.9));
-}
-
-.card-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background-color: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(6px);
-  color: #FFFFFF;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 12px;
-  text-transform: uppercase;
-}
-
-/* Contenido Interno */
-.card-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 16px 18px 16px;
+.cs-nav-icon {
+  width: 23px;
+  min-width: 23px;
+  font-size: 21px;
   text-align: center;
 }
 
-.card-title {
-  color: #FFFFFF;
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin: 0;
+.cs-sidebar-bottom {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.15);
 }
 
-/* Botón de Acción */
-.card-action-btn {
-  background-color: var(--color-btn-primary);
-  color: var(--color-brand-dark);
+.cs-user-mini {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 8px;
+
+  background: transparent;
   border: none;
-  padding: 8px 24px;
-  border-radius: 18px;
-  font-weight: 800;
-  font-size: 0.8rem;
-  letter-spacing: 0.5px;
+  border-radius: 12px;
+
+  color: white;
+  text-align: left;
   cursor: pointer;
-  transition: all 0.2s var(--transition-smooth);
-  width: 80%;
 }
 
-.card-action-btn:hover {
-  background-color: var(--color-btn-hover);
-  transform: scale(1.03);
+.cs-user-mini:hover {
+  background: rgba(255,255,255,.08);
 }
 
-/* Animación Menú */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+.cs-avatar,
+.cs-header-avatar {
+  width: 39px;
+  height: 39px;
+  min-width: 39px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 800;
 }
 
-/* Responsividad */
+.cs-avatar {
+  background: var(--cs-sage);
+  color: var(--cs-forest);
+}
+
+.cs-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.cs-user-info span {
+  color: #B6C3B3;
+  font-size: 11px;
+}
+
+/* SIDEBAR CONTRAÍDO */
+
+.cs-dashboard.sidebar-collapsed .cs-sidebar {
+  width: var(--cs-sidebar-mini);
+  min-width: var(--cs-sidebar-mini);
+  padding-inline: 12px;
+}
+
+.cs-dashboard.sidebar-collapsed .cs-brand {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.cs-dashboard.sidebar-collapsed .cs-brand-name,
+.cs-dashboard.sidebar-collapsed .cs-nav-label,
+.cs-dashboard.sidebar-collapsed .cs-nav-text,
+.cs-dashboard.sidebar-collapsed .cs-user-info {
+  display: none;
+}
+
+.cs-dashboard.sidebar-collapsed .cs-nav-item {
+  justify-content: center;
+  padding-inline: 8px;
+}
+
+.cs-dashboard.sidebar-collapsed .cs-user-mini {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+/* =====================================================
+   MAIN CONTENT
+   ===================================================== */
+
+.cs-main {
+  flex: 1;
+  min-width: 0;
+  padding: 0 42px;
+}
+
+/* HEADER */
+
+.cs-header {
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid var(--cs-border);
+}
+
+.cs-header-left,
+.cs-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cs-breadcrumb {
+  font-size: 12px;
+  color: var(--cs-muted);
+}
+
+.cs-breadcrumb span {
+  padding: 0 6px;
+  color: #B2B8AC;
+}
+
+.cs-header-avatar {
+  background: var(--cs-forest);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.cs-header-avatar:hover {
+  background: var(--cs-olive);
+}
+
+.cs-menu-container {
+  position: relative;
+}
+
+.cs-user-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+
+  width: 230px;
+  padding: 9px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  background: white;
+  border: 1px solid var(--cs-border);
+  border-radius: 15px;
+
+  box-shadow: 0 12px 30px rgba(36,59,43,.13);
+  z-index: 150;
+
+  animation: csFadeIn .2s ease;
+}
+
+.cs-dropdown-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 11px;
+}
+
+.cs-dropdown-header strong {
+  color: var(--cs-forest);
+  font-size: 13px;
+}
+
+.cs-dropdown-header span {
+  color: var(--cs-muted);
+  font-size: 11px;
+}
+
+.cs-user-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 11px;
+  border: none;
+  border-radius: 9px;
+
+  background: transparent;
+  color: var(--cs-text);
+
+  text-align: left;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.cs-user-dropdown button:hover {
+  background: var(--cs-cream);
+}
+
+.cs-dropdown-divider {
+  height: 1px;
+  background: var(--cs-border);
+  margin: 5px 0;
+}
+
+.cs-user-dropdown .cs-logout-button {
+  color: #A7443C;
+}
+
+/* =====================================================
+   WELCOME
+   ===================================================== */
+
+.cs-welcome {
+  padding: 35px 0 25px;
+}
+
+.cs-eyebrow {
+  color: var(--cs-olive);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.cs-welcome h1 {
+  margin: 10px 0 7px;
+
+  color: var(--cs-forest);
+  font-size: clamp(24px, 3vw, 32px);
+  letter-spacing: -1px;
+  font-weight: 800;
+}
+
+.cs-welcome p {
+  margin: 0;
+  color: var(--cs-muted);
+  font-size: 14px;
+}
+
+/* =====================================================
+   HERO BANNER
+   ===================================================== */
+
+.cs-hero {
+  min-height: 220px;
+  padding: 32px 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 90% 50%,
+      #526B49 0%,
+      transparent 35%
+    ),
+    linear-gradient(110deg, #243B2B, #344E39);
+
+  border-radius: 22px;
+  color: white;
+}
+
+.cs-hero-content {
+  max-width: 590px;
+  position: relative;
+  z-index: 2;
+}
+
+.cs-hero-tag {
+  color: #D3E1C0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.cs-hero h2 {
+  margin: 14px 0 10px;
+  font-size: clamp(25px, 3vw, 34px);
+  letter-spacing: -.8px;
+}
+
+.cs-hero p {
+  max-width: 480px;
+  color: #E0E8DC;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.cs-hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+
+  margin-top: 12px;
+  padding: 12px 19px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: var(--cs-sage);
+  color: var(--cs-forest);
+
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+
+  transition: .2s ease;
+}
+
+.cs-hero-button:hover {
+  background: white;
+  transform: translateY(-2px);
+}
+
+.cs-hero-decoration {
+  margin-right: 35px;
+  font-size: 115px;
+  opacity: .9;
+  transform: rotate(-12deg);
+}
+
+/* =====================================================
+   FEATURE CARDS
+   ===================================================== */
+
+.cs-section {
+  padding-top: 38px;
+}
+
+.cs-section-heading {
+  margin-bottom: 20px;
+}
+
+.cs-section-heading h2 {
+  margin: 0 0 6px;
+  color: var(--cs-forest);
+  font-size: 20px;
+}
+
+.cs-section-heading p {
+  margin: 0;
+  color: var(--cs-muted);
+  font-size: 12px;
+}
+
+.cs-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.cs-feature-card {
+  min-width: 0;
+
+  background: white;
+  border: 1px solid var(--cs-border);
+  border-radius: var(--cs-radius);
+  overflow: hidden;
+
+  box-shadow: var(--cs-shadow);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.cs-feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(36,59,43,.11);
+}
+
+.cs-card-image {
+  height: 165px;
+  position: relative;
+  overflow: hidden;
+  background: #E8EADF;
+}
+
+.cs-card-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+
+  transition: transform .4s ease;
+}
+
+.cs-feature-card:hover .cs-card-image img {
+  transform: scale(1.05);
+}
+
+.cs-card-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+
+  padding: 7px 11px;
+
+  background: rgba(36,59,43,.88);
+  color: white;
+
+  border-radius: 20px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+
+.cs-card-body {
+  padding: 20px 22px;
+}
+
+.cs-card-icon {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 12px;
+
+  background: #EDF1E6;
+  color: var(--cs-forest);
+  border-radius: 10px;
+
+  font-size: 19px;
+}
+
+.cs-card-body h3 {
+  margin: 0 0 9px;
+  color: var(--cs-forest);
+  font-size: 17px;
+}
+
+.cs-card-body p {
+  min-height: 42px;
+  margin: 0 0 17px;
+
+  color: var(--cs-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.cs-card-link {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px 0 0;
+
+  border: none;
+  border-top: 1px solid var(--cs-border);
+
+  background: transparent;
+  color: var(--cs-olive);
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+  text-align: left;
+}
+
+.cs-card-link:hover {
+  color: var(--cs-forest);
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.cs-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 35px 0 20px;
+
+  color: var(--cs-muted);
+  font-size: 10px;
+}
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+.cs-mobile-menu {
+  display: none;
+
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid var(--cs-border);
+  border-radius: 10px;
+
+  background: white;
+  color: var(--cs-forest);
+
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.cs-mobile-overlay {
+  display: none;
+}
+
 @media (max-width: 900px) {
-  .dashboard-grid {
+  .cs-main {
+    padding: 0 24px;
+  }
+
+  .cs-card-grid {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 650px) {
+
+  .cs-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: var(--cs-sidebar-width);
+    min-width: var(--cs-sidebar-width);
+
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+
+    z-index: 200;
+  }
+
+  .cs-dashboard.mobile-menu-open .cs-sidebar {
+    transform: translateX(0);
+  }
+
+  .cs-dashboard.mobile-menu-open .cs-mobile-overlay {
+    display: block;
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,.45);
+    z-index: 150;
+  }
+
+  .cs-collapse-btn {
+    display: none;
+  }
+
+  /* En móvil el menú siempre aparece expandido */
+  .cs-dashboard.sidebar-collapsed .cs-sidebar {
+    width: var(--cs-sidebar-width);
+    min-width: var(--cs-sidebar-width);
+    padding-inline: 16px;
+  }
+
+  .cs-dashboard.sidebar-collapsed .cs-brand-name,
+  .cs-dashboard.sidebar-collapsed .cs-nav-label,
+  .cs-dashboard.sidebar-collapsed .cs-nav-text,
+  .cs-dashboard.sidebar-collapsed .cs-user-info {
+    display: initial;
+  }
+
+  .cs-dashboard.sidebar-collapsed .cs-nav-label {
+    display: block;
+  }
+
+  .cs-dashboard.sidebar-collapsed .cs-brand,
+  .cs-dashboard.sidebar-collapsed .cs-nav-item,
+  .cs-dashboard.sidebar-collapsed .cs-user-mini {
+    justify-content: flex-start;
+  }
+
+  .cs-main {
+    width: 100%;
+    padding: 0 17px;
+  }
+
+  .cs-header {
+    height: 65px;
+  }
+
+  .cs-mobile-menu {
+    display: grid;
+    place-items: center;
+  }
+
+  .cs-breadcrumb {
+    font-size: 11px;
+  }
+
+  .cs-welcome {
+    padding: 28px 0 22px;
+  }
+
+  .cs-hero {
+    min-height: 200px;
+    padding: 25px 22px;
+  }
+
+  .cs-hero-decoration {
+    display: none;
+  }
+
+  .cs-hero h2 {
+    font-size: 26px;
+  }
+
+  .cs-card-grid {
     grid-template-columns: 1fr;
   }
-  .card-container {
-    height: 220px;
+
+  .cs-card-image {
+    height: 190px;
+  }
+
+  .cs-footer {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
-.dropdown-divider {
-  height: 1px;
-  background-color: var(--color-border);
-  margin: 4px 0;
-}
-
-.dropdown-item.logout-item {
-  color: #c0392b;
-}
-
-.dropdown-item.logout-item:hover {
-  background-color: rgba(192, 57, 43, 0.1);
+@media (prefers-reduced-motion: reduce) {
+  .cs-dashboard *,
+  .cs-dashboard *::before,
+  .cs-dashboard *::after {
+    transition-duration: .01ms !important;
+  }
 }

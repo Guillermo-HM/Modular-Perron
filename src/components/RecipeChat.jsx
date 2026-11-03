@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../assets/recipechat.css";
 import { ingredientsDb, nombreIngrediente } from "../data/catalogoIngredientes";
 import { Blobatar } from "@blobatar/react";
@@ -21,7 +21,7 @@ const OPCIONES_PRESUPUESTO = [
   { titulo: "Amplio", rango: "Más de $300 y hasta $1,000 MXN", maximo: 1000 },
 ];
 
-const BlobatarIcon = () => {
+const BlobatarIcon = ({seed}) => {
   const { ref, lookAt } = useGaze({ travel: 3 });
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const BlobatarIcon = () => {
 
   return (
     <div className="bot-avatar-container">
-      <Blobatar ref={ref} name="Cooki" animate="always" />
+      <Blobatar ref={ref} name="seed" animate="always" />
     </div>
   );
 };
@@ -46,6 +46,7 @@ function RecipeChat({ onBack }) {
   const [openSections, setOpenSections] = useState({ Proteinas: true });
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [confirmedIngredients, setConfirmedIngredients] = useState([]);
+  const [userId, setUserId] = useState(null);
 
   // Estados de respuesta de la API
   const [loading, setLoading] = useState(false);
@@ -304,6 +305,18 @@ function RecipeChat({ onBack }) {
     }
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const{data: {user}} = await supabase.auth.getUser();
+      if (user) {
+        setUserId(user.id);
+      }
+    };
+    fetchUser();
+
+  }, []);
+
+
   return (
     <div className={`recipe-chat-view ${isClosing ? "closing" : ""}`}>
       <div className="chat-card-frame">
@@ -320,7 +333,7 @@ function RecipeChat({ onBack }) {
         {/* ÁREA DE CHAT SUPERIOR */}
         <section className="chat-display-area">
           <div className="chat-bubble-row bot">
-            <BlobatarIcon />
+            <BlobatarIcon seed = {userId || "invitado"}/>
             <div className="bubbles-column">
               <div className="chat-bubble">
                 Primero, iniciemos con algunas preguntas
@@ -350,7 +363,7 @@ function RecipeChat({ onBack }) {
                 <div className="chat-bubble-response">{budget}</div>
               </div>
               <div className="chat-bubble-row bot">
-                <BlobatarIcon />
+                <BlobatarIcon sedd = {userId || "invitado"} />
                 <div className="chat-bubble">
                   ¿Cuánto tiempo tienes disponible para cocinar?
                 </div>
@@ -372,7 +385,7 @@ function RecipeChat({ onBack }) {
                 </div>
               </div>
               <div className="chat-bubble-row bot">
-                <BlobatarIcon />
+                <BlobatarIcon sedd = {userId || "invitado"} />
                 <div className="chat-bubble">
                   ¿Qué ingredientes tienes disponibles? Selecciónalos para
                   buscar recetas.
@@ -383,7 +396,7 @@ function RecipeChat({ onBack }) {
 
           {loading && (
             <div className="chat-bubble-row bot">
-              <BlobatarIcon />
+              <BlobatarIcon sedd = {userId || "invitado"} />
               <div className="chat-bubble">
                 Buscando las mejores recetas en el motor Prolog...
               </div>
@@ -392,7 +405,7 @@ function RecipeChat({ onBack }) {
 
           {!loading && searched && (
             <div className="chat-bubble-row bot">
-              <BlobatarIcon />
+              <BlobatarIcon sedd = {userId || "invitado"} />
               <div className="bubbles-column">
                 {recipes.length > 0 && (
                   <div className="chat-bubble">

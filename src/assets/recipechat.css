@@ -3,9 +3,9 @@
    ========================================================================== */
 
 :root {
-  --chat-bg-dark: #584142;
+  --chat-bg-dark: #243B2B;
   --chat-bg-light: #DFE2D2;
-  --chat-bubble-bot: #00BCD4;
+  --chat-bubble-bot: #DFE2D2;
   --chat-border-dark: #3F2B2C;
 }
 
@@ -48,7 +48,7 @@
   position: absolute;
   top: 16px;
   left: 16px;
-  background-color: #E2C7C7;
+  background-color: #DFE2D2;
   color: #333;
   border: none;
   width: 42px;
@@ -64,7 +64,7 @@
 
 .chat-back-btn:hover {
   transform: scale(1.08);
-  background-color: #d1b4b4;
+  background-color: #B6BAAB;
 }
 
 /* --------------------------------------------------------------------------
