@@ -8,7 +8,6 @@ import { SavedRecipesModal } from '../components/SavedRecipesModal';
 import { WeeklyPlanModal } from '../components/WeeklyPlanModal';
 import { AjustesDietaModal } from '../components/AjustesDietaModal';
 
-import { CiBookmark } from "react-icons/ci";
 
 export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
 
@@ -401,7 +400,7 @@ export const Dashboard = ({ username = 'Guillermo', onLogout }) => {
           </div>
 
           <div className="cs-hero-decoration">
-            🥗
+            
           </div>
 
         </section>
