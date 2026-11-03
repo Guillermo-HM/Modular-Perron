@@ -159,43 +159,60 @@ function RecipeChat({ onBack }) {
   // Función para guardar o remover receta de Supabase
   const handleToggleSaveRecipe = async (recipeKey) => {
     if (!recipeKey || typeof recipeKey !== "string") {
-      console.error("recipeKey inválida:", recipeKey);
+      console.error("recipeKey invalida:", recipeKey);
       return;
     }
 
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+      const { data: { session }} = await supabase.auth.getSession();
       if (!session) {
-        alert("Debes iniciar sesión para guardar recetas.");
+        alert("Debes iniciar sesion para guardar recetas");
         return;
       }
 
-      const currentList = Array.isArray(savedRecipeKeys)
-        ? savedRecipeKeys.filter(
-            (k) => typeof k === "string" && k.trim() !== "" && k !== "null",
-          )
-        : [];
+      const { data, error: fetchError } = await supabase
+      .from('perfiles')
+      .select('recetas_guardadas')
+      .eq('id', session.user.id)
+      .single();
 
-      const isAlreadySaved = currentList.includes(recipeKey);
+      if (fetchError) throw fetchError;
+
+      //La formateamos
+      let rawList = data?.recetas_guardadas;
+      let listaActual = [];
+
+      if (Array.isArray(rawList)) {
+        listaActual = rawList.filter(k => typeof k === "string" && k.trim() !== "" && k !== "null");
+
+      } else if (typeof rawList === 'string' && rawList.trim() !== ''){
+        listaActual = rawList
+        .replace(/^\{|\}$/g, '')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+      }
+
+      const isAlreadySaved = listaActual.includes(recipeKey);
       const updatedList = isAlreadySaved
-        ? currentList.filter((k) => k !== recipeKey)
-        : [...currentList, recipeKey];
+        ? listaActual.filter((k) => k !== recipeKey)
+        : [...listaActual, recipeKey];
 
-      const { error } = await supabase
+      const {error: updateError} = await supabase
         .from("perfiles")
-        .update({ recetas_guardadas: updatedList })
+        .update({ recetas_guardadas: updatedList})
         .eq("id", session.user.id);
 
-      if (error) throw error;
+      if (updateError) throw updateError;
 
       setSavedRecipeKeys(updatedList);
+
     } catch (err) {
       console.error("Error al actualizar favoritos:", err);
-      alert("No se pudo actualizar tu lista de favoritos.");
+      alert("No se pudo actulizar tu lista de favoritos.");
     }
   };
+
 
   // Abre el detalle flotante de la receta seleccionada
   const handleOpenRecipeDetail = (item) => {
